@@ -17,9 +17,30 @@ import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {styles} from '../styles/index_style';
-import {MC, safeHeight, screenHeight} from '../config/convert';
+import {MC, barHeight, screenHeight} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
+
+const filterStatusData = [
+  {value: 'backlog', name: '代办项'},
+  {value: 'advance', name: '进步项'},
+  {value: 'lag', name: '退步项'},
+  {value: 'caution', name: '警示项'},
+  {value: 'abnormal', name: '异常项'},
+];
+const filterTypeData = [
+  {value: 'test', name: '体检'},
+  {value: 'diagnose', name: '诊断'},
+  {value: 'treat', name: '治疗'},
+  {value: 'history', name: '病史'},
+  {value: 'system', name: '身体系统'},
+];
+const filterTimeData = [
+  {value: '1mon', name: '近一个月'},
+  {value: '3mon', name: '近三个月'},
+  {value: '6mon', name: '近六个月'},
+  {value: '1year', name: '近一年'},
+];
 
 class Index extends Component {
   constructor(props) {
@@ -68,7 +89,7 @@ class Index extends Component {
       if (action) {
         Animated.parallel([
           Animated.timing(this.state.bodyInfoTitleTop, {
-            toValue: safeHeight - MC(596),
+            toValue: screenHeight - MC(596) - barHeight,
             duration: 200,
             useNativeDriver: true,
           }),
@@ -243,6 +264,30 @@ class Index extends Component {
                       <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
                       <Text style={styles.infoListItemStateBad}>2项不良反应</Text>
                     </View>
+                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
+                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+                      <Text style={styles.infoListItemTitle}>萘普生</Text>
+                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
+                      <Text style={styles.infoListItemStateWait}>待办</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('Check')}>
+                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+                      <Text style={styles.infoListItemTitle}>空腹血糖</Text>
+                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
+                      <Text style={styles.infoListItemStateWait}>待办</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('BodyRecord')}>
+                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+                      <Text style={styles.infoListItemTitle}>头痛</Text>
+                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
+                      <Text style={styles.infoListItemStateMid}>中度</Text>
+                    </TouchableOpacity>
+                    <View style={styles.infoListItem}>
+                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+                      <Text style={styles.infoListItemTitle}>拜糖平片</Text>
+                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
+                      <Text style={styles.infoListItemStateBad}>2项不良反应</Text>
+                    </View>
                   </ScrollView>
                 ) : (
                   // <View style={styles.drawView}>
@@ -354,237 +399,69 @@ class Index extends Component {
               <View style={styles.popchooseView}>
                 <Text style={styles.popchooseTitle}>按状态筛选</Text>
                 <View style={styles.popchooseStateView}>
-                  <TouchableWithoutFeedback onPress={() => this.chooseState('backlog')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedState === 'backlog' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
+                  {filterStatusData.map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => this.chooseState(item.value)}
+                        key={item.value}
                         style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedState === 'backlog' ? '#ffffff' : '#001133'},
+                          styles.popchooseStateItem,
+                          {backgroundColor: this.state.choosedState === item.value ? '#1FD1A2' : '#eceff4'},
                         ]}>
-                        待办项
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseState('advance')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedState === 'advance' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedState === 'advance' ? '#ffffff' : '#001133'},
-                        ]}>
-                        进步项
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseState('lag')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedState === 'lag' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedState === 'lag' ? '#ffffff' : '#001133'},
-                        ]}>
-                        退步项
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseState('caution')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedState === 'caution' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedState === 'caution' ? '#ffffff' : '#001133'},
-                        ]}>
-                        警示项
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseState('abnormal')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedState === 'abnormal' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedState === 'abnormal' ? '#ffffff' : '#001133'},
-                        ]}>
-                        异常项
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
+                        <Text
+                          style={[
+                            styles.popchooseStateItemText,
+                            {color: this.state.choosedState === item.value ? '#ffffff' : '#001133'},
+                          ]}>
+                          {item.name}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
                 <Text style={styles.popchooseTitle}>按类型筛选</Text>
                 <View style={styles.popchooseStateView}>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('test')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'test' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
+                  {filterTypeData.map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => this.chooseType(item.value)}
+                        key={item.value}
                         style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'test' ? '#ffffff' : '#001133'},
+                          styles.popchooseStateItem,
+                          {backgroundColor: this.state.choosedType === item.value ? '#1FD1A2' : '#eceff4'},
                         ]}>
-                        体检
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('diagnose')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'diagnose' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'diagnose' ? '#ffffff' : '#001133'},
-                        ]}>
-                        诊断
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('treat')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'treat' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'treat' ? '#ffffff' : '#001133'},
-                        ]}>
-                        治疗
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('history')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'history' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'history' ? '#ffffff' : '#001133'},
-                        ]}>
-                        病史
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('system')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'system' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'system' ? '#ffffff' : '#001133'},
-                        ]}>
-                        身体系统
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseType('pos')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedType === 'pos' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedType === 'pos' ? '#ffffff' : '#001133'},
-                        ]}>
-                        身体部位
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
+                        <Text
+                          style={[
+                            styles.popchooseStateItemText,
+                            {color: this.state.choosedType === item.value ? '#ffffff' : '#001133'},
+                          ]}>
+                          {item.name}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
                 <Text style={styles.popchooseTitle}>按时间筛选</Text>
                 <View style={styles.popchooseStateView}>
-                  <TouchableWithoutFeedback onPress={() => this.chooseTime('1mon')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedTime === '1mon' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
+                  {filterTimeData.map((item, index) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => this.chooseTime(item.value)}
+                        key={item.value}
                         style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedTime === '1mon' ? '#ffffff' : '#001133'},
+                          styles.popchooseStateItem,
+                          {backgroundColor: this.state.choosedTime === item.value ? '#1FD1A2' : '#eceff4'},
                         ]}>
-                        近一个月
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseTime('3mon')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedTime === '3mon' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedTime === '3mon' ? '#ffffff' : '#001133'},
-                        ]}>
-                        近三个月
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseTime('6mon')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedTime === '6mon' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedTime === '6mon' ? '#ffffff' : '#001133'},
-                        ]}>
-                        近六个月
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                  <TouchableWithoutFeedback onPress={() => this.chooseTime('1year')}>
-                    <View
-                      style={[
-                        styles.popchooseStateItem,
-                        {backgroundColor: this.state.choosedTime === '1year' ? '#1FD1A2' : '#eceff4'},
-                      ]}>
-                      <Text
-                        style={[
-                          styles.popchooseStateItemText,
-                          {color: this.state.choosedTime === '1year' ? '#ffffff' : '#001133'},
-                        ]}>
-                        近一年
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
+                        <Text
+                          style={[
+                            styles.popchooseStateItemText,
+                            {color: this.state.choosedTime === item.value ? '#ffffff' : '#001133'},
+                          ]}>
+                          {item.name}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
                 </View>
               </View>
               <TouchableOpacity

@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, Animated, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {styles} from '../styles/mian_style';
-import {MC, safeHeight} from '../config/convert';
+import {MC} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
 
@@ -18,6 +18,7 @@ class Index extends Component {
       bodyInfoImgTop: new Animated.Value(MC(140)),
     };
     api.formateJSON(this.props.globle);
+    console.log(this.props.globle.userdata.userName);
   }
 
   async exit() {

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {MC, safeHeight, windowWidth, barHeight, windowHeight, screenHeight} from '../config/convert';
+import {MC, windowWidth, barHeight, screenHeight} from '../config/convert';
 
 const styles = StyleSheet.create({
   container: {
@@ -11,10 +11,11 @@ const styles = StyleSheet.create({
     top: 0,
   },
   safeView: {
-    position: 'absolute',
     width: windowWidth,
-    height: safeHeight,
-    top: barHeight,
+    height: screenHeight,
+    marginTop: barHeight,
+    flex: 1,
+    justifyContent: 'space-between',
   },
   userInfoView: {
     position: 'relative',
@@ -43,8 +44,8 @@ const styles = StyleSheet.create({
   },
   mainView: {
     position: 'relative',
-    height: safeHeight - MC(336),
     width: windowWidth,
+    flex: 1,
     backgroundColor: '#F8FAFF',
     borderTopLeftRadius: MC(40),
     borderTopRightRadius: MC(40),
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
   mainViewCtrl: {
     position: 'relative',
     width: windowWidth,
-    height: safeHeight - MC(456),
+    height: screenHeight - MC(456),
     alignItems: 'center',
     zIndex: 999,
   },
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   infoListView: {
     position: 'absolute',
     width: windowWidth,
-    height: safeHeight - MC(616),
+    height: screenHeight - MC(616) - barHeight,
     backgroundColor: '#F8FAFF',
     alignItems: 'center',
   },
@@ -330,8 +331,8 @@ const styles = StyleSheet.create({
     height: MC(60),
     borderRadius: MC(12),
     marginTop: MC(12),
-    marginRight: MC(12),
-    marginLeft: MC(12),
+    marginRight: MC(10),
+    marginLeft: MC(10),
     backgroundColor: '#eceff4',
     justifyContent: 'center',
     alignItems: 'center',

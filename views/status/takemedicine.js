@@ -184,9 +184,7 @@ class TakeMedicine extends Component {
                 <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('nodiarrhean')}>
                   <Text style={styles.reactionsItemTitle}>腹泻</Text>
                   <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.nodiarrhean ? (
-                      <Image style={styles.choosedIcon} source={img.choosedIcon} />
-                    ) : null}
+                    {this.state.reactions.nodiarrhean ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('vomit')}>
@@ -198,17 +196,13 @@ class TakeMedicine extends Component {
                 <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('abdomen')}>
                   <Text style={styles.reactionsItemTitle}>上腹部不适</Text>
                   <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.abdomen ? (
-                      <Image style={styles.choosedIcon} source={img.choosedIcon} />
-                    ) : null}
+                    {this.state.reactions.abdomen ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('constipation')}>
                   <Text style={styles.reactionsItemTitle}>便秘</Text>
                   <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.constipation ? (
-                      <Image style={styles.choosedIcon} source={img.choosedIcon} />
-                    ) : null}
+                    {this.state.reactions.constipation ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
                   </View>
                 </TouchableOpacity>
               </View>

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, ImageBackground, Image, Text, TouchableOpacity, TextInput, Modal} from 'react-native';
+import {View, StatusBar, ImageBackground, Image, Text, TouchableOpacity, TextInput, Modal, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
@@ -137,19 +137,21 @@ class Login extends Component {
           <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)', justifyContent: 'center', alignItems: 'center'}}>
             <View style={styles.privacyView}>
               <Text style={styles.privacyTitle}>服务协议与隐私政策</Text>
-              <Text style={styles.privacyContent}>
-                为了更好地保障您的个人权益，在您使用产品的全部功能前，请仔细阅读并理解《服务协议》和《隐私政策》，（您可以在【APP-我的-设置-隐私政策】中查看）。如您拒绝，将无法进行登录。
-              </Text>
-              <Text style={styles.privacyContent}>
-                1.【健康智脑】会根据您使用的具体功能需要，收集必要的用户信息（如申请设备系统权限收集设备信息、日志信息，并申请存储等相关权限）；涉及重要或敏感的权限时，我们会在您使用到相应业务功能时，另行弹窗再次征得您的同意后开启；权限开启后，您还可以随时通过设置关闭权限；您不同意开启权限，将不会影响其他相关业务功能的正常使用。{' '}
-              </Text>
-              <Text style={styles.privacyContent}>
-                2.
-                为了为您提供持续稳定的服务运营支持，使您获得最优使用体验。【健康智脑】收集您所使用的设备信息包括设备名称、设备型号、硬件序列号、操作系统版本及类型、语言设置、分辨率、存储内存。{' '}
-              </Text>
-              <Text style={styles.privacyContent}>
-                3. 为了向【健康智脑】上传您的头像及/或其他图片信息，【健康智脑】将申请调用您所使用设备中的摄像头或者相册权限；
-              </Text>
+              <ScrollView>
+                <Text style={styles.privacyContent}>
+                  为了更好地保障您的个人权益，在您使用产品的全部功能前，请仔细阅读并理解《服务协议》和《隐私政策》，（您可以在【APP-我的-设置-隐私政策】中查看）。如您拒绝，将无法进行登录。
+                </Text>
+                <Text style={styles.privacyContent}>
+                  1.【健康智脑】会根据您使用的具体功能需要，收集必要的用户信息（如申请设备系统权限收集设备信息、日志信息，并申请存储等相关权限）；涉及重要或敏感的权限时，我们会在您使用到相应业务功能时，另行弹窗再次征得您的同意后开启；权限开启后，您还可以随时通过设置关闭权限；您不同意开启权限，将不会影响其他相关业务功能的正常使用。{' '}
+                </Text>
+                <Text style={styles.privacyContent}>
+                  2.
+                  为了为您提供持续稳定的服务运营支持，使您获得最优使用体验。【健康智脑】收集您所使用的设备信息包括设备名称、设备型号、硬件序列号、操作系统版本及类型、语言设置、分辨率、存储内存。{' '}
+                </Text>
+                <Text style={styles.privacyContent}>
+                  3. 为了向【健康智脑】上传您的头像及/或其他图片信息，【健康智脑】将申请调用您所使用设备中的摄像头或者相册权限；
+                </Text>
+              </ScrollView>
               <View style={styles.privacyBtnView}>
                 <TouchableOpacity style={styles.privacyBtnLeft} onPress={() => this.setState({isShowPrivacy: false})}>
                   <Text style={styles.privacyBtnText1}>不同意</Text>

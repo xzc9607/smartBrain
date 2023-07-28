@@ -38,10 +38,12 @@ class Add extends Component {
       choosedSystemType: '',
       wantData: [],
       history: [],
+      typeList: [],
     };
   }
 
   componentDidMount() {
+    this.getFirstType();
     this.getWant();
     this.getHistory();
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
@@ -95,6 +97,12 @@ class Add extends Component {
     }
     this.inputsearchRef.current.blur();
   };
+
+  getFirstType() {
+    api.post('app/element/type/2', {}, res => {
+      api.formateJSON(res.data);
+    });
+  }
 
   chooseType(type) {
     this.setState({choosedType: type});
