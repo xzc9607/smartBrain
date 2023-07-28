@@ -1,26 +1,19 @@
 import React, {Component} from 'react';
-import {
-  View,
-  StatusBar,
-  ImageBackground,
-  Image,
-  Text,
-  Animated,
-  TouchableOpacity,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 
 import {styles} from '../styles/setting_style';
-import {MC, safeHeight} from '../config/convert';
 import img from '../imgs/img';
 
 class Setting extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+  }
+
+  toNextPage(pageName) {
+    this.props.navigation.navigate(pageName);
   }
 
   render() {
@@ -38,25 +31,18 @@ class Setting extends Component {
           </View>
           <View style={styles.mainView}>
             <View style={styles.infoView}>
-              <TouchableOpacity
-                style={styles.infoItem}
-                onPress={() =>
-                  this.props.navigation.navigate('Webview', {
-                    weburi: 'https://www.baidu.com',
-                    title: '隐私政策',
-                  })
-                }>
+              <TouchableOpacity style={styles.infoItem} onPress={() => this.toNextPage('Privacy')}>
                 <Text style={styles.infoItemTextLeft}>隐私政策</Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </TouchableOpacity>
-              <View style={styles.infoItem}>
+              {/* <View style={styles.infoItem}>
                 <Text style={styles.infoItemTextLeft}>个人信息收集清单</Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </View>
               <View style={[styles.infoItem, {borderBottomColor: '#ffffff'}]}>
                 <Text style={styles.infoItemTextLeft}>个人信息共享清单</Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
-              </View>
+              </View> */}
             </View>
             <Text style={styles.saveBtn}>注销账号</Text>
           </View>

@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   infoView: {
     width: MC(690),
-    height: MC(300),
+    height: MC(100),
     backgroundColor: '#ffffff',
     borderRadius: MC(30),
     marginTop: MC(30),
@@ -90,6 +90,11 @@ const styles = StyleSheet.create({
     fontSize: MC(28),
     textAlign: 'center',
     lineHeight: MC(100),
+  },
+  privacyText: {
+    width: MC(650),
+    fontSize: MC(28),
+    color: '#000000',
   },
 });
 

@@ -46,6 +46,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   inputTitle: {
+    width: MC(570),
+    textAlign: 'left',
     color: '#001133',
     fontSize: MC(32),
     fontWeight: '700',
@@ -54,6 +56,7 @@ const styles = StyleSheet.create({
   inputView: {
     width: MC(570),
     flex: 1,
+    alignItems: 'center',
   },
   inputPhone: {
     width: MC(570),
@@ -125,7 +128,6 @@ const styles = StyleSheet.create({
   allowIcon: {
     width: MC(24),
     height: MC(24),
-    marginRight: MC(8),
   },
   allowText: {
     color: '#ffffff',
@@ -134,6 +136,71 @@ const styles = StyleSheet.create({
   clickText: {
     color: '#001133',
     textDecorationLine: 'underline',
+  },
+  arrowView: {
+    width: MC(30),
+    height: MC(30),
+    borderRadius: 50,
+    borderColor: '#ffffff',
+    borderWidth: 1,
+    marginRight: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  privacyView: {
+    width: MC(650),
+    height: MC(988),
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+    borderRadius: MC(40),
+  },
+  privacyTitle: {
+    fontSize: MC(48),
+    color: '#333333',
+    fontWeight: '500',
+    marginTop: MC(44),
+    marginBottom: MC(44),
+  },
+  privacyContent: {
+    width: MC(552),
+    fontSize: MC(24),
+    color: '#666666',
+    fontWeight: '200',
+  },
+  privacyBtnView: {
+    position: 'absolute',
+    bottom: MC(74),
+    width: MC(550),
+    height: MC(72),
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  privacyBtnLeft: {
+    width: MC(240),
+    height: MC(72),
+    borderRadius: MC(36),
+    borderWidth: 1,
+    borderColor: '#00D69E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  privacyBtnRight: {
+    width: MC(240),
+    height: MC(72),
+    borderRadius: MC(36),
+    backgroundColor: '#00D69E',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  privacyBtnText1: {
+    color: '#00D69E',
+    fontSize: MC(32),
+    fontWeight: '500',
+  },
+  privacyBtnText2: {
+    color: '#ffffff',
+    fontSize: MC(32),
+    fontWeight: '500',
   },
 });
 

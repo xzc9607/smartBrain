@@ -18,6 +18,7 @@ import TakeMedicine from './views/status/takemedicine';
 import TakeMedicineRecord from './views/status/takemedicinerecord';
 import BodyRecord from './views/status/bodyrecord';
 import AddItem from './views/additem';
+import Privacy from './views/more/privacy';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,6 +39,7 @@ const App: () => Node = () => {
           <Stack.Screen name="TakeMedicineRecord" component={TakeMedicineRecord} />
           <Stack.Screen name="BodyRecord" component={BodyRecord} />
           <Stack.Screen name="AddItem" component={AddItem} />
+          <Stack.Screen name="Privacy" component={Privacy} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </NavigationContainer>
