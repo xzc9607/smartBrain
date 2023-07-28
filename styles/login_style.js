@@ -1,0 +1,140 @@
+import {StyleSheet} from 'react-native';
+import {screenHeight, MC, safeHeight, windowWidth, barHeight} from '../config/convert';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#00D69E',
+  },
+  Bgcontainer: {
+    position: 'absolute',
+    top: 0,
+    width: windowWidth,
+    height: screenHeight,
+    flex: 1,
+    backgroundColor: '#00D69E',
+  },
+  safeView: {
+    position: 'absolute',
+    width: windowWidth,
+    height: safeHeight,
+    top: barHeight,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  logo: {
+    position: 'absolute',
+    top: MC(200),
+    width: MC(228),
+    height: MC(164),
+    // marginTop: MC(200),
+  },
+  InnerView: {
+    width: MC(650),
+    height: MC(668),
+    borderRadius: MC(50),
+    backgroundColor: '#ffffff',
+    marginTop: MC(163),
+    alignItems: 'center',
+  },
+  loginTitle: {
+    color: '#001133',
+    width: MC(650),
+    fontSize: MC(36),
+    fontWeight: '700',
+    marginTop: MC(43),
+    textAlign: 'center',
+  },
+  inputTitle: {
+    color: '#001133',
+    fontSize: MC(32),
+    fontWeight: '700',
+    marginTop: MC(40),
+  },
+  inputView: {
+    width: MC(570),
+    flex: 1,
+  },
+  inputPhone: {
+    width: MC(570),
+    height: MC(90),
+    borderRadius: MC(20),
+    backgroundColor: '#f8faff',
+    marginTop: MC(12),
+    paddingLeft: MC(30),
+    color: '#001133',
+  },
+  inputCodeView: {
+    width: MC(570),
+    height: MC(90),
+    marginTop: MC(12),
+    justifyContent: 'center',
+  },
+  inputCode: {
+    width: MC(570),
+    height: MC(90),
+    borderRadius: MC(20),
+    backgroundColor: '#f8faff',
+    paddingLeft: MC(30),
+    color: '#001133',
+  },
+  loginBtnView: {
+    position: 'absolute',
+    bottom: MC(40),
+    width: MC(544),
+    height: MC(100),
+    borderRadius: MC(30),
+    backgroundColor: '#00d69e',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loginBtnText: {
+    color: '#ffffff',
+    fontSize: MC(32),
+    fontWeight: '500',
+  },
+  sendCodeView: {
+    width: MC(200),
+    height: MC(64),
+    position: 'absolute',
+    right: MC(20),
+    backgroundColor: '#00d69e',
+    borderRadius: MC(24),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  sendCodeText: {
+    color: '#ffffff',
+    fontSize: MC(24),
+    fontWeight: '500',
+  },
+  loginTypeTip: {
+    color: '#ffffff',
+    fontSize: MC(28),
+    marginTop: MC(48),
+  },
+  allowView: {
+    position: 'absolute',
+    bottom: MC(100),
+    width: windowWidth,
+    height: MC(34),
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  allowIcon: {
+    width: MC(24),
+    height: MC(24),
+    marginRight: MC(8),
+  },
+  allowText: {
+    color: '#ffffff',
+    fontSize: MC(24),
+  },
+  clickText: {
+    color: '#001133',
+    textDecorationLine: 'underline',
+  },
+});
+
+export {styles};
