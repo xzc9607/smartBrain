@@ -17,8 +17,6 @@ class Index extends Component {
       bodyInfoTitleTop: new Animated.Value(0),
       bodyInfoImgTop: new Animated.Value(MC(140)),
     };
-    api.formateJSON(this.props.globle);
-    console.log(this.props.globle.userdata.userName);
   }
 
   async exit() {
