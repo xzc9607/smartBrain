@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback} from 'react-native';
+import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback, Alert} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,11 +17,26 @@ class Index extends Component {
       bodyInfoTitleTop: new Animated.Value(0),
       bodyInfoImgTop: new Animated.Value(MC(140)),
     };
-    api.formateJSON(this.props.globle);
-    console.log(this.props.globle.userdata.userName);
   }
 
-  async exit() {
+  exit() {
+    Alert.alert('退出登录', '您确定要退出登录吗？', [
+      {
+        text: '取消',
+        onPress: () => {},
+        style: 'cancel',
+      },
+      {
+        text: '退出',
+        onPress: () => {
+          this.logout();
+        },
+        style: 'default',
+      },
+    ]);
+  }
+
+  async logout() {
     this.props.resetData({});
     await AsyncStorage.removeItem('token');
     setTimeout(() => {

@@ -299,13 +299,104 @@ class Index extends Component {
                   <View style={styles.drawView}>
                     <ImageBackground style={styles.manDrew} source={img.manDrew}>
                       <ImageBackground style={styles.bodyInner} source={img.bodyInner}>
-                        <Image style={styles.bodyWarImg} source={img.bodyWarnHeartIcon} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutHeart} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutLung} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutbladder} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutKidney} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutLiver} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutPancreas} />
+                        <Image style={styles.bodyWarImg} source={img.ImgGutStomach} />
                       </ImageBackground>
                     </ImageBackground>
-                    <View style={styles.TipsView}>
-                      <View style={styles.TipsLine}></View>
-                      <View style={styles.TipsInnerView}>
+                    <View style={styles.TipsViewHead}>
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+                        <Text style={styles.TipsInnerText}>头部 1</Text>
+                      </View>
+                      <Image style={styles.lineBodyHead} source={img.lineBodyHead} />
+                    </View>
+                    <View style={styles.TipsViewNeck}>
+                      <Image style={styles.lineBodyNeck} source={img.lineBodyNeck} />
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+                        <Text style={styles.TipsInnerText}>颈部 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewHeart}>
+                      <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
                         <Text style={styles.TipsInnerText}>心脏 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewLung}>
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肺部 1</Text>
+                      </View>
+                      <Image style={styles.lineGutLung} source={img.lineGutLung} />
+                    </View>
+                    <View style={styles.TipsViewLiver}>
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400'}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肝脏 1</Text>
+                      </View>
+                      <Image style={styles.lineGutLiver} source={img.lineGutLiver} />
+                    </View>
+                    <View style={styles.TipsViewStomach}>
+                      <Image style={styles.lineGutStomach} source={img.lineGutStomach} />
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#822EF3'}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#822EF3'}]}>胃部 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewHelperL}>
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左臂 1</Text>
+                      </View>
+                      <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperL} />
+                    </View>
+                    <View style={styles.TipsViewHelperR}>
+                      <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperR} />
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右臂 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewKidney}>
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF', marginTop: MC(20)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肾脏 1</Text>
+                      </View>
+                      <Image style={styles.lineGutKidney} source={img.lineGutKidney} />
+                    </View>
+                    <View style={styles.TipsViewPancreas}>
+                      <Image style={styles.lineGutPancreas} source={img.lineGutPancreas} />
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(42)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>胰脏 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewBladder}>
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>膀胱 1</Text>
+                      </View>
+                      <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
+                    </View>
+                    <View style={styles.TipsViewEnteric}>
+                      <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
+                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400', marginTop: MC(32)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肠道 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewGenital}>
+                      <Image style={styles.lineBodyGenital} source={img.lineBodyGenital} />
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(88)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>阴部 1</Text>
+                      </View>
+                    </View>
+                    <View style={styles.TipsViewLegL}>
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左腿 1</Text>
+                      </View>
+                      <Image style={styles.lineBodyLeg} source={img.lineBodyLegL} />
+                    </View>
+                    <View style={styles.TipsViewLegR}>
+                      <Image style={styles.lineBodyLeg} source={img.lineBodyLegR} />
+                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右腿 1</Text>
                       </View>
                     </View>
                   </View>

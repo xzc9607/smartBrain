@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   safeView: {
     position: 'absolute',
     width: windowWidth,
-    height: safeHeight,
+    height: screenHeight - barHeight,
     top: barHeight,
     alignItems: 'center',
   },
@@ -100,19 +100,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemTypeView: {
-    height: MC(408),
+    minHeight: MC(186),
     width: windowWidth - MC(100),
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
   },
   IconView: {
-    width: MC(192),
-    height: MC(192),
+    width: MC(174),
+    height: MC(186),
     borderRadius: MC(50),
-    backgroundColor: '#f5f5f5',
     alignItems: 'center',
-    marginBottom: MC(24),
   },
   searchItemIcon: {
     width: MC(76),
@@ -123,7 +121,7 @@ const styles = StyleSheet.create({
     color: '#001133',
     fontSize: MC(24),
     fontWeight: '500',
-    marginTop: MC(20),
+    marginTop: MC(95),
   },
   itemType1View: {
     width: windowWidth - MC(100),
