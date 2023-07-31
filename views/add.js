@@ -128,6 +128,8 @@ class Add extends Component {
   }
 
   getSubType(id) {
+    // 1.存大类id，判断选择的是哪个大类
+    // 2.请求当前类目下的第一个子类
     // this.setState({choosedTypeId: id, subtypeList: haha}, () => {
     // api.post('app/project/get/element/' + id, {}, res => {
     //   // this.setState({subtypeList: [...this.state.subtypeList, ...res.data]})
@@ -153,7 +155,7 @@ class Add extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           {/*//! 标题栏 */}
           <View style={styles.navView}>

@@ -15,7 +15,7 @@ class UserInfo extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
             <Text style={styles.navTitle}>个人信息</Text>
