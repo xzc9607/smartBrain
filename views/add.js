@@ -240,7 +240,7 @@ class Add extends Component {
             ) : (
               // !搜索输入框获取焦点
               <View style={styles.itemSearchView}>
-                <Text style={styles.searchTitle}>历史搜索</Text>
+                {this.state.history.length > 0 ? <Text style={styles.searchTitle}>历史搜索</Text> : null}
                 <View style={styles.historyView}>
                   {this.state.history.map((item, index) => {
                     return (
@@ -254,7 +254,7 @@ class Add extends Component {
                 <View style={styles.historyView}>
                   {this.state.wantData.map((item, index) => {
                     return (
-                      <Text style={styles.historyText} key={item}>
+                      <Text style={styles.historyText} key={item} onPress={() => this.setState({searchText: item})}>
                         {item}
                       </Text>
                     );

@@ -77,6 +77,10 @@ class TakeMedicine extends Component {
     };
   }
 
+  componentWillUnmount() {
+    Picker.hide();
+  }
+
   onChange(value) {
     this.setState({value});
   }

@@ -1,15 +1,5 @@
 import React, {Component} from 'react';
-import {
-  View,
-  StatusBar,
-  ImageBackground,
-  Image,
-  Text,
-  Animated,
-  TouchableOpacity,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 
