@@ -91,7 +91,16 @@ const post = async (url, body, success, failure) => {
       return res.json();
     })
     .then(sres => {
-      return success(sres);
+      if (sres.code !== 200) {
+        if (sres.code === 400) {
+          setTimeout(() => {
+            return failure(that => that.navigation.navigate('Login'));
+          }, 500);
+        }
+        return failure(sres);
+      } else {
+        return success(sres);
+      }
     });
 };
 
