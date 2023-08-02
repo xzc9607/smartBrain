@@ -6,6 +6,10 @@ const toast = Text => {
   ToastAndroid.showWithGravity(Text, ToastAndroid.SHORT, ToastAndroid.CENTER);
 };
 
+const logout = async () => {
+  await AsyncStorage.removeItem('token');
+};
+
 const formateJSON = (str, obj) => {
   if (typeof str === 'object') {
     console.log('\n', JSON.stringify(str, null, '   '));
@@ -93,6 +97,7 @@ const post = async (url, body, success, failure) => {
     .then(sres => {
       if (sres.code !== 200) {
         if (sres.code === 400) {
+          logout();
           setTimeout(() => {
             return failure(that => that.navigation.navigate('Login'));
           }, 500);
