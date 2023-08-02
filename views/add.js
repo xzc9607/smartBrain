@@ -19,38 +19,6 @@ import {styles} from '../styles/add_style';
 import img from '../imgs/img';
 import api from '../config/api';
 
-const haha = [
-  {
-    leave: 'p1',
-    data: [
-      {
-        id: 'q1',
-        name: '头部',
-      },
-      {
-        id: 'q2',
-        name: '脸部',
-      },
-    ],
-  },
-];
-
-const hahaha = [
-  {
-    leave: 'p2',
-    data: [
-      {
-        id: 'w1',
-        name: '头痛',
-      },
-      {
-        id: 'w2',
-        name: '头晕',
-      },
-    ],
-  },
-];
-
 class Add extends Component {
   constructor(props) {
     super(props);
@@ -64,6 +32,7 @@ class Add extends Component {
       typeList: [],
       subtypeList: [],
       subtypeId: [],
+      isShowComfirm: false,
     };
   }
 
@@ -92,19 +61,31 @@ class Add extends Component {
       api.toast('请输入需要搜索的内容');
       return;
     }
-    this.setState({history: [this.state.searchText, ...this.state.history]}, () => {
-      AsyncStorage.setItem('history', JSON.stringify(this.state.history));
-      // todo 搜索
+    if (this.state.history.includes(this.state.searchText)) {
       api.post(
         'app/element/search',
         {
           keyword: this.state.searchText,
         },
         res => {
-          console.log(res);
+          api.formateJSON(res.data);
         },
       );
-    });
+    } else {
+      this.setState({history: [this.state.searchText, ...this.state.history]}, () => {
+        AsyncStorage.setItem('history', JSON.stringify(this.state.history));
+        // todo 搜索
+        api.post(
+          'app/element/search',
+          {
+            keyword: this.state.searchText,
+          },
+          res => {
+            api.formateJSON(res.data);
+          },
+        );
+      });
+    }
   }
 
   getWant() {
@@ -122,25 +103,78 @@ class Add extends Component {
   };
 
   getFirstType() {
-    api.post('app/element/type/2', {}, res => {
-      this.setState({typeList: res.data});
-    });
+    api.post(
+      'app/element/type/2',
+      {},
+      res => {
+        this.setState({typeList: res.data});
+      },
+      err => {
+        console.log(err);
+      },
+    );
   }
 
   getSubType(id) {
     // 1.存大类id，判断选择的是哪个大类
     // 2.请求当前类目下的第一个子类
-    // this.setState({choosedTypeId: id, subtypeList: haha}, () => {
-    // api.post('app/project/get/element/' + id, {}, res => {
-    //   // this.setState({subtypeList: [...this.state.subtypeList, ...res.data]})
-    //   api.formateJSON(res.data);
-    // });
-    // });
+    this.setState({choosedTypeId: id}, () => {
+      api.post('/app/element/parent/' + id, {}, res => {
+        this.setState({subtypeList: [res.data], subtypeId: [], isShowComfirm: false});
+      });
+    });
   }
 
-  getNext(id, index) {
-    this.setState({subtypeList: [...this.state.subtypeList, ...hahaha], subtypeId: [...this.state.subtypeId, id]}, () => {
-      console.log(this.state.subtypeId);
+  getNext(id, innerindex, index) {
+    //? innerindex 当前index下的子项的index
+
+    if (this.state.subtypeList.length > index) {
+      this.setState({isShowComfirm: false});
+    }
+
+    if (this.state.subtypeId[index] === undefined) {
+      api.post('/app/element/parent/' + id, {}, res => {
+        if (res.data.length === 0) {
+          this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
+            this.canToAdd(id);
+          });
+          return;
+        }
+        this.setState({
+          subtypeId: [...this.state.subtypeId, id],
+          subtypeList: [...this.state.subtypeList, res.data],
+        });
+      });
+    } else if (this.state.subtypeId[index] !== undefined && this.state.subtypeId[index] === id) {
+      return;
+    } else {
+      this.setState(
+        {
+          subtypeId: [...this.state.subtypeId.slice(0, index), id],
+          subtypeList: this.state.subtypeList.slice(0, index + 1),
+        },
+        () => {
+          api.post('/app/element/parent/' + id, {}, res => {
+            if (res.data.length === 0) {
+              this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
+                this.canToAdd(id);
+              });
+              return;
+            }
+            this.setState({
+              subtypeList: [...this.state.subtypeList, res.data],
+            });
+          });
+        },
+      );
+    }
+  }
+
+  canToAdd(id) {
+    console.log('judge');
+    api.post('/app/project/get/element/' + id, {}, res => {
+      api.formateJSON(res.data);
+      this.setState({isShowComfirm: res.data.length !== 0});
     });
   }
 
@@ -218,17 +252,20 @@ class Add extends Component {
                   </View> */}
                   {this.state.subtypeList.map((item, index) => {
                     return (
-                      <View style={styles.itemNextView} key={item.leave}>
-                        {item.data.map((innerItem, innerIndex) => {
+                      <View style={styles.itemNextView} key={index}>
+                        {item.map((innerItem, innerIndex) => {
                           return (
                             <Text
                               key={innerItem.id}
                               style={[
                                 styles.nextText,
-                                {color: this.state.subtypeId[innerIndex] === innerItem.id ? 'red' : 'black'},
+                                {
+                                  backgroundColor: this.state.subtypeId[index] === innerItem.id ? '#1FD1A2' : '#f5f5f5',
+                                  color: this.state.subtypeId[index] === innerItem.id ? '#ffffff' : '#000000',
+                                },
                               ]}
-                              onPress={() => this.getNext(innerItem.id, innerIndex)}>
-                              {innerItem.name}
+                              onPress={() => this.getNext(innerItem.id, innerIndex, index)}>
+                              {innerItem.elementName}
                             </Text>
                           );
                         })}
@@ -236,6 +273,11 @@ class Add extends Component {
                     );
                   })}
                 </View>
+                {this.state.isShowComfirm ? (
+                  <Text style={styles.saveBtn} onPress={() => this.toNextPage('AddItem')}>
+                    确定
+                  </Text>
+                ) : null}
               </ScrollView>
             ) : (
               // !搜索输入框获取焦点
@@ -262,11 +304,6 @@ class Add extends Component {
                 </View>
               </View>
             )}
-            {/* {this.state.choosedType && !this.state.searching !== '' ? (
-              <Text style={styles.saveBtn} onPress={() => this.toNextPage('AddItem')}>
-                确定
-              </Text>
-            ) : null} */}
           </View>
         </View>
       </View>

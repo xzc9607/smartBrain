@@ -230,8 +230,8 @@ const styles = StyleSheet.create({
     marginBottom: MC(28),
   },
   saveBtn: {
-    position: 'absolute',
-    bottom: MC(22),
+    position: 'relative',
+    marginTop: MC(30),
     width: MC(650),
     height: MC(100),
     backgroundColor: '#1FD1A2',

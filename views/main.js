@@ -9,6 +9,7 @@ import {MC} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
 
+const day = 24 * 60 * 60;
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +17,18 @@ class Index extends Component {
       bodyInfoState: true,
       bodyInfoTitleTop: new Animated.Value(0),
       bodyInfoImgTop: new Animated.Value(MC(140)),
+      createTime: 0,
     };
+  }
+
+  componentDidMount() {
+    this.dealCreateTime();
+  }
+
+  dealCreateTime() {
+    let now = Date.now() / 1000;
+    let time = this.props.globle.userdata.creatorTime;
+    this.setState({createTime: parseInt((now - time) / day, 10)});
   }
 
   exit() {
@@ -69,7 +81,7 @@ class Index extends Component {
           <View style={styles.userInfoView}>
             <Text style={styles.userName}>{this.props.globle.userdata.userName}</Text>
             <View style={styles.userUseDay}>
-              <Text style={{color: '#ffffff', fontSize: MC(20)}}>已使用健康智脑1333天</Text>
+              <Text style={{color: '#ffffff', fontSize: MC(20)}}>已使用健康智脑{this.state.createTime}天</Text>
             </View>
             <TouchableWithoutFeedback onPress={() => this.toNextPage('UserInfo')}>
               <View style={styles.userAvatar}>
