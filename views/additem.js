@@ -4,13 +4,26 @@ import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 
 import {styles} from '../styles/additem_style';
-import {MC, safeHeight} from '../config/convert';
 import img from '../imgs/img';
+import api from '../config/api';
 
-class Setting extends Component {
+class AddItem extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      infoData: [],
+    };
+    console.log(this.props.route.params.transParams);
+  }
+
+  componentDidMount() {
+    this.getItemInfo();
+  }
+
+  getItemInfo() {
+    api.post('/app/project/info/' + this.props.route.params.transParams.id, {}, res => {
+      api.formateJSON(res.data);
+    });
   }
 
   render() {
@@ -19,7 +32,7 @@ class Setting extends Component {
         <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
-            <Text style={styles.navTitle}>头部不适</Text>
+            <Text style={styles.navTitle}>{this.props.route.params.transParams.projectName}</Text>
             <TouchableWithoutFeedback onPress={() => this.props.navigation.goBack()}>
               <View style={styles.backIconView}>
                 <Image style={styles.backIcon} source={img.backIconBlck} />
@@ -125,4 +138,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Setting);
+export default connect(mapStateToProps, mapDispatchToProps)(AddItem);

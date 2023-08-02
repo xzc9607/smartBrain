@@ -34,6 +34,7 @@ class Add extends Component {
       subtypeId: [],
       isShowComfirm: false,
     };
+    this.transParams = {};
   }
 
   componentDidMount() {
@@ -128,10 +129,6 @@ class Add extends Component {
   getNext(id, innerindex, index) {
     //? innerindex 当前index下的子项的index
 
-    if (this.state.subtypeList.length > index) {
-      this.setState({isShowComfirm: false});
-    }
-
     if (this.state.subtypeId[index] === undefined) {
       api.post('/app/element/parent/' + id, {}, res => {
         if (res.data.length === 0) {
@@ -152,6 +149,7 @@ class Add extends Component {
         {
           subtypeId: [...this.state.subtypeId.slice(0, index), id],
           subtypeList: this.state.subtypeList.slice(0, index + 1),
+          isShowComfirm: false,
         },
         () => {
           api.post('/app/element/parent/' + id, {}, res => {
@@ -171,11 +169,16 @@ class Add extends Component {
   }
 
   canToAdd(id) {
-    console.log('judge');
     api.post('/app/project/get/element/' + id, {}, res => {
       api.formateJSON(res.data);
-      this.setState({isShowComfirm: res.data.length !== 0});
+      this.setState({isShowComfirm: res.data.length !== 0}, () => {
+        this.transParams = res.data[0];
+      });
     });
+  }
+
+  toAdd() {
+    this.props.navigation.navigate('AddItem', {transParams: this.transParams});
   }
 
   chooseType(type) {
@@ -274,7 +277,7 @@ class Add extends Component {
                   })}
                 </View>
                 {this.state.isShowComfirm ? (
-                  <Text style={styles.saveBtn} onPress={() => this.toNextPage('AddItem')}>
+                  <Text style={styles.saveBtn} onPress={() => this.toAdd()}>
                     确定
                   </Text>
                 ) : null}
