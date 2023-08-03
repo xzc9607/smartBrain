@@ -1,1 +1,2 @@
 export const RESETUSERDATA = 'RESETUSERDATA';
+export const RESETADDLIST = 'RESETADDLIST';

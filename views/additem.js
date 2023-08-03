@@ -212,6 +212,7 @@ class AddItem extends Component {
       }
     });
     api.formateJSON(this.callback);
+    this.props.navigation.navigate('Continue');
     // api.post('/app/project/result/' + this.props.route.params.transParams.id, this.callback, res => {
     //   api.formateJSON(res);
     // });
