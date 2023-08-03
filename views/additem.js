@@ -1,19 +1,26 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
+import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView, TextInput} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
+import Picker from 'react-native-picker';
 
 import {styles} from '../styles/additem_style';
 import img from '../imgs/img';
 import api from '../config/api';
+
+const typePickDate = ['mmol/L', 'xxxx/L'];
 
 class AddItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       infoData: [],
+      value: [],
     };
-    console.log(this.props.route.params.transParams);
+    this.callback = {
+      projectId: this.props.route.params.transParams.id,
+      dataList: [],
+    };
   }
 
   componentDidMount() {
@@ -22,8 +29,192 @@ class AddItem extends Component {
 
   getItemInfo() {
     api.post('/app/project/info/' + this.props.route.params.transParams.id, {}, res => {
-      api.formateJSON(res.data);
+      res.data.forEach((item, index) => {
+        this.callback.dataList.push({
+          elementDataType: item.elementDataType,
+          elementId: item.elementId,
+          elementValue: '',
+        });
+      });
+      this.setState({infoData: res.data});
     });
+  }
+
+  showItem(item, index) {
+    if (item.elementDataType === 1) {
+      //单选
+      return (
+        <View style={styles.singleChooseView} key={item.id}>
+          <View style={styles.headView}>
+            <Text style={styles.headTitle}>{item.elementName}</Text>
+            <TouchableOpacity style={styles.smallIconView}>
+              <Image style={styles.smallIcon} source={img.smallAddInfo} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemView}>
+            {item.selectList.map((selItem, sleIndex) => {
+              return (
+                <TouchableOpacity
+                  style={styles.singleChooseItem}
+                  key={selItem.id}
+                  onPress={() => this.singleChoose(selItem.elementName, index)}>
+                  <View style={styles.singleChooseItemView}>
+                    {this.state.value[index] === selItem.elementName ? (
+                      <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
+                    ) : null}
+                  </View>
+                  <Text style={styles.singleChooseItemText}>{selItem.elementName}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+      );
+    } else if (item.elementDataType === 2) {
+      //多选
+      return (
+        <View style={styles.multiView} key={item.id}>
+          <View style={styles.headView}>
+            <Text style={styles.headTitle}>{item.elementName}</Text>
+            <TouchableOpacity style={styles.smallIconView}>
+              <Image style={styles.smallIcon} source={img.smallAddInfo} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.itemView}>
+            {item.selectList.map((selItem, sleIndex) => {
+              return (
+                <TouchableOpacity
+                  style={styles.singleChooseItem}
+                  key={selItem.id}
+                  onPress={() => this.multiChoose(selItem, index)}>
+                  <View style={styles.multiChooseItemView}>
+                    {!!this.state.value[index] && this.state.value[index].includes(selItem.elementName) ? (
+                      <Image style={styles.multiChooseIcon} source={img.choosedIcon} resizeMode="stretch" />
+                    ) : null}
+                  </View>
+                  <Text style={styles.singleChooseItemText}>{selItem.elementName}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </View>
+      );
+    } else if (item.elementDataType === 3) {
+      //input
+      return (
+        <View style={styles.inputOusideView}>
+          <View style={styles.headView}>
+            <Text style={styles.headTitle}>{item.elementName}</Text>
+            <TouchableOpacity style={styles.smallIconView}>
+              <Image style={styles.smallIcon} source={img.smallAddInfo} />
+            </TouchableOpacity>
+          </View>
+          <TextInput style={styles.inputView} placeholder={'请在此输入详情'} onChangeText={text => this.textInput(text, index)} />
+        </View>
+      );
+    } else if (item.elementDataType === 4) {
+      // number
+      return (
+        <View style={styles.pickerView}>
+          <Text style={styles.pickerTitle}>{item.elementName}</Text>
+          <TextInput
+            style={styles.valueInput}
+            placeholder="请在此输入数值"
+            keyboardType="numeric"
+            onChangeText={num => this.valueEnter(num, index)}
+          />
+        </View>
+      );
+    } else if (item.elementDataType === 5) {
+      // 区间，选择器?
+      return (
+        <TouchableOpacity style={styles.pickerView} onPress={() => this.showPicker(item, index)}>
+          <Text style={styles.pickerTitle}>持续时间</Text>
+          <Text style={styles.pickerChooseText}>{this.state.value[index] ? this.state.value[index] : '请选择'}</Text>
+          <Image style={styles.rightArrow} source={img.rightArrow} />
+        </TouchableOpacity>
+      );
+    }
+  }
+
+  singleChoose(value, index) {
+    const tVal = Array.from(this.state.value);
+    tVal[index] = value;
+    this.setState({value: tVal}, () => {
+      console.log(this.state.value);
+    });
+  }
+
+  multiChoose(value, index) {
+    const tVal = Array.from(this.state.value);
+    let tMulti = [];
+    if (tVal[index]) {
+      tMulti = [...tVal[index]];
+      if (tMulti.includes(value.elementName)) {
+        tMulti = tMulti.filter(val => val !== value.elementName);
+      } else {
+        tMulti.push(value.elementName);
+      }
+    } else {
+      tMulti = [value.elementName];
+    }
+    tVal[index] = tMulti;
+    this.setState({value: tVal}, () => {
+      console.log(this.state.value);
+    });
+  }
+
+  textInput(value, index) {
+    const tVal = Array.from(this.state.value);
+    tVal[index] = value;
+    this.setState({value: tVal}, () => {
+      console.log(this.state.value);
+    });
+  }
+
+  valueEnter(value, index) {
+    const tVal = Array.from(this.state.value);
+    tVal[index] = Number(value);
+    this.setState({value: tVal}, () => {
+      console.log(this.state.value);
+    });
+  }
+
+  showPicker(value, index) {
+    const tVal = Array.from(this.state.value);
+    Picker.init({
+      pickerData: typePickDate,
+      pickerTitleText: '请选择',
+      pickerConfirmBtnText: '确定',
+      pickerCancelBtnText: '取消',
+      onPickerConfirm: data => {
+        tVal[index] = value;
+        this.setState({value: tVal});
+      },
+      onPickerCancel: data => {},
+    });
+    Picker.show();
+  }
+
+  submit() {
+    for (let i = 0; i < this.state.infoData.length; i++) {
+      if (this.state.value[i] === undefined) {
+        api.toast('请输入完整数据!');
+        return;
+      }
+    }
+    this.state.value.forEach((val, index) => {
+      if (this.state.infoData[index].elementDataType === 2) {
+        //多选
+        this.callback.dataList[index].elementValue = val.join(',');
+      } else {
+        this.callback.dataList[index].elementValue = val;
+      }
+    });
+    api.formateJSON(this.callback);
+    // api.post('/app/project/result/' + this.props.route.params.transParams.id, this.callback, res => {
+    //   api.formateJSON(res);
+    // });
   }
 
   render() {
@@ -42,84 +233,14 @@ class AddItem extends Component {
               <Image style={styles.bigicon} source={img.bigAddInfo} />
             </TouchableOpacity>
           </View>
-          <View style={styles.mainView}>
-            <View style={styles.singleChooseView}>
-              <View style={styles.headView}>
-                <Text style={styles.headTitle}>头部不适</Text>
-                <TouchableOpacity style={styles.smallIconView}>
-                  <Image style={styles.smallIcon} source={img.smallAddInfo} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemView}>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头晕</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头痛</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头胀</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头沉</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头沉</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.singleChooseItemView}>
-                    <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头沉</Text>
-                </View>
-              </View>
-            </View>
-            <View style={styles.pickerView}>
-              <Text style={styles.pickerTitle}>持续时间</Text>
-              <Text style={styles.pickerChooseText}>3天</Text>
-              <Image style={styles.rightArrow} source={img.rightArrow} />
-            </View>
-            <View style={styles.multiView}>
-              <View style={styles.headView}>
-                <Text style={styles.headTitle}>部位</Text>
-                <TouchableOpacity style={styles.smallIconView}>
-                  <Image style={styles.smallIcon} source={img.smallAddInfo} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.itemView}>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.multiChooseItemView}>
-                    <Image style={styles.multiChooseIcon} source={img.choosedIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>头顶</Text>
-                </View>
-                <View style={styles.singleChooseItem}>
-                  <View style={styles.multiChooseItemView}>
-                    <Image style={styles.multiChooseIcon} source={img.choosedIcon} />
-                  </View>
-                  <Text style={styles.singleChooseItemText}>额部</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.footer}>
+          <ScrollView style={styles.mainView} contentContainerStyle={{alignItems: 'center'}}>
+            {this.state.infoData.map((item, index) => {
+              return this.showItem(item, index);
+            })}
+          </ScrollView>
+          <TouchableOpacity style={styles.footer} onPress={() => this.submit()}>
             <Text style={styles.footerBtnView}>确定</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     );

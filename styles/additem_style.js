@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {screenHeight, MC, safeHeight, windowWidth, barHeight} from '../config/convert';
+import {screenHeight, MC, windowWidth, barHeight} from '../config/convert';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   safeView: {
     position: 'absolute',
     width: windowWidth,
-    height: safeHeight,
+    height: screenHeight - barHeight,
     top: barHeight,
     alignItems: 'center',
   },
@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFF',
     width: windowWidth,
-    alignItems: 'center',
   },
   bigiconView: {
     position: 'absolute',
@@ -90,7 +89,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   singleChooseItem: {
-    width: MC(104),
+    minWidth: MC(104),
     height: MC(34),
     flexDirection: 'row',
     alignItems: 'center',
@@ -168,11 +167,10 @@ const styles = StyleSheet.create({
     height: MC(34),
   },
   footer: {
+    position: 'relative',
     width: windowWidth,
     height: MC(144),
     backgroundColor: '#ffffff',
-    position: 'absolute',
-    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -185,6 +183,29 @@ const styles = StyleSheet.create({
     fontSize: MC(28),
     textAlign: 'center',
     lineHeight: MC(100),
+  },
+  inputView: {
+    width: MC(630),
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    padding: 0,
+  },
+  inputOusideView: {
+    width: MC(690),
+    height: MC(170),
+    borderRadius: MC(30),
+    marginTop: MC(30),
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+  },
+  valueInput: {
+    position: 'absolute',
+    right: MC(72),
+    fontSize: MC(28),
+    color: '#001133',
+    fontWeight: '500',
+    width: MC(300),
+    textAlign: 'right',
   },
 });
 
