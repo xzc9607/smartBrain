@@ -1,5 +1,15 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback, ScrollView, TextInput} from 'react-native';
+import {
+  View,
+  StatusBar,
+  Image,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  ScrollView,
+  TextInput,
+  Alert,
+} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import Picker from 'react-native-picker';
@@ -137,6 +147,22 @@ class AddItem extends Component {
     }
   }
 
+  showTips(tip) {
+    Alert.alert(
+      '说明',
+      tip,
+      [
+        {
+          text: '好的',
+          style: 'cancel',
+        },
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  }
+
   singleChoose(value, index) {
     const tVal = Array.from(this.state.value);
     tVal[index] = value;
@@ -230,7 +256,9 @@ class AddItem extends Component {
                 <Image style={styles.backIcon} source={img.backIconBlck} />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableOpacity style={styles.bigiconView}>
+            <TouchableOpacity
+              style={styles.bigiconView}
+              onPress={() => this.showTips(this.props.route.params.transParams.projectName)}>
               <Image style={styles.bigicon} source={img.bigAddInfo} />
             </TouchableOpacity>
           </View>

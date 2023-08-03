@@ -160,16 +160,16 @@ const styles = StyleSheet.create({
   },
   itemContentView: {
     width: MC(630),
-    height: MC(34),
+    minHeight: MC(34),
     marginTop: MC(20),
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   itemContentTextTitle: {
-    color: '#001133',
-    opacity: 0.5,
+    color: '#0011337f',
   },
   itemContentTextLine: {
-    color: '#001133',
+    color: '#0011337f',
     fontSize: MC(32),
     marginLeft: MC(20),
     marginRight: MC(20),
