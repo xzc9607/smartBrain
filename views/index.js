@@ -34,12 +34,12 @@ const filterTypeData = [
   {value: 'treat', name: '治疗'},
   {value: 'history', name: '病史'},
   {value: 'system', name: '身体系统'},
+  {value: 'position', name: '身体部位'},
 ];
 const filterTimeData = [
-  {value: '1mon', name: '近一个月'},
-  {value: '3mon', name: '近三个月'},
   {value: '6mon', name: '近六个月'},
   {value: '1year', name: '近一年'},
+  {value: '2year', name: '近二年'},
 ];
 
 class Index extends Component {
