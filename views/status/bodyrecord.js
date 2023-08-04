@@ -1,4 +1,3 @@
-/* eslint-disable react/self-closing-comp */
 import React, {Component} from 'react';
 import {View, StatusBar, Image, Text, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
@@ -72,24 +71,20 @@ class BodyRecord extends Component {
                 </View>
                 <View style={styles.itemLine}></View>
                 <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>时长:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'5天'}</Text>
+                  <Text style={styles.itemContentTextTitle}>
+                    时长：
+                    <Text style={{color: '#001133'}}>5天</Text>
+                  </Text>
                   <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>部位:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'枕部正中'}</Text>
+                  <Text style={styles.itemContentTextTitle}>
+                    时长：
+                    <Text style={{color: '#001133'}}>5天</Text>
+                  </Text>
                   <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>程度:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'重度'}</Text>
-                </View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>性质:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'振发性 胀痛'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>诱因:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'熬夜'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>缓解:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'按摩'}</Text>
+                  <Text style={styles.itemContentTextTitle}>
+                    性质:
+                    <Text style={{color: '#001133'}}>振发性 胀痛</Text>
+                  </Text>
                 </View>
                 <View style={styles.itemContentView}>
                   <Text style={styles.itemContentTextTitle}>时间</Text>

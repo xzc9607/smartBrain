@@ -67,9 +67,16 @@ class Index extends Component {
     const value = await AsyncStorage.getItem('token');
     if (value !== null) {
       // todo 登录了
-      console.log('登录了');
       api.get('app/user/info', res => {
-        this.props.resetData(res.data);
+        api.formateJSON(res.data);
+        if (res.code === 600) {
+          this.props.navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        } else {
+          this.props.resetData(res.data);
+        }
       });
     } else {
       // todo 没登录

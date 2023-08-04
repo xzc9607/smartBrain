@@ -183,8 +183,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   itemContentTextTitle: {
-    color: '#001133',
-    opacity: 0.5,
+    color: '#0011337f',
   },
   itemContentTextLine: {
     color: '#001133',
