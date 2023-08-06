@@ -22,7 +22,7 @@ const dateFormate = (fmt, date) => {
 const formateTdate = date => {
   var timer = new Date(date).getTime();
   var text = new Date(timer);
-  text = dateFormate('yyyy年MM月dd日 hh时mm分', text);
+  text = dateFormate('yyyy.MM.dd hh:mm', text);
   return text;
 };
 

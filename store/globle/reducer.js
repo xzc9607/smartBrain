@@ -10,7 +10,7 @@ function globle(state = defaultState, action) {
   switch (action.type) {
     case RESETUSERDATA:
       return {...state, userdata: action.data};
-    case RESETUSERDATA:
+    case RESETADDLIST:
       return {...state, addList: action.data};
     default:
       return state;

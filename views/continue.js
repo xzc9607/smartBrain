@@ -4,12 +4,12 @@ import {connect} from 'react-redux';
 import {resetData, resetaddList} from '../store/globle/action';
 
 import {styles} from '../styles/continue_style';
+import date_api from '../config/date_api';
 
 class Continue extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    console.log(this.props.globle.addList);
   }
 
   allright() {
@@ -26,29 +26,33 @@ class Continue extends Component {
             <Text style={styles.navTitle}>结果</Text>
           </View>
           <ScrollView style={styles.mainView} contentContainerStyle={{alignItems: 'center'}}>
-            <View style={styles.checkItemView}>
-              <View style={styles.checkItemTitleView}>
-                <Text style={styles.checkItemTitleText}>头痛</Text>
-                <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>重度</Text>
-              </View>
-              <View style={styles.itemLine}></View>
-              <View style={styles.itemContentView}>
-                <Text style={styles.itemContentTextTitle}>
-                  时长：
-                  <Text style={{color: '#001133'}}>5天</Text>
-                </Text>
-                <Text style={styles.itemContentTextLine}>|</Text>
-                <Text style={styles.itemContentTextTitle}>
-                  时长：
-                  <Text style={{color: '#001133'}}>5天</Text>
-                </Text>
-                <Text style={styles.itemContentTextLine}>|</Text>
-              </View>
-              <View style={styles.itemContentView}>
-                <Text style={styles.itemContentTextTitle}>记录：</Text>
-                <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>2023.03.12 14:08</Text>
-              </View>
-            </View>
+            {this.props.globle.addList.map((item, index) => {
+              return (
+                <View style={styles.checkItemView} key={item.addTime}>
+                  <View style={styles.checkItemTitleView}>
+                    <Text style={styles.checkItemTitleText}>{item.projectName}</Text>
+                    <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>{item.result ?? '无结论'}</Text>
+                  </View>
+                  <View style={styles.itemLine}></View>
+                  <View style={styles.itemContentView}>
+                    {item.resultItem.map((rItem, rIndex) => {
+                      return (
+                        <>
+                          <Text style={styles.itemContentTextTitle}>
+                            {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
+                          </Text>
+                          {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
+                        </>
+                      );
+                    })}
+                  </View>
+                  <View style={styles.itemContentView}>
+                    <Text style={styles.itemContentTextTitle}>记录：</Text>
+                    <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{date_api.formateTdate(item.addTime * 1000)}</Text>
+                  </View>
+                </View>
+              );
+            })}
           </ScrollView>
           <View style={styles.footer} onPress={() => this.submit()}>
             <Text style={styles.footerConBtnView} onPress={() => this.props.navigation.navigate('Add')}>

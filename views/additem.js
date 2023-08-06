@@ -11,14 +11,13 @@ import {
   Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {resetData} from '../store/globle/action';
+import {resetData, resetaddList} from '../store/globle/action';
 import Picker from 'react-native-picker';
 
 import {styles} from '../styles/additem_style';
 import img from '../imgs/img';
 import api from '../config/api';
-
-const typePickDate = ['mmol/L', 'xxxx/L'];
+import {round} from 'lodash';
 
 class AddItem extends Component {
   constructor(props) {
@@ -40,8 +39,7 @@ class AddItem extends Component {
 
   getItemInfo() {
     api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
-      console.log('haha', this.props.route.params.transParams.id);
-      console.log('heihei', res);
+      api.formateJSON(res.data);
       res.data.forEach((item, index) => {
         this.callback.dataList.push({
           elementDataType: item.elementDataType,
@@ -115,7 +113,7 @@ class AddItem extends Component {
     } else if (item.elementDataType === 3) {
       //input
       return (
-        <View style={styles.inputOusideView}>
+        <View style={styles.inputOusideView} key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
             <TouchableOpacity style={styles.smallIconView}>
@@ -128,7 +126,7 @@ class AddItem extends Component {
     } else if (item.elementDataType === 4) {
       // number
       return (
-        <View style={styles.pickerView}>
+        <View style={styles.pickerView} key={item.id}>
           <Text style={styles.pickerTitle}>{item.elementName}</Text>
           <TextInput
             style={styles.valueInput}
@@ -211,16 +209,15 @@ class AddItem extends Component {
 
   genPickerArr(start, end, dataNum) {
     let arr = [];
-    for (let i = start; i < end; i = i + dataNum) {
-      // todo 精度问题待解决 lodash
-      arr.push(i);
+    for (let i = start; i < end; i = i + 10 ** -dataNum) {
+      arr.push(round(i, dataNum));
     }
     return Array.from(arr);
   }
 
   showPicker(value, index) {
     const tVal = Array.from(this.state.value);
-    this.pickerArr = this.genPickerArr(value.elementDataMax, value.elementDataMin, 10 ** -value.dataNum);
+    this.pickerArr = this.genPickerArr(value.elementDataMin, value.elementDataMax, value.dataNum);
     Picker.init({
       pickerData: this.pickerArr,
       pickerTitleText: '请选择',
@@ -250,13 +247,14 @@ class AddItem extends Component {
         this.callback.dataList[index].elementValue = val;
       }
     });
-    api.formateJSON(this.callback);
-    // this.props.navigation.navigate('Continue');
+    // api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.id,
       this.callback,
       res => {
-        api.formateJSON(res);
+        api.formateJSON(res.data);
+        this.props.resetaddList([res.data, ...this.props.globle.addList]);
+        this.props.navigation.navigate('Continue');
       },
       res => res(this.props),
     );
@@ -303,6 +301,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     resetData: data => dispatch({...resetData(), data}),
+    resetaddList: data => dispatch({...resetaddList(), data}),
   };
 }
 
