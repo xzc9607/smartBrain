@@ -86,7 +86,7 @@ const post = async (url, body, success, failure) => {
   }
   requestBody.ts = Date.now();
 
-  return fetch('http://124.222.161.101/api/' + url, {
+  return fetch('http://124.222.161.101/api/app/' + url, {
     method: 'POST',
     headers: header,
     body: JSON.stringify(requestBody),
@@ -96,13 +96,19 @@ const post = async (url, body, success, failure) => {
     })
     .then(sres => {
       if (sres.code !== 200) {
-        if (sres.code === 400) {
+        formateJSON(sres);
+        if (sres.code === 600) {
           logout();
           setTimeout(() => {
-            return failure(that => that.navigation.navigate('Login'));
+            return failure(that =>
+              that.navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}],
+              }),
+            );
           }, 500);
         }
-        return failure(sres);
+        toast(url + '=>' + sres.msg);
       } else {
         return success(sres);
       }

@@ -241,6 +241,25 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: MC(100),
   },
+  searchResult: {
+    marginLeft: MC(50),
+    width: MC(650),
+    height: MC(80),
+    lineHeight: MC(80),
+    fontSize: MC(30),
+    color: '#001133',
+    borderBottomColor: '#e6e9f2',
+    borderBottomWidth: 1,
+  },
+  searchResultBlank: {
+    marginLeft: MC(50),
+    width: MC(650),
+    height: MC(80),
+    lineHeight: MC(80),
+    fontSize: MC(36),
+    color: '#333333',
+    textAlign: 'center',
+  },
 });
 
 export {styles};

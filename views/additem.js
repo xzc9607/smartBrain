@@ -31,6 +31,7 @@ class AddItem extends Component {
       projectId: this.props.route.params.transParams.id,
       dataList: [],
     };
+    this.pickerArr = [];
   }
 
   componentDidMount() {
@@ -38,7 +39,9 @@ class AddItem extends Component {
   }
 
   getItemInfo() {
-    api.post('/app/project/info/' + this.props.route.params.transParams.id, {}, res => {
+    api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
+      console.log('haha', this.props.route.params.transParams.id);
+      console.log('heihei', res);
       res.data.forEach((item, index) => {
         this.callback.dataList.push({
           elementDataType: item.elementDataType,
@@ -67,9 +70,9 @@ class AddItem extends Component {
                 <TouchableOpacity
                   style={styles.singleChooseItem}
                   key={selItem.id}
-                  onPress={() => this.singleChoose(selItem.elementName, index)}>
+                  onPress={() => this.singleChoose(selItem.id, index)}>
                   <View style={styles.singleChooseItemView}>
-                    {this.state.value[index] === selItem.elementName ? (
+                    {this.state.value[index] === selItem.id ? (
                       <Image style={styles.singleChooseIcon} source={img.singleChooseIcon} />
                     ) : null}
                   </View>
@@ -98,7 +101,7 @@ class AddItem extends Component {
                   key={selItem.id}
                   onPress={() => this.multiChoose(selItem, index)}>
                   <View style={styles.multiChooseItemView}>
-                    {!!this.state.value[index] && this.state.value[index].includes(selItem.elementName) ? (
+                    {!!this.state.value[index] && this.state.value[index].includes(selItem.id) ? (
                       <Image style={styles.multiChooseIcon} source={img.choosedIcon} resizeMode="stretch" />
                     ) : null}
                   </View>
@@ -176,13 +179,13 @@ class AddItem extends Component {
     let tMulti = [];
     if (tVal[index]) {
       tMulti = [...tVal[index]];
-      if (tMulti.includes(value.elementName)) {
-        tMulti = tMulti.filter(val => val !== value.elementName);
+      if (tMulti.includes(value.id)) {
+        tMulti = tMulti.filter(val => val !== value.id);
       } else {
-        tMulti.push(value.elementName);
+        tMulti.push(value.id);
       }
     } else {
-      tMulti = [value.elementName];
+      tMulti = [value.id];
     }
     tVal[index] = tMulti;
     this.setState({value: tVal}, () => {
@@ -206,10 +209,20 @@ class AddItem extends Component {
     });
   }
 
+  genPickerArr(start, end, dataNum) {
+    let arr = [];
+    for (let i = start; i < end; i = i + dataNum) {
+      // todo 精度问题待解决 lodash
+      arr.push(i);
+    }
+    return Array.from(arr);
+  }
+
   showPicker(value, index) {
     const tVal = Array.from(this.state.value);
+    this.pickerArr = this.genPickerArr(value.elementDataMax, value.elementDataMin, 10 ** -value.dataNum);
     Picker.init({
-      pickerData: typePickDate,
+      pickerData: this.pickerArr,
       pickerTitleText: '请选择',
       pickerConfirmBtnText: '确定',
       pickerCancelBtnText: '取消',
@@ -238,10 +251,15 @@ class AddItem extends Component {
       }
     });
     api.formateJSON(this.callback);
-    this.props.navigation.navigate('Continue');
-    // api.post('/app/project/result/' + this.props.route.params.transParams.id, this.callback, res => {
-    //   api.formateJSON(res);
-    // });
+    // this.props.navigation.navigate('Continue');
+    api.post(
+      'project/result/' + this.props.route.params.transParams.id,
+      this.callback,
+      res => {
+        api.formateJSON(res);
+      },
+      res => res(this.props),
+    );
   }
 
   render() {

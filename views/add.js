@@ -26,6 +26,7 @@ class Add extends Component {
     this.state = {
       searchText: '',
       searching: false,
+      searchResult: [],
       choosedTypeId: '',
       wantData: [],
       history: [],
@@ -33,6 +34,7 @@ class Add extends Component {
       subtypeList: [],
       subtypeId: [],
       isShowComfirm: false,
+      isShowResult: false,
     };
     this.transParams = {};
   }
@@ -64,12 +66,13 @@ class Add extends Component {
     }
     if (this.state.history.includes(this.state.searchText)) {
       api.post(
-        'app/element/search',
+        'element/search',
         {
           keyword: this.state.searchText,
         },
         res => {
           api.formateJSON(res.data);
+          this.setState({isShowResult: true, searchResult: res.data});
         },
       );
     } else {
@@ -77,12 +80,13 @@ class Add extends Component {
         AsyncStorage.setItem('history', JSON.stringify(this.state.history));
         // todo 搜索
         api.post(
-          'app/element/search',
+          'element/search',
           {
             keyword: this.state.searchText,
           },
           res => {
             api.formateJSON(res.data);
+            this.setState({isShowResult: true, searchResult: res.data});
           },
         );
       });
@@ -90,7 +94,7 @@ class Add extends Component {
   }
 
   getWant() {
-    api.post('app/common/want/search', {}, res => {
+    api.post('common/want/search', {}, res => {
       this.setState({wantData: res.data});
     });
   }
@@ -105,7 +109,7 @@ class Add extends Component {
 
   getFirstType() {
     api.post(
-      'app/element/type/2',
+      'element/type/2',
       {},
       res => {
         this.setState({typeList: res.data});
@@ -120,7 +124,7 @@ class Add extends Component {
     // 1.存大类id，判断选择的是哪个大类
     // 2.请求当前类目下的第一个子类
     this.setState({choosedTypeId: id}, () => {
-      api.post('/app/element/parent/' + id, {}, res => {
+      api.post('element/parent/' + id, {}, res => {
         this.setState({subtypeList: [res.data], subtypeId: [], isShowComfirm: false});
       });
     });
@@ -130,7 +134,7 @@ class Add extends Component {
     //? innerindex 当前index下的子项的index
 
     if (this.state.subtypeId[index] === undefined) {
-      api.post('/app/element/parent/' + id, {}, res => {
+      api.post('element/parent/' + id, {}, res => {
         if (res.data.length === 0) {
           this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
             this.canToAdd(id);
@@ -152,7 +156,7 @@ class Add extends Component {
           isShowComfirm: false,
         },
         () => {
-          api.post('/app/element/parent/' + id, {}, res => {
+          api.post('element/parent/' + id, {}, res => {
             if (res.data.length === 0) {
               this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
                 this.canToAdd(id);
@@ -169,7 +173,7 @@ class Add extends Component {
   }
 
   canToAdd(id) {
-    api.post('/app/project/get/element/' + id, {}, res => {
+    api.post('project/get/element/' + id, {}, res => {
       api.formateJSON(res.data);
       this.setState({isShowComfirm: res.data.length !== 0}, () => {
         this.transParams = res.data[0];
@@ -179,14 +183,6 @@ class Add extends Component {
 
   toAdd() {
     this.props.navigation.navigate('AddItem', {transParams: this.transParams});
-  }
-
-  chooseType(type) {
-    this.setState({choosedType: type});
-  }
-
-  toNextPage(pageName) {
-    this.props.navigation.navigate(pageName);
   }
 
   render() {
@@ -209,7 +205,13 @@ class Add extends Component {
               <TextInput
                 ref={this.inputsearchRef}
                 style={styles.inputCode}
-                onChangeText={text => this.setState({searchText: text})}
+                onChangeText={text =>
+                  this.setState({searchText: text}, () => {
+                    if (text === '') {
+                      this.setState({isShowResult: false});
+                    }
+                  })
+                }
                 value={this.state.searchText}
                 onFocus={() =>
                   this.setState({searching: true}, () => {
@@ -223,7 +225,7 @@ class Add extends Component {
                 <Image style={styles.searchIconImg} source={img.searchIcon} />
               </TouchableOpacity>
             </View>
-            {!this.state.searching ? (
+            {!this.state.searching && !this.state.isShowResult ? (
               // !新增默认显示区域
               <ScrollView style={styles.itemView} contentContainerStyle={styles.itemContentView}>
                 <Text style={styles.itemTitle}>选择动态类型</Text>
@@ -282,14 +284,17 @@ class Add extends Component {
                   </Text>
                 ) : null}
               </ScrollView>
-            ) : (
+            ) : this.state.searching && !this.state.isShowResult ? (
               // !搜索输入框获取焦点
               <View style={styles.itemSearchView}>
                 {this.state.history.length > 0 ? <Text style={styles.searchTitle}>历史搜索</Text> : null}
                 <View style={styles.historyView}>
                   {this.state.history.map((item, index) => {
                     return (
-                      <Text style={styles.historyText} key={item}>
+                      <Text
+                        style={styles.historyText}
+                        key={item}
+                        onPress={() => this.setState({searchText: item}, () => this.search())}>
                         {item}
                       </Text>
                     );
@@ -299,12 +304,30 @@ class Add extends Component {
                 <View style={styles.historyView}>
                   {this.state.wantData.map((item, index) => {
                     return (
-                      <Text style={styles.historyText} key={item} onPress={() => this.setState({searchText: item})}>
+                      <Text
+                        style={styles.historyText}
+                        key={item}
+                        onPress={() => this.setState({searchText: item}, () => this.search())}>
                         {item}
                       </Text>
                     );
                   })}
                 </View>
+              </View>
+            ) : (
+              // !搜索结果展示
+              <View style={styles.itemSearchView}>
+                {this.state.searchResult.length > 0 ? (
+                  this.state.searchResult.map((Ritem, Rindex) => {
+                    return (
+                      <Text style={styles.searchResult} key={Ritem.id}>
+                        {Ritem.elementName}
+                      </Text>
+                    );
+                  })
+                ) : (
+                  <Text style={styles.searchResultBlank}>暂无相关信息</Text>
+                )}
               </View>
             )}
           </View>
