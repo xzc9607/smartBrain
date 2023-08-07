@@ -31,18 +31,18 @@ class Continue extends Component {
                 <View style={styles.checkItemView} key={item.addTime}>
                   <View style={styles.checkItemTitleView}>
                     <Text style={styles.checkItemTitleText}>{item.projectName}</Text>
-                    <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>{item.result ?? '无结论'}</Text>
+                    <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>{item.result ?? ''}</Text>
                   </View>
                   <View style={styles.itemLine}></View>
                   <View style={styles.itemContentView}>
                     {item.resultItem.map((rItem, rIndex) => {
                       return (
-                        <>
+                        <View key={rItem.elementName}>
                           <Text style={styles.itemContentTextTitle}>
                             {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
                           </Text>
                           {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
-                        </>
+                        </View>
                       );
                     })}
                   </View>

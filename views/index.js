@@ -56,6 +56,7 @@ class Index extends Component {
       choosedState: '',
       choosedType: '',
       choosedTime: '',
+      proCount: {},
     };
   }
 
@@ -76,6 +77,8 @@ class Index extends Component {
           });
         } else {
           this.props.resetData(res.data);
+          this.getProjectCount();
+          this.getBodyInfo();
         }
       });
     } else {
@@ -85,6 +88,18 @@ class Index extends Component {
         routes: [{name: 'Login'}],
       });
     }
+  }
+
+  getProjectCount() {
+    api.post('home/count/list', {}, res => {
+      this.setState({proCount: res.data});
+    });
+  }
+
+  getBodyInfo() {
+    api.post('home/info', {}, res => {
+      api.formateJSON(res.data);
+    });
   }
 
   toNextPage(pageName) {
@@ -419,14 +434,17 @@ class Index extends Component {
                 <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>代办项</Text>
                   <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>77</Text>
+                    <Text style={styles.infoItemText}>
+                      {this.state.proCount.waitCount > 0 ? this.state.proCount.waitCount : '-'}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>进步项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
-                      <Image style={styles.infoItemIcon} source={img.upIcon} />8
+                      <Image style={styles.infoItemIcon} source={img.upIcon} />
+                      {this.state.proCount.progressiveCount > 0 ? this.state.proCount.progressiveCount : '-'}
                     </Text>
                   </View>
                 </View>
@@ -434,20 +452,25 @@ class Index extends Component {
                   <Text style={styles.infoItemTitleText}>退步项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
-                      <Image style={styles.infoItemIcon} source={img.downIcon} />9
+                      <Image style={styles.infoItemIcon} source={img.downIcon} />{' '}
+                      {this.state.proCount.behindCount > 0 ? this.state.proCount.behindCount : '-'}
                     </Text>
                   </View>
                 </View>
                 <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>警示项</Text>
                   <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>9</Text>
+                    <Text style={styles.infoItemText}>
+                      {this.state.proCount.warningCount > 0 ? this.state.proCount.warningCount : '-'}
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>异常项</Text>
                   <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>99</Text>
+                    <Text style={styles.infoItemText}>
+                      {this.state.proCount.abnormalCount > 0 ? this.state.proCount.abnormalCount : '-'}
+                    </Text>
                   </View>
                 </View>
               </Animated.View>
