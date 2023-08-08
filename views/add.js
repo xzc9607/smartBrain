@@ -10,6 +10,7 @@ import {
   Keyboard,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
@@ -181,6 +182,22 @@ class Add extends Component {
     });
   }
 
+  searchToAdd(item) {
+    api.post('project/get/element/' + item.id, {}, res => {
+      if (res.data.length !== 0) {
+        this.props.navigation.navigate('AddItem', {transParams: res.data[0]});
+      } else {
+        Alert.alert(item.elementName, item.description === '' ? '暂无详情' : item.description, [
+          {
+            text: '好的',
+            onPress: () => {},
+            style: 'default',
+          },
+        ]);
+      }
+    });
+  }
+
   toAdd() {
     this.props.navigation.navigate('AddItem', {transParams: this.transParams});
   }
@@ -320,7 +337,7 @@ class Add extends Component {
                 {this.state.searchResult.length > 0 ? (
                   this.state.searchResult.map((Ritem, Rindex) => {
                     return (
-                      <Text style={styles.searchResult} key={Ritem.id}>
+                      <Text style={styles.searchResult} key={Ritem.id} onPress={() => this.searchToAdd(Ritem)}>
                         {Ritem.elementName}
                       </Text>
                     );

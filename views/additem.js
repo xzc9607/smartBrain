@@ -51,6 +51,18 @@ class AddItem extends Component {
     });
   }
 
+  // getDes(id) {
+  //   api.post('project/get/element/' + item.id, {}, res => {
+  //     Alert.alert(item.elementName, item.description, [
+  //       {
+  //         text: '好的',
+  //         onPress: () => {},
+  //         style: 'default',
+  //       },
+  //     ]);
+  //   });
+  // }
+
   showItem(item, index) {
     if (item.elementDataType === 1) {
       //单选
@@ -140,7 +152,7 @@ class AddItem extends Component {
       // 区间，选择器?
       return (
         <TouchableOpacity style={styles.pickerView} onPress={() => this.showPicker(item, index)}>
-          <Text style={styles.pickerTitle}>持续时间</Text>
+          <Text style={styles.pickerTitle}>{item.elementName}</Text>
           <Text style={styles.pickerChooseText}>{this.state.value[index] ? this.state.value[index] : '请选择'}</Text>
           <Image style={styles.rightArrow} source={img.rightArrow} />
         </TouchableOpacity>
