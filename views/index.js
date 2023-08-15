@@ -23,18 +23,19 @@ import api from '../config/api';
 
 const filterStatusData = [
   {value: 'backlog', name: '代办项'},
-  {value: 'advance', name: '进步项'},
-  {value: 'lag', name: '退步项'},
+  // {value: 'advance', name: '进步项'},
+  // {value: 'lag', name: '退步项'},
   {value: 'caution', name: '警示项'},
   {value: 'abnormal', name: '异常项'},
+  {value: 'all', name: '全部项'},
 ];
 const filterTypeData = [
   {value: 'test', name: '体检'},
   {value: 'diagnose', name: '诊断'},
   {value: 'treat', name: '治疗'},
   {value: 'history', name: '病史'},
-  {value: 'system', name: '身体系统'},
-  {value: 'position', name: '身体部位'},
+  // {value: 'system', name: '身体系统'},
+  // {value: 'position', name: '身体部位'},
 ];
 const filterTimeData = [
   {value: '6mon', name: '近六个月'},
