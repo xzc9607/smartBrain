@@ -71,6 +71,7 @@ class Index extends Component {
       // todo 登录了
       api.get('app/user/info', res => {
         api.formateJSON(res.data);
+        res.data.userGender = 2;
         if (res.code === 600) {
           this.props.navigation.reset({
             index: 0,
@@ -211,7 +212,10 @@ class Index extends Component {
             <Text style={styles.userInfoTitle}>健康智脑</Text>
             <TouchableWithoutFeedback onPress={() => this.toNextPage('Main')}>
               <View style={styles.userAvatar}>
-                <Image style={styles.userAvatarImg} source={img.userAvatar} />
+                <Image
+                  style={styles.userAvatarImg}
+                  source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                />
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -320,7 +324,9 @@ class Index extends Component {
                   //    </ImageBackground>
                   // </View>
                   <View style={styles.drawView}>
-                    <ImageBackground style={styles.manDrew} source={img.manDrew}>
+                    <ImageBackground
+                      style={styles.manDrew}
+                      source={this.props.globle.userdata.userGender === 2 ? img.womanDrew : img.manDrew}>
                       <ImageBackground style={styles.bodyInner} source={img.bodyInner}>
                         <Image style={styles.bodyWarImg} source={img.ImgGutHeart} />
                         <Image style={styles.bodyWarImg} source={img.ImgGutLung} />
@@ -486,7 +492,10 @@ class Index extends Component {
                 </View>
               ) : (
                 <View style={styles.indexBtn}>
-                  <Image style={styles.userBtnAvatar} source={img.userAvatar} />
+                  <Image
+                    style={styles.userBtnAvatar}
+                    source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                  />
                   <Text style={styles.indexBtnText}>补充健康信息，完善健康画像</Text>
                   <View style={styles.addBtnView}>
                     <Image style={styles.addIcon} source={img.addIcon} />
