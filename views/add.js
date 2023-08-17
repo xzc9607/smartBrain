@@ -67,7 +67,7 @@ class Add extends Component {
     }
     if (this.state.history.includes(this.state.searchText)) {
       api.post(
-        'element/search',
+        'project/search',
         {
           keyword: this.state.searchText,
         },
@@ -81,7 +81,7 @@ class Add extends Component {
         AsyncStorage.setItem('history', JSON.stringify(this.state.history));
         // todo 搜索
         api.post(
-          'element/search',
+          'project/search',
           {
             keyword: this.state.searchText,
           },
@@ -183,19 +183,17 @@ class Add extends Component {
   }
 
   searchToAdd(item) {
-    api.post('project/get/element/' + item.id, {}, res => {
-      if (res.data.length !== 0) {
-        this.props.navigation.navigate('AddItem', {transParams: res.data[0]});
-      } else {
-        Alert.alert(item.elementName, item.description === '' ? '暂无详情' : item.description, [
-          {
-            text: '好的',
-            onPress: () => {},
-            style: 'default',
-          },
-        ]);
-      }
-    });
+    if (item.projectType === 2 || item.projectType === 3) {
+      Alert.alert(item.projectName, item.description ?? '暂无详情', [
+        {
+          text: '好的',
+          onPress: () => {},
+          style: 'default',
+        },
+      ]);
+    } else {
+      this.props.navigation.navigate('AddItem', {transParams: item});
+    }
   }
 
   toAdd() {
@@ -338,7 +336,7 @@ class Add extends Component {
                   this.state.searchResult.map((Ritem, Rindex) => {
                     return (
                       <Text style={styles.searchResult} key={Ritem.id} onPress={() => this.searchToAdd(Ritem)}>
-                        {Ritem.elementName}
+                        {Ritem.projectName}
                       </Text>
                     );
                   })

@@ -259,7 +259,7 @@ class AddItem extends Component {
         this.callback.dataList[index].elementValue = val;
       }
     });
-    // api.formateJSON(this.callback);
+    api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.id,
       this.callback,
