@@ -1,6 +1,7 @@
 const img = {
   topBg: require('./img_top_bg.png'),
   userAvatar: require('./img_avatar_men.jpg'),
+  womenAvatar: require('./img_avatar_women.jpg'),
   stateIcon1: require('./icon_home_dynamic.png'),
   stateIcon2: require('./icon_home_portrait.png'),
   upIcon: require('./icon_home_litre.png'),

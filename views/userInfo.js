@@ -86,13 +86,15 @@ class UserInfo extends Component {
               <TouchableOpacity style={styles.infoItem} onPress={() => this.showGenderPicker()}>
                 <Text style={styles.infoItemTextLeft}>性别</Text>
                 <Text style={styles.infoItemTextRight}>
-                  {this.state.userGender === 1 ? '男' : this.state.userGender === 2 ? '女' : '保密'}
+                  {this.state.userGender === 1 ? '男' : this.state.userGender === 2 ? '女' : '未选择'}
                 </Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </TouchableOpacity>
               <TouchableOpacity style={styles.infoItem} onPress={() => this.showMaritalPicker()}>
                 <Text style={styles.infoItemTextLeft}>婚姻状况</Text>
-                <Text style={styles.infoItemTextRight}>{this.state.marital === 1 ? '未婚' : '已婚'}</Text>
+                <Text style={styles.infoItemTextRight}>
+                  {this.state.marital === 1 ? '未婚' : this.state.marital === 2 ? '已婚' : '未选择'}
+                </Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </TouchableOpacity>
               <TouchableOpacity

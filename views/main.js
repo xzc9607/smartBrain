@@ -28,7 +28,7 @@ class Index extends Component {
   dealCreateTime() {
     let now = Date.now() / 1000;
     let time = this.props.globle.userdata.creatorTime;
-    this.setState({createTime: parseInt((now - time) / day, 10)});
+    this.setState({createTime: Math.ceil((now - time) / day)});
   }
 
   exit() {
@@ -85,7 +85,10 @@ class Index extends Component {
             </View>
             <TouchableWithoutFeedback onPress={() => this.toNextPage('UserInfo')}>
               <View style={styles.userAvatar}>
-                <Image style={styles.userAvatarImg} source={img.userAvatar} />
+                <Image
+                  style={styles.userAvatarImg}
+                  source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                />
                 <Image style={styles.backIcon2} source={img.backIcon} />
               </View>
             </TouchableWithoutFeedback>

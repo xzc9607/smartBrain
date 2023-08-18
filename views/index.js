@@ -23,18 +23,19 @@ import api from '../config/api';
 
 const filterStatusData = [
   {value: 'backlog', name: '代办项'},
-  {value: 'advance', name: '进步项'},
-  {value: 'lag', name: '退步项'},
+  // {value: 'advance', name: '进步项'},
+  // {value: 'lag', name: '退步项'},
   {value: 'caution', name: '警示项'},
   {value: 'abnormal', name: '异常项'},
+  {value: 'all', name: '全部项'},
 ];
 const filterTypeData = [
   {value: 'test', name: '体检'},
   {value: 'diagnose', name: '诊断'},
   {value: 'treat', name: '治疗'},
   {value: 'history', name: '病史'},
-  {value: 'system', name: '身体系统'},
-  {value: 'position', name: '身体部位'},
+  // {value: 'system', name: '身体系统'},
+  // {value: 'position', name: '身体部位'},
 ];
 const filterTimeData = [
   {value: '6mon', name: '近六个月'},
@@ -57,6 +58,7 @@ class Index extends Component {
       choosedType: '',
       choosedTime: '',
       proCount: {},
+      drewData: [],
     };
   }
 
@@ -79,6 +81,7 @@ class Index extends Component {
           this.props.resetData(res.data);
           this.getProjectCount();
           this.getBodyInfo();
+          // todo list
         }
       });
     } else {
@@ -98,7 +101,180 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      api.formateJSON(res.data);
+      this.setState({drewData: res.data});
+      // api.formateJSON(res.data);
+    });
+  }
+
+  drewShow(data) {
+    data.map((item, index) => {
+      if (item.elementName === '颈部' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewNeck}>
+            <Image style={styles.lineBodyNeck} source={img.lineBodyNeck} />
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+              <Text style={styles.TipsInnerText}>颈部 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '肾脏' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewKidney}>
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF', marginTop: MC(20)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肾脏 {item.count}</Text>
+            </View>
+            <Image style={styles.lineGutKidney} source={img.lineGutKidney} />
+          </View>
+        );
+      } else if (item.elementName === '肝脏' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewLiver}>
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400'}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肝脏 {item.count}</Text>
+            </View>
+            <Image style={styles.lineGutLiver} source={img.lineGutLiver} />
+          </View>
+        );
+      } else if (item.elementName === '脾脏' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewPancreas}>
+            <Image style={styles.lineGutPancreas} source={img.lineGutPancreas} />
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(42)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>脾脏 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if ((item.elementName === '胃' || item.elementName === '胃部') && item.count > 0) {
+        return (
+          <View style={styles.TipsViewStomach}>
+            <Image style={styles.lineGutStomach} source={img.lineGutStomach} />
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#822EF3'}]}>
+              <Text style={[styles.TipsInnerText, {color: '#822EF3'}]}>胃部 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '心脏' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewHeart}>
+            <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
+              <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '血液' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewHeart}>
+            <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
+              <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '阴部' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewGenital}>
+            <Image style={styles.lineBodyGenital} source={img.lineBodyGenital} />
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(88)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>阴部 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '左腿' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewLegL}>
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左腿 {item.count}</Text>
+            </View>
+            <Image style={styles.lineBodyLeg} source={img.lineBodyLegL} />
+          </View>
+        );
+      } else if (item.elementName === '右腿' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewLegR}>
+            <Image style={styles.lineBodyLeg} source={img.lineBodyLegR} />
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右腿 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '左臂' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewHelperL}>
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左臂 {item.count}</Text>
+            </View>
+            <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperL} />
+          </View>
+        );
+      } else if (item.elementName === '右臂' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewHelperR}>
+            <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperR} />
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右臂 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '肠道' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewEnteric}>
+            <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400', marginTop: MC(32)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肠道 {item.count}</Text>
+            </View>
+          </View>
+        );
+      } else if (item.elementName === '膀胱' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewBladder}>
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
+              <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>膀胱 {item.count}</Text>
+            </View>
+            <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
+          </View>
+        );
+      } else if ((item.elementName === '肺部' || item.elementName === '肺') && item.count > 0) {
+        return (
+          <View style={styles.TipsViewLung}>
+            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
+              <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肺部 {item.count}</Text>
+            </View>
+            <Image style={styles.lineGutLung} source={img.lineGutLung} />
+          </View>
+        );
+      } else if (item.elementName === '头部' && item.count > 0) {
+        return (
+          <View style={styles.TipsViewHead}>
+            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+              <Text style={styles.TipsInnerText}>头部 {item.count}</Text>
+            </View>
+            <Image style={styles.lineBodyHead} source={img.lineBodyHead} />
+          </View>
+        );
+      }
+    });
+  }
+
+  bodyInnerDrewShow(data) {
+    data.map((item, index) => {
+      if (item.elementName === '肾脏' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutKidney} />;
+      } else if (item.elementName === '肝脏' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutLiver} />;
+      } else if (item.elementName === '脾脏' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutPancreas} />;
+      } else if (item.elementName === '胃' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutStomach} />;
+      } else if (item.elementName === '心脏' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutHeart} />;
+      } else if (item.elementName === '肠道' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} />;
+      } else if (item.elementName === '膀胱' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutbladder} />;
+      } else if (item.elementName === '肺部' && item.count > 0) {
+        return <Image style={styles.bodyWarImg} source={img.ImgGutLung} />;
+      }
     });
   }
 
@@ -210,7 +386,10 @@ class Index extends Component {
             <Text style={styles.userInfoTitle}>健康智脑</Text>
             <TouchableWithoutFeedback onPress={() => this.toNextPage('Main')}>
               <View style={styles.userAvatar}>
-                <Image style={styles.userAvatarImg} source={img.userAvatar} />
+                <Image
+                  style={styles.userAvatarImg}
+                  source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                />
               </View>
             </TouchableWithoutFeedback>
           </View>
@@ -261,7 +440,12 @@ class Index extends Component {
                   },
                 ]}>
                 {this.state.bodyInfoState ? (
-                  <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false} overScrollMode="always">
+                  <ScrollView
+                    style={{flex: 1}}
+                    showsVerticalScrollIndicator={false}
+                    overScrollMode="always"
+                    contentContainerStyle={{alignItems: 'center'}}>
+                    <Text>暂无动态</Text>
                     <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
                       <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
                       <Text style={styles.infoListItemTitle}>萘普生</Text>
@@ -312,115 +496,16 @@ class Index extends Component {
                     </View>
                   </ScrollView>
                 ) : (
-                  // <View style={styles.drawView}>
-                  //    <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
-                  //    <ImageBackground style={styles.manDrew} source={img.manDrew}>
-                  //       <Image style={styles.bodyInner} source={img.bodyInner} />
-                  //    </ImageBackground>
-                  // </View>
                   <View style={styles.drawView}>
-                    <ImageBackground style={styles.manDrew} source={img.manDrew}>
+                    <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
+                    <ImageBackground
+                      style={styles.manDrew}
+                      source={this.props.globle.userdata.userGender === 2 ? img.womanDrew : img.manDrew}>
                       <ImageBackground style={styles.bodyInner} source={img.bodyInner}>
-                        <Image style={styles.bodyWarImg} source={img.ImgGutHeart} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutLung} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutbladder} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutKidney} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutLiver} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutPancreas} />
-                        <Image style={styles.bodyWarImg} source={img.ImgGutStomach} />
+                        {this.state.drewData.length > 0 ? this.bodyInnerDrewShow(this.state.drewData) : null}
                       </ImageBackground>
                     </ImageBackground>
-                    <View style={styles.TipsViewHead}>
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
-                        <Text style={styles.TipsInnerText}>头部 1</Text>
-                      </View>
-                      <Image style={styles.lineBodyHead} source={img.lineBodyHead} />
-                    </View>
-                    <View style={styles.TipsViewNeck}>
-                      <Image style={styles.lineBodyNeck} source={img.lineBodyNeck} />
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
-                        <Text style={styles.TipsInnerText}>颈部 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewHeart}>
-                      <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
-                        <Text style={styles.TipsInnerText}>心脏 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewLung}>
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肺部 1</Text>
-                      </View>
-                      <Image style={styles.lineGutLung} source={img.lineGutLung} />
-                    </View>
-                    <View style={styles.TipsViewLiver}>
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400'}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肝脏 1</Text>
-                      </View>
-                      <Image style={styles.lineGutLiver} source={img.lineGutLiver} />
-                    </View>
-                    <View style={styles.TipsViewStomach}>
-                      <Image style={styles.lineGutStomach} source={img.lineGutStomach} />
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#822EF3'}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#822EF3'}]}>胃部 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewHelperL}>
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左臂 1</Text>
-                      </View>
-                      <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperL} />
-                    </View>
-                    <View style={styles.TipsViewHelperR}>
-                      <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperR} />
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右臂 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewKidney}>
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF', marginTop: MC(20)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肾脏 1</Text>
-                      </View>
-                      <Image style={styles.lineGutKidney} source={img.lineGutKidney} />
-                    </View>
-                    <View style={styles.TipsViewPancreas}>
-                      <Image style={styles.lineGutPancreas} source={img.lineGutPancreas} />
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(42)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>胰脏 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewBladder}>
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>膀胱 1</Text>
-                      </View>
-                      <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
-                    </View>
-                    <View style={styles.TipsViewEnteric}>
-                      <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
-                      <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400', marginTop: MC(32)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肠道 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewGenital}>
-                      <Image style={styles.lineBodyGenital} source={img.lineBodyGenital} />
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(88)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>阴部 1</Text>
-                      </View>
-                    </View>
-                    <View style={styles.TipsViewLegL}>
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左腿 1</Text>
-                      </View>
-                      <Image style={styles.lineBodyLeg} source={img.lineBodyLegL} />
-                    </View>
-                    <View style={styles.TipsViewLegR}>
-                      <Image style={styles.lineBodyLeg} source={img.lineBodyLegR} />
-                      <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
-                        <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右腿 1</Text>
-                      </View>
-                    </View>
+                    {this.state.drewData.length > 0 ? this.drewShow(this.state.drewData) : null}
                   </View>
                 )}
               </Animated.View>
@@ -485,7 +570,10 @@ class Index extends Component {
                 </View>
               ) : (
                 <View style={styles.indexBtn}>
-                  <Image style={styles.userBtnAvatar} source={img.userAvatar} />
+                  <Image
+                    style={styles.userBtnAvatar}
+                    source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                  />
                   <Text style={styles.indexBtnText}>补充健康信息，完善健康画像</Text>
                   <View style={styles.addBtnView}>
                     <Image style={styles.addIcon} source={img.addIcon} />
