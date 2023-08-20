@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {View, StatusBar, Image, Text, TouchableWithoutFeedback, Keyboard, TouchableOpacity, TextInput} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import DatePicker from 'react-native-date-picker';
@@ -16,17 +16,23 @@ const maritalPickDate = ['未婚', '已婚'];
 class UserInfo extends Component {
   constructor(props) {
     super(props);
+    this.inputnameRef = React.createRef();
     this.state = {
-      userName: this.props.globle.userdata.userName,
-      userGender: this.props.globle.userdata.userGender,
-      marital: 1,
-      birthday: new Date(),
+      userName: this.props.globle.userdata.realName,
+      userGender: this.props.globle.userdata.gender,
+      marital: this.props.globle.userdata.openColumn,
+      birthday: new Date(this.props.globle.userdata.birthday),
       isopenDP: false,
     };
   }
 
+  componentDidMount() {
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+  }
+
   componentWillUnmount() {
     Picker.hide();
+    this.keyboardDidHideListener.remove();
   }
 
   showGenderPicker() {
@@ -52,7 +58,7 @@ class UserInfo extends Component {
       pickerCancelBtnText: '取消',
       onPickerConfirm: data => {
         console.log(data);
-        this.setState({marital: data[0] === '未婚' ? 1 : 2});
+        this.setState({marital: data[0] === '未婚' ? 2 : 1});
       },
       onPickerCancel: data => {},
     });
@@ -60,8 +66,36 @@ class UserInfo extends Component {
   }
 
   submit() {
-    api.toast('暂未开放该功能');
+    let body = {
+      account: '18269890607',
+      mobilePhone: '18269890607',
+      birthday: date_api.formateTdateShort(this.state.birthday),
+      gender: this.state.userGender,
+      openColumn: this.state.marital,
+      realName: this.state.userName,
+    };
+    if (body.realName === '') {
+      api.toast('请输入用户名');
+      return;
+    }
+    api.put('app/user/update', body, res => {
+      if (res.code === 200) {
+        api.toast('更新成功');
+        this.getUserInfo();
+      }
+    });
   }
+
+  getUserInfo() {
+    api.get('app/user/info', Sres => {
+      this.props.resetData(Sres.data);
+    });
+  }
+
+  //键盘收起
+  _keyboardDidHide = () => {
+    this.inputnameRef.current.blur();
+  };
 
   render() {
     return (
@@ -81,7 +115,13 @@ class UserInfo extends Component {
               <Text style={styles.infoTitle}>基本信息</Text>
               <View style={styles.infoItem}>
                 <Text style={styles.infoItemTextLeft}>姓名</Text>
-                <Text style={styles.infoItemTextRight}>{this.state.userName}</Text>
+                <TextInput
+                  ref={this.inputnameRef}
+                  style={styles.infoItemTextRight}
+                  onChangeText={text => this.setState({userName: text})}
+                  value={this.state.userName}
+                  placeholder="请输入用户名"
+                />
               </View>
               <TouchableOpacity style={styles.infoItem} onPress={() => this.showGenderPicker()}>
                 <Text style={styles.infoItemTextLeft}>性别</Text>

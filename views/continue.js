@@ -37,7 +37,7 @@ class Continue extends Component {
                   <View style={styles.itemContentView}>
                     {item.resultItem.map((rItem, rIndex) => {
                       return (
-                        <View key={rItem.elementName}>
+                        <View key={rItem.elementName} style={{flexDirection: 'row'}}>
                           <Text style={styles.itemContentTextTitle}>
                             {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
                           </Text>

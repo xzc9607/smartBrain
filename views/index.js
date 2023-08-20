@@ -20,27 +20,28 @@ import {styles} from '../styles/index_style';
 import {MC, barHeight, screenHeight} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
+import date_api from '../config/date_api';
 
 const filterStatusData = [
-  {value: 'backlog', name: '代办项'},
+  {value: 5, name: '代办项'},
   // {value: 'advance', name: '进步项'},
   // {value: 'lag', name: '退步项'},
-  {value: 'caution', name: '警示项'},
-  {value: 'abnormal', name: '异常项'},
-  {value: 'all', name: '全部项'},
+  {value: 20, name: '警示项'},
+  {value: 25, name: '异常项'},
 ];
 const filterTypeData = [
-  {value: 'test', name: '体检'},
-  {value: 'diagnose', name: '诊断'},
-  {value: 'treat', name: '治疗'},
-  {value: 'history', name: '病史'},
+  {value: 1, name: '体检'},
+  {value: 2, name: '诊断'},
+  {value: 3, name: '治疗'},
+  {value: 5, name: '病史'},
   // {value: 'system', name: '身体系统'},
   // {value: 'position', name: '身体部位'},
 ];
 const filterTimeData = [
-  {value: '6mon', name: '近六个月'},
-  {value: '1year', name: '近一年'},
-  {value: '2year', name: '近二年'},
+  {value: 1, name: '近一个月'},
+  {value: 2, name: '近三个月'},
+  {value: 3, name: '近六个月'},
+  {value: 4, name: '近一年'},
 ];
 
 class Index extends Component {
@@ -59,6 +60,8 @@ class Index extends Component {
       choosedTime: '',
       proCount: {},
       drewData: [],
+      lastDrewTime: 0,
+      userList: [],
     };
   }
 
@@ -81,7 +84,7 @@ class Index extends Component {
           this.props.resetData(res.data);
           this.getProjectCount();
           this.getBodyInfo();
-          // todo list
+          this.getUserList();
         }
       });
     } else {
@@ -101,8 +104,29 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      this.setState({drewData: res.data});
       // api.formateJSON(res.data);
+      if (res.data.updateTime > 0) {
+        this.setState({lastDrewTime: res.data.updateTime, drewData: res.data.list});
+      }
+    });
+  }
+
+  getUserList() {
+    let body = {};
+    if (this.state.choosedState !== '') {
+      body.statusType = this.state.choosedState;
+    }
+    if (this.state.choosedType !== '') {
+      body.projectType = this.state.choosedType;
+    }
+    if (this.state.choosedTime !== '') {
+      body.timeType = this.state.choosedTime;
+    }
+    console.log(body);
+    api.post('project/user/list', body, res => {
+      console.log('user/list');
+      api.formateJSON(res);
+      this.setState({userList: res.data});
     });
   }
 
@@ -366,12 +390,14 @@ class Index extends Component {
         },
         () => {
           this.showScreen(false);
+          this.getUserList();
         },
       );
     } else {
       //todo 重新拿所有数据
       this.setState({screenCount: 0}, () => {
         this.showScreen(false);
+        this.getUserList();
       });
     }
   }
@@ -388,7 +414,7 @@ class Index extends Component {
               <View style={styles.userAvatar}>
                 <Image
                   style={styles.userAvatarImg}
-                  source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                  source={this.props.globle.userdata.gender === 2 ? img.womenAvatar : img.userAvatar}
                 />
               </View>
             </TouchableWithoutFeedback>
@@ -413,7 +439,7 @@ class Index extends Component {
                   </View>
                 </TouchableOpacity>
               ) : (
-                <Text style={styles.drawUpdataTimeText}>2023.04.01更新</Text>
+                <Text style={styles.drawUpdataTimeText}>{date_api.formateDrewTime(this.state.lastDrewTime)}</Text>
               )}
               {/* 状态/画像切换按钮 */}
               <TouchableOpacity onPress={() => this.switchBodyInfo(this.state.bodyInfoState)}>
@@ -445,7 +471,7 @@ class Index extends Component {
                     showsVerticalScrollIndicator={false}
                     overScrollMode="always"
                     contentContainerStyle={{alignItems: 'center'}}>
-                    <Text>暂无动态</Text>
+                    {/* <Text>暂无动态</Text> */}
                     <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
                       <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
                       <Text style={styles.infoListItemTitle}>萘普生</Text>
@@ -500,12 +526,12 @@ class Index extends Component {
                     <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
                     <ImageBackground
                       style={styles.manDrew}
-                      source={this.props.globle.userdata.userGender === 2 ? img.womanDrew : img.manDrew}>
+                      source={this.props.globle.userdata.gender === 2 ? img.womanDrew : img.manDrew}>
                       <ImageBackground style={styles.bodyInner} source={img.bodyInner}>
-                        {this.state.drewData.length > 0 ? this.bodyInnerDrewShow(this.state.drewData) : null}
+                        {this.state.lastDrewTime > 0 ? this.bodyInnerDrewShow(this.state.drewData) : null}
                       </ImageBackground>
                     </ImageBackground>
-                    {this.state.drewData.length > 0 ? this.drewShow(this.state.drewData) : null}
+                    {this.state.lastDrewTime > 0 ? this.drewShow(this.state.drewData) : null}
                   </View>
                 )}
               </Animated.View>
@@ -517,14 +543,14 @@ class Index extends Component {
                   },
                 ]}>
                 <View style={styles.infoItem}>
-                  <Text style={styles.infoItemTitleText}>代办项</Text>
+                  <Text style={styles.infoItemTitleText}>待办项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
                       {this.state.proCount.waitCount > 0 ? this.state.proCount.waitCount : '-'}
                     </Text>
                   </View>
                 </View>
-                <View style={styles.infoItem}>
+                {/* <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>进步项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
@@ -532,8 +558,8 @@ class Index extends Component {
                       {this.state.proCount.progressiveCount > 0 ? this.state.proCount.progressiveCount : '-'}
                     </Text>
                   </View>
-                </View>
-                <View style={styles.infoItem}>
+                </View> */}
+                {/* <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>退步项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
@@ -541,7 +567,7 @@ class Index extends Component {
                       {this.state.proCount.behindCount > 0 ? this.state.proCount.behindCount : '-'}
                     </Text>
                   </View>
-                </View>
+                </View> */}
                 <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>警示项</Text>
                   <View style={styles.infoItemInner}>
@@ -558,6 +584,16 @@ class Index extends Component {
                     </Text>
                   </View>
                 </View>
+                <View style={styles.infoItem}>
+                  <Text style={styles.infoItemTitleText}>全部项</Text>
+                  <View style={styles.infoItemInner}>
+                    <Text style={styles.infoItemText}>
+                      {this.state.proCount.abnormalCount + this.state.proCount.warningCount + this.state.proCount.waitCount > 0
+                        ? this.state.proCount.abnormalCount + this.state.proCount.warningCount + this.state.proCount.waitCount
+                        : '-'}
+                    </Text>
+                  </View>
+                </View>
               </Animated.View>
             </View>
           </View>
@@ -568,17 +604,21 @@ class Index extends Component {
                 <View style={styles.indexBtn}>
                   <Text style={styles.indexBtnText}>新增健康动态</Text>
                 </View>
-              ) : (
+              ) : this.state.lastDrewTime === 0 ? (
                 <View style={styles.indexBtn}>
                   <Image
                     style={styles.userBtnAvatar}
-                    source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                    source={this.props.globle.userdata.gender === 2 ? img.womenAvatar : img.userAvatar}
                   />
                   <Text style={styles.indexBtnText}>补充健康信息，完善健康画像</Text>
                   <View style={styles.addBtnView}>
                     <Image style={styles.addIcon} source={img.addIcon} />
                     <Text style={styles.addBtnText}>新增</Text>
                   </View>
+                </View>
+              ) : (
+                <View style={styles.indexBtn}>
+                  <Text style={styles.indexBtnText}>新增健康动态</Text>
                 </View>
               )}
             </TouchableOpacity>
@@ -675,11 +715,7 @@ class Index extends Component {
               </View>
               <TouchableOpacity
                 style={styles.popchooseResetbtn}
-                onPress={() =>
-                  this.setState({choosedState: '', choosedType: '', choosedTime: '', screenCount: 0}, () => {
-                    //TODO 重新请求?
-                  })
-                }>
+                onPress={() => this.setState({choosedState: '', choosedType: '', choosedTime: '', screenCount: 0})}>
                 <Text style={styles.popchooseBtnText}>重置</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.popchooseSubbtn} onPress={() => this.submitScreen()}>

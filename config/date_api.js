@@ -112,4 +112,15 @@ const formateTdateShort = date => {
   return text;
 };
 
-export default {formateTdate, formateTimePass, formateDateSaving, formateTdateShort};
+const formateDrewTime = date => {
+  if (date === 0) {
+    return '';
+  } else {
+    var timer = new Date(date * 1000).getTime();
+    var text = new Date(timer);
+    text = dateFormate('yyyy.MM.dd', text);
+    return text + '更新';
+  }
+};
+
+export default {formateTdate, formateTimePass, formateDateSaving, formateTdateShort, formateDrewTime};

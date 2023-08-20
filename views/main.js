@@ -79,7 +79,7 @@ class Index extends Component {
             <Text style={styles.navTitle}>个人中心</Text>
           </View>
           <View style={styles.userInfoView}>
-            <Text style={styles.userName}>{this.props.globle.userdata.userName}</Text>
+            <Text style={styles.userName}>{this.props.globle.userdata.realName}</Text>
             <View style={styles.userUseDay}>
               <Text style={{color: '#ffffff', fontSize: MC(20)}}>已使用健康智脑{this.state.createTime}天</Text>
             </View>
@@ -87,7 +87,7 @@ class Index extends Component {
               <View style={styles.userAvatar}>
                 <Image
                   style={styles.userAvatarImg}
-                  source={this.props.globle.userdata.userGender === 2 ? img.womenAvatar : img.userAvatar}
+                  source={this.props.globle.userdata.gender === 2 ? img.womenAvatar : img.userAvatar}
                 />
                 <Image style={styles.backIcon2} source={img.backIcon} />
               </View>

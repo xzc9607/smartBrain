@@ -49,6 +49,30 @@ const login = async (phone, code, success, failure) => {
     });
 };
 
+const put = async (url, body, success, failure) => {
+  let header = {
+    'Content-Type': 'application/json',
+  };
+  const value = await AsyncStorage.getItem('token');
+  if (value !== null) {
+    header.Authorization = value;
+  } else {
+    this.showToast('登录失败');
+  }
+
+  return fetch('http://124.222.161.101/api/' + url, {
+    method: 'PUT',
+    headers: header,
+    body: JSON.stringify(body),
+  })
+    .then(res => {
+      return res.json();
+    })
+    .then(sres => {
+      return success(sres);
+    });
+};
+
 const get = async (url, success, failure) => {
   let header = {};
   const value = await AsyncStorage.getItem('token');
@@ -115,4 +139,4 @@ const post = async (url, body, success, failure) => {
     });
 };
 
-export default {login, get, post, formateJSON, toast};
+export default {login, get, post, put, formateJSON, toast};
