@@ -10,7 +10,7 @@ import img from '../imgs/img';
 import api from '../config/api';
 import date_api from '../config/date_api';
 
-const genderPickDate = ['男性', '女性'];
+const genderPickDate = ['男', '女'];
 const maritalPickDate = ['未婚', '已婚'];
 
 class UserInfo extends Component {
@@ -43,7 +43,7 @@ class UserInfo extends Component {
       pickerCancelBtnText: '取消',
       onPickerConfirm: data => {
         console.log(data);
-        this.setState({userGender: data[0] === '男性' ? 1 : 2});
+        this.setState({userGender: data[0] === '男' ? 1 : 2});
       },
       onPickerCancel: data => {},
     });
@@ -67,8 +67,8 @@ class UserInfo extends Component {
 
   submit() {
     let body = {
-      account: '18269890607',
-      mobilePhone: '18269890607',
+      account: this.props.globle.userdata.mobilePhone,
+      mobilePhone: this.props.globle.userdata.mobilePhone,
       birthday: date_api.formateTdateShort(this.state.birthday),
       gender: this.state.userGender,
       openColumn: this.state.marital,

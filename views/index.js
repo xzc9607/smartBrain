@@ -74,7 +74,7 @@ class Index extends Component {
     if (value !== null) {
       // todo 登录了
       api.get('app/user/info', res => {
-        api.formateJSON(res.data);
+        // api.formateJSON(res.data);
         if (res.code === 600) {
           this.props.navigation.reset({
             index: 0,
@@ -122,7 +122,6 @@ class Index extends Component {
     if (this.state.choosedTime !== '') {
       body.timeType = this.state.choosedTime;
     }
-    console.log(body);
     api.post('project/user/list', body, res => {
       console.log('user/list');
       api.formateJSON(res);

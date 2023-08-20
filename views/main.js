@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {styles} from '../styles/mian_style';
 import {MC} from '../config/convert';
 import img from '../imgs/img';
-import api from '../config/api';
 
 const day = 24 * 60 * 60;
 class Index extends Component {

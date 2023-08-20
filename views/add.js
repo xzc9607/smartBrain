@@ -184,6 +184,7 @@ class Add extends Component {
 
   searchToAdd(item) {
     if (item.projectType === 2 || item.projectType === 3) {
+      // todo elenment/info
       Alert.alert(item.projectName, item.description ?? '暂无详情', [
         {
           text: '好的',

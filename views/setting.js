@@ -5,7 +5,6 @@ import {resetData} from '../store/globle/action';
 
 import {styles} from '../styles/setting_style';
 import img from '../imgs/img';
-import api from '../config/api';
 
 class Setting extends Component {
   constructor(props) {
@@ -45,9 +44,9 @@ class Setting extends Component {
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </View> */}
             </View>
-            <Text style={styles.saveBtn} onPress={() => api.toast('此功能暂未开放')}>
+            {/* <Text style={styles.saveBtn} onPress={() => api.toast('此功能暂未开放')}>
               注销账号
-            </Text>
+            </Text> */}
           </View>
         </View>
       </View>
