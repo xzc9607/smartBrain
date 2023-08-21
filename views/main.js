@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback, Alert} from 'react-native';
+import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback, Alert, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -93,38 +93,31 @@ class Index extends Component {
             </TouchableWithoutFeedback>
           </View>
           <View style={styles.mainView}>
-            <TouchableWithoutFeedback onPress={() => this.toNextPage('UserInfo')}>
-              <View style={styles.itemTop}>
-                <Image style={styles.ItemIcon} source={img.myIcon} />
-                <Text style={styles.ItemText}>个人信息</Text>
-                <Image style={styles.backIcon3} source={img.backIconBlck} />
-              </View>
-            </TouchableWithoutFeedback>
+            <TouchableOpacity style={styles.itemTop} onPress={() => this.toNextPage('UserInfo')}>
+              <Image style={styles.ItemIcon} source={img.myIcon} />
+              <Text style={styles.ItemText}>个人信息</Text>
+              <Image style={styles.backIcon3} source={img.backIconBlck} />
+            </TouchableOpacity>
             <View style={styles.itemMid}>
               <Image style={styles.ItemIcon} source={img.kefuIcon} />
               <Text style={styles.ItemText}>客服帮助</Text>
               <Image style={styles.backIcon3} source={img.backIconBlck} />
             </View>
-            <View style={styles.itemMid}>
+            <TouchableOpacity style={styles.itemMid} onPress={() => this.toNextPage('About')}>
               <Image style={styles.ItemIcon} source={img.aboutIcon} />
               <Text style={styles.ItemText}>关于我们</Text>
               <Image style={styles.backIcon3} source={img.backIconBlck} />
-            </View>
-            <TouchableWithoutFeedback onPress={() => this.toNextPage('Setting')}>
-              <View style={styles.itemEnd}>
-                <Image style={styles.ItemIcon} source={img.setIcon} />
-                <Text style={styles.ItemText}>设置</Text>
-                <Image style={styles.backIcon3} source={img.backIconBlck} />
-              </View>
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback onPress={() => this.exit()}>
-              <View style={styles.itemExit}>
-                <Image style={styles.ItemIcon} source={img.exitIcon} />
-                <Text style={styles.ItemText}>退出登录</Text>
-                <Image style={styles.backIcon3} source={img.backIconBlck} />
-              </View>
-            </TouchableWithoutFeedback>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemEnd} onPress={() => this.toNextPage('Setting')}>
+              <Image style={styles.ItemIcon} source={img.setIcon} />
+              <Text style={styles.ItemText}>设置</Text>
+              <Image style={styles.backIcon3} source={img.backIconBlck} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.itemExit} onPress={() => this.exit()}>
+              <Image style={styles.ItemIcon} source={img.exitIcon} />
+              <Text style={styles.ItemText}>退出登录</Text>
+              <Image style={styles.backIcon3} source={img.backIconBlck} />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

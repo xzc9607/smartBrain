@@ -96,6 +96,34 @@ const styles = StyleSheet.create({
     fontSize: MC(28),
     color: '#000000',
   },
+  appicon: {
+    position: 'absolute',
+    top: MC(80),
+    width: MC(147),
+    height: MC(147),
+    borderRadius: MC(30),
+  },
+  aboutTitle: {
+    position: 'absolute',
+    top: MC(274),
+    fontSize: MC(32),
+    fontWeight: '500',
+    color: '#001133',
+  },
+  versionTitle: {
+    position: 'absolute',
+    top: MC(334),
+    fontSize: MC(24),
+    fontWeight: '500',
+    color: 'rgba(0,0,0,0.4)',
+  },
+  rightTitle: {
+    position: 'absolute',
+    bottom: MC(80),
+    fontSize: MC(24),
+    fontWeight: '500',
+    color: 'rgba(0,0,0,0.4)',
+  },
 });
 
 export {styles};

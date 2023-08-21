@@ -1,4 +1,5 @@
 const img = {
+  appicon: require('./appicon.png'),
   topBg: require('./img_top_bg.png'),
   userAvatar: require('./img_avatar_men.jpg'),
   womenAvatar: require('./img_avatar_women.jpg'),
