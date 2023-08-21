@@ -103,7 +103,7 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      // api.formateJSON(res.data);
+      api.formateJSON(res.data);
       if (res.data.updateTime > 0) {
         this.setState({lastDrewTime: res.data.updateTime, drewData: res.data.list});
       }
@@ -239,6 +239,7 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '肠道' && item.count > 0) {
+        //0
         return (
           <View style={styles.TipsViewEnteric}>
             <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
@@ -248,6 +249,7 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '膀胱' && item.count > 0) {
+        //0
         return (
           <View style={styles.TipsViewBladder}>
             <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
@@ -257,6 +259,7 @@ class Index extends Component {
           </View>
         );
       } else if ((item.elementName === '肺部' || item.elementName === '肺') && item.count > 0) {
+        //0
         return (
           <View style={styles.TipsViewLung}>
             <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
@@ -266,6 +269,7 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '头部' && item.count > 0) {
+        //0
         return (
           <View style={styles.TipsViewHead}>
             <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
@@ -470,30 +474,6 @@ class Index extends Component {
                     overScrollMode="always"
                     contentContainerStyle={{alignItems: 'center'}}>
                     {/* <Text>暂无动态</Text> */}
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>萘普生</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateWait}>待办</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('Check')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>空腹血糖</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateWait}>待办</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('BodyRecord')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>头痛</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateMid}>中度</Text>
-                    </TouchableOpacity>
-                    <View style={styles.infoListItem}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>拜糖平片</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateBad}>2项不良反应</Text>
-                    </View>
                     <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
                       <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
                       <Text style={styles.infoListItemTitle}>萘普生</Text>
