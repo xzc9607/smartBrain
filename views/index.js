@@ -74,7 +74,6 @@ class Index extends Component {
     if (value !== null) {
       // todo 登录了
       api.get('app/user/info', res => {
-        // api.formateJSON(res.data);
         if (res.code === 600) {
           this.props.navigation.reset({
             index: 0,

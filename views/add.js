@@ -175,7 +175,7 @@ class Add extends Component {
 
   canToAdd(id) {
     api.post('project/get/element/' + id, {}, res => {
-      api.formateJSON(res.data);
+      console.log(res.data.length === 0 ? '无法添加此项，因为没有添加项' : '可以被添加');
       this.setState({isShowComfirm: res.data.length !== 0}, () => {
         this.transParams = res.data[0];
       });
@@ -184,14 +184,19 @@ class Add extends Component {
 
   searchToAdd(item) {
     if (item.projectType === 2 || item.projectType === 3) {
-      // todo elenment/info
-      Alert.alert(item.projectName, item.description ?? '暂无详情', [
-        {
-          text: '好的',
-          onPress: () => {},
-          style: 'default',
-        },
-      ]);
+      api.get('element/' + item.elementId, res => {
+        Alert.alert(
+          item.projectName,
+          res.data.description === null || res.data.description === '' ? '暂无详情' : res.data.description,
+          [
+            {
+              text: '好的',
+              onPress: () => {},
+              style: 'default',
+            },
+          ],
+        );
+      });
     } else {
       this.props.navigation.navigate('AddItem', {transParams: item});
     }

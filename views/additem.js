@@ -17,7 +17,6 @@ import Picker from 'react-native-picker';
 import {styles} from '../styles/additem_style';
 import img from '../imgs/img';
 import api from '../config/api';
-import {round} from 'lodash';
 
 class AddItem extends Component {
   constructor(props) {
@@ -25,43 +24,63 @@ class AddItem extends Component {
     this.state = {
       infoData: [],
       value: [],
+      unitArr: [],
     };
     this.callback = {
       projectId: this.props.route.params.transParams.id,
       dataList: [],
     };
     this.pickerArr = [];
+    api.formateJSON(this.props.route.params.transParams);
   }
 
   componentDidMount() {
     this.getItemInfo();
   }
 
+  componentWillUnmount() {
+    Picker.hide();
+  }
+
   getItemInfo() {
     api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
       api.formateJSON(res.data);
       res.data.forEach((item, index) => {
-        this.callback.dataList.push({
-          elementDataType: item.elementDataType,
-          elementId: item.elementId,
-          elementValue: '',
-        });
+        if (item.elementDataType === 5 && item.unitList.length !== 0) {
+          this.callback.dataList.push({
+            elementDataType: item.elementDataType,
+            elementId: item.elementId,
+            elementValue: '',
+            elementUnitId: '',
+          });
+        } else {
+          this.callback.dataList.push({
+            elementDataType: item.elementDataType,
+            elementId: item.elementId,
+            elementValue: '',
+          });
+        }
       });
+      // api.formateJSON(this.callback);
       this.setState({infoData: res.data});
     });
   }
 
-  // getDes(id) {
-  //   api.post('project/get/element/' + item.id, {}, res => {
-  //     Alert.alert(item.elementName, item.description, [
-  //       {
-  //         text: '好的',
-  //         onPress: () => {},
-  //         style: 'default',
-  //       },
-  //     ]);
-  //   });
-  // }
+  getDes(id) {
+    api.get('element/' + this.props.route.params.transParams.elementId, res => {
+      Alert.alert(
+        this.props.route.params.transParams.projectName,
+        res.data.description === null || res.data.description === '' ? '暂无详情' : res.data.description,
+        [
+          {
+            text: '好的',
+            onPress: () => {},
+            style: 'default',
+          },
+        ],
+      );
+    });
+  }
 
   showItem(item, index) {
     if (item.elementDataType === 1) {
@@ -70,7 +89,7 @@ class AddItem extends Component {
         <View style={styles.singleChooseView} key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
-            <TouchableOpacity style={styles.smallIconView}>
+            <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
               <Image style={styles.smallIcon} source={img.smallAddInfo} />
             </TouchableOpacity>
           </View>
@@ -99,7 +118,7 @@ class AddItem extends Component {
         <View style={styles.multiView} key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
-            <TouchableOpacity style={styles.smallIconView}>
+            <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
               <Image style={styles.smallIcon} source={img.smallAddInfo} />
             </TouchableOpacity>
           </View>
@@ -128,7 +147,7 @@ class AddItem extends Component {
         <View style={styles.inputOusideView} key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
-            <TouchableOpacity style={styles.smallIconView}>
+            <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
               <Image style={styles.smallIcon} source={img.smallAddInfo} />
             </TouchableOpacity>
           </View>
@@ -149,21 +168,31 @@ class AddItem extends Component {
         </View>
       );
     } else if (item.elementDataType === 5) {
-      // 区间，选择器?
+      // 区间
       return (
-        <TouchableOpacity style={styles.pickerView} onPress={() => this.showPicker(item, index)}>
+        <View style={styles.pickerView} key={item.id}>
           <Text style={styles.pickerTitle}>{item.elementName}</Text>
-          <Text style={styles.pickerChooseText}>{this.state.value[index] ? this.state.value[index] : '请选择'}</Text>
-          <Image style={styles.rightArrow} source={img.rightArrow} />
-        </TouchableOpacity>
+          <TextInput
+            style={styles.pickerInput}
+            placeholder="请输入数值"
+            keyboardType="numeric"
+            onChangeText={num => this.pickerInputEnter(num, index)}
+          />
+          {item.unitList.length > 0 ? (
+            <TouchableOpacity style={styles.pickerChooseView} onPress={() => this.showPicker(item, index)}>
+              <Text style={styles.pickerChooseText}>{this.state.unitArr[index] ? this.state.unitArr[index] : '请选择'}</Text>
+              <Image style={styles.rightArrow} source={img.rightArrow} />
+            </TouchableOpacity>
+          ) : null}
+        </View>
       );
     }
   }
 
-  showTips(tip) {
+  showTips(title, tip) {
     Alert.alert(
-      '说明',
-      tip,
+      title,
+      tip === '' || tip === null ? '暂无详情' : tip,
       [
         {
           text: '好的',
@@ -219,29 +248,57 @@ class AddItem extends Component {
     });
   }
 
-  genPickerArr(start, end, dataNum) {
+  genPickerArr(val) {
     let arr = [];
-    for (let i = start; i < end; i = i + 10 ** -dataNum) {
-      arr.push(round(i, dataNum));
-    }
+    val.forEach(e => {
+      arr.push(e.elementName);
+    });
     return Array.from(arr);
   }
 
   showPicker(value, index) {
-    const tVal = Array.from(this.state.value);
-    this.pickerArr = this.genPickerArr(value.elementDataMin, value.elementDataMax, value.dataNum);
+    this.pickerArr = this.genPickerArr(value.unitList);
     Picker.init({
       pickerData: this.pickerArr,
       pickerTitleText: '请选择',
       pickerConfirmBtnText: '确定',
       pickerCancelBtnText: '取消',
       onPickerConfirm: data => {
-        tVal[index] = value;
-        this.setState({value: tVal});
+        value.unitList.forEach((item, Iindex) => {
+          if (item.elementName === data[0]) {
+            let arr = Array.from(this.state.unitArr);
+            arr[index] = item.elementName;
+            this.setState({unitArr: arr});
+            this.callback.dataList[index].elementUnitId = item.id;
+          }
+        });
+        api.formateJSON(this.callback);
       },
       onPickerCancel: data => {},
     });
     Picker.show();
+  }
+
+  pickerInputEnter(value, index) {
+    const tVal = Array.from(this.state.value);
+    tVal[index] = Number(value);
+    if (Number.isNaN(Number(value))) {
+      Alert.alert('提示', '请输入正确的数值！', [
+        {
+          text: '好的',
+          onPress: () => {
+            this.setState({value: tVal}, () => {
+              console.log(this.state.value);
+            });
+          },
+          style: 'default',
+        },
+      ]);
+    } else {
+      this.setState({value: tVal}, () => {
+        console.log(this.state.value);
+      });
+    }
   }
 
   submit() {
@@ -249,6 +306,18 @@ class AddItem extends Component {
       if (this.state.value[i] === undefined) {
         api.toast('请输入完整数据!');
         return;
+      }
+
+      if (this.callback.dataList[i].elementUnitId === '') {
+        api.toast('请选择单位!');
+        return;
+      }
+
+      if (this.callback.dataList[i].elementDataType === 5) {
+        if (Number.isNaN(this.state.value[i])) {
+          api.toast('请输入正确的数值！');
+          return;
+        }
       }
     }
     this.state.value.forEach((val, index) => {
@@ -284,9 +353,7 @@ class AddItem extends Component {
                 <Image style={styles.backIcon} source={img.backIconBlck} />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableOpacity
-              style={styles.bigiconView}
-              onPress={() => this.showTips(this.props.route.params.transParams.projectName)}>
+            <TouchableOpacity style={styles.bigiconView} onPress={() => this.getDes()}>
               <Image style={styles.bigicon} source={img.bigAddInfo} />
             </TouchableOpacity>
           </View>
