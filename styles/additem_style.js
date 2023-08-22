@@ -171,10 +171,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: MC(24),
+    borderRadius: 2,
   },
   multiChooseIcon: {
     width: MC(34),
     height: MC(34),
+    borderRadius: 2,
   },
   footer: {
     position: 'relative',
