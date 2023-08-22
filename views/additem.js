@@ -17,6 +17,7 @@ import Picker from 'react-native-picker';
 import {styles} from '../styles/additem_style';
 import img from '../imgs/img';
 import api from '../config/api';
+import {useNavigationBuilder} from '@react-navigation/native';
 
 class AddItem extends Component {
   constructor(props) {
@@ -86,7 +87,12 @@ class AddItem extends Component {
     if (item.elementDataType === 1) {
       //单选
       return (
-        <View style={styles.singleChooseView} key={item.id}>
+        <View
+          style={[
+            styles.singleChooseView,
+            {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+          ]}
+          key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
             <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
@@ -115,7 +121,12 @@ class AddItem extends Component {
     } else if (item.elementDataType === 2) {
       //多选
       return (
-        <View style={styles.multiView} key={item.id}>
+        <View
+          style={[
+            styles.multiView,
+            {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+          ]}
+          key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
             <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
@@ -170,7 +181,12 @@ class AddItem extends Component {
     } else if (item.elementDataType === 5) {
       // 区间
       return (
-        <View style={styles.pickerView} key={item.id}>
+        <View
+          style={[
+            styles.pickerView,
+            {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+          ]}
+          key={item.id}>
           <Text style={styles.pickerTitle}>{item.elementName}</Text>
           <TextInput
             style={styles.pickerInput}

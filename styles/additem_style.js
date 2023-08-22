@@ -7,13 +7,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   safeView: {
-    position: 'absolute',
     width: windowWidth,
-    height: screenHeight - barHeight,
-    top: barHeight,
+    height: screenHeight,
+    marginTop: barHeight,
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'space-between',
   },
   navView: {
+    position: 'relative',
     height: MC(88),
     width: windowWidth,
     justifyContent: 'center',

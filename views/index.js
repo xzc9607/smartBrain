@@ -17,7 +17,7 @@ import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {styles} from '../styles/index_style';
-import {MC, barHeight, screenHeight} from '../config/convert';
+import {MC, barHeight, screenHeight, windowWidth} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
 import date_api from '../config/date_api';
@@ -530,6 +530,7 @@ class Index extends Component {
                         return this.indexList(item);
                       })
                     )}
+                    <View style={{position: 'relative', width: windowWidth, height: 35}}></View>
                   </ScrollView>
                 ) : (
                   <View style={styles.drawView}>
