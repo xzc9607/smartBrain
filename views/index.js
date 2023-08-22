@@ -23,11 +23,12 @@ import api from '../config/api';
 import date_api from '../config/date_api';
 
 const filterStatusData = [
-  {value: 5, name: '代办项'},
+  {value: 5, name: '待办项'},
   // {value: 'advance', name: '进步项'},
   // {value: 'lag', name: '退步项'},
   {value: 20, name: '警示项'},
   {value: 25, name: '异常项'},
+  {value: 99, name: '全部项'},
 ];
 const filterTypeData = [
   {value: 1, name: '体检'},
@@ -103,7 +104,7 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      api.formateJSON(res.data);
+      // api.formateJSON(res.data);
       if (res.data.updateTime > 0) {
         this.setState({lastDrewTime: res.data.updateTime, drewData: res.data.list});
       }
@@ -112,7 +113,7 @@ class Index extends Component {
 
   getUserList() {
     let body = {};
-    if (this.state.choosedState !== '') {
+    if (this.state.choosedState !== '' && this.state.choosedState !== 99) {
       body.statusType = this.state.choosedState;
     }
     if (this.state.choosedType !== '') {
@@ -187,10 +188,10 @@ class Index extends Component {
       } else if (item.elementName === '血液' && item.count > 0) {
         return (
           <View style={styles.TipsViewHeart}>
-            <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
+            {/* <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
             <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
               <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
-            </View>
+            </View> */}
           </View>
         );
       } else if (item.elementName === '阴部' && item.count > 0) {
@@ -239,7 +240,6 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '肠道' && item.count > 0) {
-        //0
         return (
           <View style={styles.TipsViewEnteric}>
             <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
@@ -249,7 +249,6 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '膀胱' && item.count > 0) {
-        //0
         return (
           <View style={styles.TipsViewBladder}>
             <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
@@ -258,8 +257,7 @@ class Index extends Component {
             <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
           </View>
         );
-      } else if ((item.elementName === '肺部' || item.elementName === '肺') && item.count > 0) {
-        //0
+      } else if (item.elementName === '肺' && item.count > 0) {
         return (
           <View style={styles.TipsViewLung}>
             <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
@@ -269,7 +267,6 @@ class Index extends Component {
           </View>
         );
       } else if (item.elementName === '头部' && item.count > 0) {
-        //0
         return (
           <View style={styles.TipsViewHead}>
             <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
@@ -298,10 +295,53 @@ class Index extends Component {
         return <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} />;
       } else if (item.elementName === '膀胱' && item.count > 0) {
         return <Image style={styles.bodyWarImg} source={img.ImgGutbladder} />;
-      } else if (item.elementName === '肺部' && item.count > 0) {
+      } else if (item.elementName === '肺' && item.count > 0) {
         return <Image style={styles.bodyWarImg} source={img.ImgGutLung} />;
       }
     });
+  }
+
+  indexList(item) {
+    if (!item.projectEditType) {
+      //未知
+      return (
+        <View style={styles.infoListItem} key={item.id}>
+          <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+          <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
+          <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
+        </View>
+      );
+    } else if (item.projectEditType === 5) {
+      //待办
+      return (
+        <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')} key={item.id}>
+          <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+          <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
+          <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
+          <Text style={styles.infoListItemStateWait}>待办</Text>
+        </TouchableOpacity>
+      );
+    } else if (item.projectEditType === 20) {
+      //警示
+      return (
+        <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('BodyRecord')} key={item.id}>
+          <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+          <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
+          <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
+          <Text style={styles.infoListItemStateMid}>中度</Text>
+        </TouchableOpacity>
+      );
+    } else if (item.projectEditType === 25) {
+      //异常
+      return (
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('TakeMedicine')}>
+          <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+          <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
+          <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
+          <Text style={styles.infoListItemStateBad}>{item.result}</Text>
+        </TouchableOpacity>
+      );
+    }
   }
 
   toNextPage(pageName) {
@@ -404,6 +444,16 @@ class Index extends Component {
     }
   }
 
+  labelClick(type) {
+    let body = {};
+    if (type !== 99) {
+      body.projectType = type;
+    }
+    api.post('project/user/list', body, res => {
+      this.setState({userList: res.data, choosedState: '', choosedType: '', choosedTime: '', screenCount: 0});
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -473,31 +523,13 @@ class Index extends Component {
                     showsVerticalScrollIndicator={false}
                     overScrollMode="always"
                     contentContainerStyle={{alignItems: 'center'}}>
-                    {/* <Text>暂无动态</Text> */}
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>萘普生</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateWait}>待办</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('Check')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>空腹血糖</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateWait}>待办</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('BodyRecord')}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>头痛</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateMid}>中度</Text>
-                    </TouchableOpacity>
-                    <View style={styles.infoListItem}>
-                      <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
-                      <Text style={styles.infoListItemTitle}>拜糖平片</Text>
-                      <Text style={styles.infoListItemTime}>创建时间：2023.03.11 14:52</Text>
-                      <Text style={styles.infoListItemStateBad}>2项不良反应</Text>
-                    </View>
+                    {this.state.userList.length === 0 ? (
+                      <Text>暂无信息</Text>
+                    ) : (
+                      this.state.userList.map((item, index) => {
+                        return this.indexList(item);
+                      })
+                    )}
                   </ScrollView>
                 ) : (
                   <View style={styles.drawView}>
@@ -520,14 +552,14 @@ class Index extends Component {
                     transform: [{translateY: this.state.bodyInfoTitleTop}],
                   },
                 ]}>
-                <View style={styles.infoItem}>
+                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(5)}>
                   <Text style={styles.infoItemTitleText}>待办项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
                       {this.state.proCount.waitCount > 0 ? this.state.proCount.waitCount : '-'}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
                 {/* <View style={styles.infoItem}>
                   <Text style={styles.infoItemTitleText}>进步项</Text>
                   <View style={styles.infoItemInner}>
@@ -546,23 +578,23 @@ class Index extends Component {
                     </Text>
                   </View>
                 </View> */}
-                <View style={styles.infoItem}>
+                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(20)}>
                   <Text style={styles.infoItemTitleText}>警示项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
                       {this.state.proCount.warningCount > 0 ? this.state.proCount.warningCount : '-'}
                     </Text>
                   </View>
-                </View>
-                <View style={styles.infoItem}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(25)}>
                   <Text style={styles.infoItemTitleText}>异常项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
                       {this.state.proCount.abnormalCount > 0 ? this.state.proCount.abnormalCount : '-'}
                     </Text>
                   </View>
-                </View>
-                <View style={styles.infoItem}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(99)}>
                   <Text style={styles.infoItemTitleText}>全部项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
@@ -571,7 +603,7 @@ class Index extends Component {
                         : '-'}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               </Animated.View>
             </View>
           </View>

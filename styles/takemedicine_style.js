@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {screenHeight, MC, safeHeight, windowWidth, barHeight} from '../config/convert';
+import {MC, windowWidth, barHeight, screenHeight} from '../config/convert';
 
 const styles = StyleSheet.create({
   container: {
@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   safeView: {
     position: 'absolute',
     width: windowWidth,
-    height: safeHeight,
+    height: screenHeight - barHeight,
     top: barHeight,
     alignItems: 'center',
   },
@@ -80,10 +80,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   reactionsView: {
+    position: 'relative',
     width: MC(690),
-    height: MC(510),
+    minHeight: MC(72),
     marginTop: MC(24),
     marginBottom: MC(40),
+  },
+  reactionsInnerView: {
+    width: MC(690),
+    minHeight: MC(56),
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   itemTitle: {
     marginLeft: MC(30),
@@ -203,10 +210,10 @@ const styles = StyleSheet.create({
     marginLeft: MC(30),
   },
   reactionsItemView: {
-    width: MC(576),
+    position: 'relative',
     height: MC(32),
-    marginLeft: MC(80),
-    marginTop: MC(34),
+    marginTop: MC(24),
+    marginLeft: MC(30),
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -216,18 +223,19 @@ const styles = StyleSheet.create({
     fontSize: MC(24),
   },
   reactionsItemCheckbox: {
-    position: 'absolute',
-    right: 0,
     width: MC(32),
     height: MC(32),
     borderColor: 'rgba(0,17,51,0.5)',
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderRadius: 2,
+    marginRight: MC(16),
   },
   choosedIcon: {
     width: MC(34),
     height: MC(34),
+    borderRadius: 2,
   },
 });
 

@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   singleChooseView: {
     width: MC(690),
-    minHeight: MC(200),
+    minHeight: MC(170),
     borderRadius: MC(30),
     marginTop: MC(30),
     backgroundColor: '#ffffff',

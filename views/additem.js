@@ -180,7 +180,7 @@ class AddItem extends Component {
           />
           {item.unitList.length > 0 ? (
             <TouchableOpacity style={styles.pickerChooseView} onPress={() => this.showPicker(item, index)}>
-              <Text style={styles.pickerChooseText}>{this.state.unitArr[index] ? this.state.unitArr[index] : '请选择'}</Text>
+              <Text style={styles.pickerChooseText}>{this.state.unitArr[index] ? this.state.unitArr[index] : '单位'}</Text>
               <Image style={styles.rightArrow} source={img.rightArrow} />
             </TouchableOpacity>
           ) : null}
@@ -260,7 +260,7 @@ class AddItem extends Component {
     this.pickerArr = this.genPickerArr(value.unitList);
     Picker.init({
       pickerData: this.pickerArr,
-      pickerTitleText: '请选择',
+      pickerTitleText: '请选择单位',
       pickerConfirmBtnText: '确定',
       pickerCancelBtnText: '取消',
       onPickerConfirm: data => {

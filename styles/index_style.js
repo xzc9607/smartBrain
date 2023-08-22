@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
   dynamicIcon: {
     position: 'absolute',
     left: MC(30),
-    top: MC(36),
+    top: MC(32),
     width: MC(34),
     height: MC(32),
   },

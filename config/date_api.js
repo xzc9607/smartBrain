@@ -123,4 +123,11 @@ const formateDrewTime = date => {
   }
 };
 
-export default {formateTdate, formateTimePass, formateDateSaving, formateTdateShort, formateDrewTime};
+const formateTdateList = date => {
+  var timer = new Date(date * 1000).getTime();
+  var text = new Date(timer);
+  text = dateFormate('yyyy.MM.dd hh:mm', text);
+  return text;
+};
+
+export default {formateTdate, formateTimePass, formateDateSaving, formateTdateShort, formateDrewTime, formateTdateList};

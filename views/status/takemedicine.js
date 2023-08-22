@@ -1,4 +1,3 @@
-/* eslint-disable react/self-closing-comp */
 import React, {Component} from 'react';
 import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
@@ -126,7 +125,7 @@ class TakeMedicine extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
             <Text style={styles.navTitle}>服药</Text>
@@ -167,48 +166,50 @@ class TakeMedicine extends Component {
               </TouchableOpacity>
               <View style={styles.reactionsView}>
                 <Text style={styles.itemTitle}>不良反应:</Text>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('non')}>
-                  <Text style={styles.reactionsItemTitle}>无不良反应</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.non ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('dizzy')}>
-                  <Text style={styles.reactionsItemTitle}>头晕</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.dizzy ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('nausea')}>
-                  <Text style={styles.reactionsItemTitle}>恶心</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.nausea ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('nodiarrhean')}>
-                  <Text style={styles.reactionsItemTitle}>腹泻</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.nodiarrhean ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('vomit')}>
-                  <Text style={styles.reactionsItemTitle}>呕吐</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.vomit ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('abdomen')}>
-                  <Text style={styles.reactionsItemTitle}>上腹部不适</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.abdomen ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('constipation')}>
-                  <Text style={styles.reactionsItemTitle}>便秘</Text>
-                  <View style={styles.reactionsItemCheckbox}>
-                    {this.state.reactions.constipation ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
-                  </View>
-                </TouchableOpacity>
+                <View style={styles.reactionsInnerView}>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('non')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.non ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>无不良反应</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('dizzy')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.dizzy ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>头晕</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('nausea')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.nausea ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>恶心</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('nodiarrhean')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.nodiarrhean ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>腹泻</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('vomit')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.vomit ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>呕吐</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('abdomen')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.abdomen ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>上腹部不适</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.reactionsItemView} onPress={() => this.chooseReaction('constipation')}>
+                    <View style={styles.reactionsItemCheckbox}>
+                      {this.state.reactions.constipation ? <Image style={styles.choosedIcon} source={img.choosedIcon} /> : null}
+                    </View>
+                    <Text style={styles.reactionsItemTitle}>便秘</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>

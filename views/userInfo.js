@@ -132,9 +132,7 @@ class UserInfo extends Component {
               </TouchableOpacity>
               <TouchableOpacity style={styles.infoItem} onPress={() => this.showMaritalPicker()}>
                 <Text style={styles.infoItemTextLeft}>婚姻状况</Text>
-                <Text style={styles.infoItemTextRight}>
-                  {this.state.marital === 1 ? '未婚' : this.state.marital === 2 ? '已婚' : '未选择'}
-                </Text>
+                <Text style={styles.infoItemTextRight}>{this.state.marital === 1 ? '已婚' : '未婚'}</Text>
                 <Image style={styles.ItemIcon} source={img.backIconBlck} />
               </TouchableOpacity>
               <TouchableOpacity
@@ -157,7 +155,9 @@ class UserInfo extends Component {
           open={this.state.isopenDP}
           date={this.state.birthday}
           onConfirm={date => {
-            this.setState({isopenDP: false, birthday: date});
+            this.setState({birthday: date}, () => {
+              this.setState({isopenDP: false});
+            });
           }}
           onCancel={() => {
             this.setState({isopenDP: false});
