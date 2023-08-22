@@ -155,7 +155,12 @@ class AddItem extends Component {
     } else if (item.elementDataType === 3) {
       //input
       return (
-        <View style={styles.inputOusideView} key={item.id}>
+        <View
+          style={[
+            styles.inputOusideView,
+            {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+          ]}
+          key={item.id}>
           <View style={styles.headView}>
             <Text style={styles.headTitle}>{item.elementName}</Text>
             <TouchableOpacity style={styles.smallIconView} onPress={() => this.showTips(item.elementName, item.description)}>
