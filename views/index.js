@@ -327,7 +327,7 @@ class Index extends Component {
     } else if (item.projectEditType === 25) {
       //异常
       return (
-        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('Check')}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
