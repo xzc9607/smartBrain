@@ -39,7 +39,7 @@ class Index extends Component {
       choosedTime: '',
       proCount: {},
       drewData: [],
-      lastDrewTime: 1,
+      lastDrewTime: 0,
       userList: [],
     };
   }
@@ -64,7 +64,7 @@ class Index extends Component {
   async getUserinfo() {
     const value = await AsyncStorage.getItem('token');
     if (value !== null) {
-      // todo 登录了
+      // 登录了
       api.get('app/user/info', res => {
         if (res.code === 600) {
           this.props.navigation.reset({
@@ -79,7 +79,7 @@ class Index extends Component {
         }
       });
     } else {
-      // todo 没登录
+      // 没登录
       this.props.navigation.reset({
         index: 0,
         routes: [{name: 'Login'}],

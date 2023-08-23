@@ -13,12 +13,12 @@ import {
   Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {resetData} from '../store/globle/action';
+import {resetData} from '../../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import img from '../imgs/img';
-import api from '../config/api';
-import {styles} from '../styles/add_style';
+import img from '../../imgs/img';
+import api from '../../config/api';
+import {styles} from '../../styles/add_style';
 
 class Add extends Component {
   constructor(props) {

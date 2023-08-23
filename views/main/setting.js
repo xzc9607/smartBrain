@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
-import {resetData} from '../store/globle/action';
+import {resetData} from '../../store/globle/action';
 
-import img from '../imgs/img';
-import {styles} from '../styles/setting_style';
+import img from '../../imgs/img';
+import {styles} from '../../styles/setting_style';
 
 class Setting extends Component {
   constructor(props) {

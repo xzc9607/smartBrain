@@ -11,12 +11,12 @@ import {
   Alert,
 } from 'react-native';
 import {connect} from 'react-redux';
-import {resetData, resetaddList} from '../store/globle/action';
+import {resetData, resetaddList} from '../../store/globle/action';
 import Picker from 'react-native-picker';
 
-import img from '../imgs/img';
-import api from '../config/api';
-import {styles} from '../styles/additem_style';
+import img from '../../imgs/img';
+import api from '../../config/api';
+import {styles} from '../../styles/additem_style';
 
 class AddItem extends Component {
   constructor(props) {

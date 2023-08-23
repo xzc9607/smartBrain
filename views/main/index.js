@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {View, StatusBar, Image, Text, Animated, TouchableWithoutFeedback, Alert, TouchableOpacity} from 'react-native';
 import {connect} from 'react-redux';
-import {resetData} from '../store/globle/action';
+import {resetData} from '../../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import img from '../imgs/img';
+import img from '../../imgs/img';
 
-import {styles} from '../styles/mian_style';
-import {MC} from '../config/convert';
-import {DAY} from '../config/data';
+import {styles} from '../../styles/mian_style';
+import {MC} from '../../config/convert';
+import {DAY} from '../../config/data';
 class Index extends Component {
   constructor(props) {
     super(props);

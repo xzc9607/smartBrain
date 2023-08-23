@@ -6066,10 +6066,10 @@ react-native-collapsible@^1.6.0:
   resolved "https://registry.npmmirror.com/react-native-collapsible/-/react-native-collapsible-1.6.0.tgz"
   integrity sha512-beZjdgbT9Y/Pg591Xy5XkKG20HffJiVad4n9bfcUF/f783A+tvOVXnqvbS58Lkaym93mi4jcDPMuW9Vc1t6rqg==
 
-react-native-date-picker@^4.2.10:
-  version "4.2.10"
-  resolved "https://registry.npmmirror.com/react-native-date-picker/-/react-native-date-picker-4.2.10.tgz"
-  integrity sha512-Qtu5mvuESjhSKCsecl5+V3kcGxjB3yUUJbbAq6u8JVZj9/fRf8+IV/yfDSREqMoiLM1ljMumxFT2Qdqkw/++Lw==
+react-native-date-picker@^4.2.14:
+  version "4.2.14"
+  resolved "https://registry.npmmirror.com/react-native-date-picker/-/react-native-date-picker-4.2.14.tgz"
+  integrity sha512-rP0ycj3I+8x4pIUGjeh7pL+cMPntKccLGX/OXx790bsIM0Hcyg0ZL86kGnnZu9fEUhXlgdr3OK/jhQue5L6kSQ==
   dependencies:
     prop-types "^15.8.1"
 
@@ -6078,10 +6078,10 @@ react-native-device-info@^10.4.0:
   resolved "https://registry.npmmirror.com/react-native-device-info/-/react-native-device-info-10.4.0.tgz"
   integrity sha512-Z37e0HtpBvfkPRgv4xN7lXpvmJyzjwCXSFTXEkw6m2UgnnIsWlOD02Avu4hJXBlIMMazaW3ZLKal3o9h3AYvCw==
 
-react-native-echarts-pro@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.npmmirror.com/react-native-echarts-pro/-/react-native-echarts-pro-1.9.0.tgz"
-  integrity sha512-x0m0Er+Vjii+JXcpOQwjG4z9RFeBYVJRH/uvWfQ9Z5K5mS3WAp4IezhwUjK2xPfBMF9NLM0Ra1wYyAAclyrsEw==
+react-native-echarts-pro@^1.9.1:
+  version "1.9.1"
+  resolved "https://registry.npmmirror.com/react-native-echarts-pro/-/react-native-echarts-pro-1.9.1.tgz"
+  integrity sha512-rKZ1cpq9LF/zKTS13wFQJj5ejBEJ9n5t+MWqdPYZuiM/KP3aUqOWIDSeXAwVi6wBHk7kjVX5sYwA2BFrZGgtBQ==
 
 react-native-gesture-handler@^2.2.1:
   version "2.9.0"

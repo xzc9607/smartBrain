@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import {View, StatusBar, ImageBackground, Image, Text, TouchableOpacity, TextInput, Modal, ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {connect} from 'react-redux';
-import {resetData} from '../store/globle/action';
+import {resetData} from '../../store/globle/action';
 
-import img from '../imgs/img';
-import api from '../config/api';
-import {styles} from '../styles/login_style';
+import img from '../../imgs/img';
+import api from '../../config/api';
+import {styles} from '../../styles/login_style';
 class Login extends Component {
   constructor(props) {
     super(props);

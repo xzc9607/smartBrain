@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {View, StatusBar, ScrollView, Text, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
-import {resetData, resetaddList} from '../store/globle/action';
+import {resetData, resetaddList} from '../../store/globle/action';
 
-import {styles} from '../styles/continue_style';
-import date_api from '../config/date_api';
+import {styles} from '../../styles/continue_style';
+import date_api from '../../config/date_api';
 
 class Continue extends Component {
   constructor(props) {

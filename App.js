@@ -6,22 +6,22 @@ import {Provider} from 'react-redux';
 import store from './store';
 
 import Index from './views/index';
-import Main from './views/main';
-import Login from './views/login';
-import UserInfo from './views/userInfo';
-import Setting from './views/setting';
-import Add from './views/add';
+import Main from './views/main/index';
+import Login from './views/login/login';
+import UserInfo from './views/main/userInfo';
+import Setting from './views/main/setting';
 import Webview from './views/components/webview';
-import Check from './views/status/check';
-import CheckRecord from './views/status/checkrecord';
-import TakeMedicine from './views/status/takemedicine';
-import TakeMedicineRecord from './views/status/takemedicinerecord';
-import BodyRecord from './views/status/bodyrecord';
-import AddItem from './views/additem';
-import Continue from './views/continue';
-import Privacy from './views/more/privacy';
-import About from './views/more/about';
-import Help from './views/more/help';
+import Check from './views/record/check';
+import CheckRecord from './views/record/checkrecord';
+import TakeMedicine from './views/record/takemedicine';
+import TakeMedicineRecord from './views/record/takemedicinerecord';
+import BodyRecord from './views/record/bodyrecord';
+import Add from './views/add/index';
+import AddItem from './views/add/additem';
+import Continue from './views/add/continue';
+import Privacy from './views/main/setting/privacy';
+import About from './views/main/about';
+import Help from './views/main/help';
 
 const Stack = createNativeStackNavigator();
 
