@@ -579,6 +579,22 @@ const styles = StyleSheet.create({
     width: MC(160),
     height: MC(74),
   },
+  bloodView: {
+    position: 'absolute',
+    right: MC(220),
+    top: MC(20),
+    width: MC(120),
+    height: MC(44),
+    borderWidth: 1,
+    borderRadius: MC(8),
+    borderColor: 'red',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bloodText: {
+    color: 'red',
+    fontSize: MC(20),
+  },
   drawUpdataTimeText: {
     position: 'absolute',
     left: MC(50),

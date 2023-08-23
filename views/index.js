@@ -183,11 +183,8 @@ class Index extends Component {
         );
       } else if (item.elementName === '血液' && item.count > 0) {
         return (
-          <View style={styles.TipsViewHeart}>
-            {/* <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
-              <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
-            </View> */}
+          <View style={styles.bloodView}>
+            <Text style={styles.bloodText}>🩸血液 {item.count}</Text>
           </View>
         );
       } else if (item.elementName === '阴部' && item.count > 0) {
@@ -310,21 +307,21 @@ class Index extends Component {
     } else if (item.projectEditType === 5) {
       //待办
       return (
-        <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('TakeMedicine')} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateWait}>待办</Text>
+          <Text style={styles.infoListItemStateWait}>{item.result}</Text>
         </TouchableOpacity>
       );
     } else if (item.projectEditType === 20) {
       //警示
       return (
-        <TouchableOpacity style={styles.infoListItem} onPress={() => this.toNextPage('BodyRecord')} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateMid}>中度</Text>
+          <Text style={styles.infoListItemStateMid}>{item.result}</Text>
         </TouchableOpacity>
       );
     } else if (item.projectEditType === 25) {
@@ -539,7 +536,9 @@ class Index extends Component {
                   </ScrollView>
                 ) : (
                   <View style={styles.drawView}>
-                    <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
+                    {this.state.lastDrewTime > 0 ? null : (
+                      <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
+                    )}
                     <ImageBackground
                       style={styles.manDrew}
                       source={this.props.globle.userdata.gender === 2 ? img.womanDrew : img.manDrew}>
@@ -547,6 +546,7 @@ class Index extends Component {
                         {this.state.lastDrewTime > 0 ? this.bodyInnerDrewShow(this.state.drewData) : null}
                       </ImageBackground>
                     </ImageBackground>
+
                     {this.state.lastDrewTime > 0 ? this.drewShow(this.state.drewData) : null}
                   </View>
                 )}
