@@ -89,6 +89,11 @@ class Index extends Component {
 
   getProjectCount() {
     api.post('home/count/list', {}, res => {
+      let allCount = 0;
+      Object.keys(res.data).forEach((item, index) => {
+        allCount += res.data[item];
+      });
+      res.data.allCount = allCount;
       this.setState({proCount: res.data});
     });
   }
@@ -114,8 +119,8 @@ class Index extends Component {
       body.timeType = this.state.choosedTime;
     }
     api.post('project/user/list', body, res => {
-      console.log('user/list');
-      api.formateJSON(res);
+      // console.log('user/list');
+      // api.formateJSON(res);
       this.setState({userList: res.data});
     });
   }
@@ -443,7 +448,6 @@ class Index extends Component {
     if (type !== 99) {
       body.statusType = type;
     }
-    console.log(body);
     api.post('project/user/list', body, res => {
       this.setState({userList: res.data, choosedState: type, choosedType: '', choosedTime: '', screenCount: 1}, () => {
         if (!this.state.bodyInfoState) {
@@ -521,9 +525,11 @@ class Index extends Component {
                     style={{flex: 1}}
                     showsVerticalScrollIndicator={false}
                     overScrollMode="always"
-                    contentContainerStyle={{alignItems: 'center'}}>
+                    contentContainerStyle={this.state.userList.length !== 0 ? {alignItems: 'center'} : {flex: 1}}>
                     {this.state.userList.length === 0 ? (
-                      <Text>暂无信息</Text>
+                      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', width: windowWidth}}>
+                        <Text>暂无相关项目</Text>
+                      </View>
                     ) : (
                       this.state.userList.map((item, index) => {
                         return this.indexList(item);
@@ -580,9 +586,7 @@ class Index extends Component {
                   <Text style={styles.infoItemTitleText}>全部项</Text>
                   <View style={styles.infoItemInner}>
                     <Text style={styles.infoItemText}>
-                      {this.state.proCount.abnormalCount + this.state.proCount.warningCount + this.state.proCount.waitCount > 0
-                        ? this.state.proCount.abnormalCount + this.state.proCount.warningCount + this.state.proCount.waitCount
-                        : '-'}
+                      {this.state.proCount.allCount > 0 ? this.state.proCount.allCount : '-'}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -647,7 +651,7 @@ class Index extends Component {
           onRequestClose={() => {
             this.showScreen(false);
           }}>
-          <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.5)'}}>
+          <View style={{flex: 1, backgroundColor: 'rgba(0,0,0,0.4)'}}>
             <Animated.View
               style={[
                 styles.screenInnerView,

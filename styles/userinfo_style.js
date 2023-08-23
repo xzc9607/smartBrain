@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {MC, safeHeight, windowWidth, barHeight} from '../config/convert';
+import {MC, safeHeight, windowWidth, barHeight, screenHeight} from '../config/convert';
 
 const styles = StyleSheet.create({
   container: {
@@ -109,6 +109,12 @@ const styles = StyleSheet.create({
     fontSize: MC(28),
     textAlign: 'center',
     lineHeight: MC(100),
+  },
+  mask: {
+    position: 'absolute',
+    width: windowWidth,
+    height: screenHeight,
+    backgroundColor: 'rgba(0,0,0,0.2)',
   },
 });
 

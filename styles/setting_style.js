@@ -42,6 +42,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFF',
     width: windowWidth,
+    alignItems: 'center',
+  },
+  scrollMainView: {
+    flex: 1,
+    backgroundColor: '#F8FAFF',
+    width: windowWidth,
   },
   infoView: {
     width: MC(690),

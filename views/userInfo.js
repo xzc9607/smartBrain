@@ -20,6 +20,7 @@ class UserInfo extends Component {
       marital: this.props.globle.userdata.openColumn,
       birthday: new Date(this.props.globle.userdata.birthday),
       isopenDP: false,
+      isshowPicker: false,
     };
   }
 
@@ -33,31 +34,48 @@ class UserInfo extends Component {
   }
 
   showGenderPicker() {
+    this.setState({isshowPicker: true});
     Picker.init({
       pickerData: genderPickDate,
       pickerTitleText: '请选择',
-      pickerConfirmBtnText: '确定',
-      pickerCancelBtnText: '取消',
+      pickerTitleColor: [0, 17, 51, 1],
+      pickerConfirmBtnText: '确定 ',
+      pickerConfirmBtnColor: [0, 17, 51, 1],
+      pickerCancelBtnText: ' 取消',
+      pickerCancelBtnColor: [0, 17, 51, 0.5],
+      pickerToolBarBg: [255, 255, 255, 1],
+      pickerBg: [255, 255, 255, 1],
+      pickerToolBarFontSize: 17,
       onPickerConfirm: data => {
-        console.log(data);
-        this.setState({userGender: data[0] === '男' ? 1 : 2});
+        this.setState({isshowPicker: false, userGender: data[0] === '男' ? 1 : 2});
       },
-      onPickerCancel: data => {},
+      onPickerCancel: data => {
+        this.setState({isshowPicker: false});
+      },
     });
     Picker.show();
   }
 
   showMaritalPicker() {
+    this.setState({isshowPicker: true});
     Picker.init({
       pickerData: maritalPickDate,
       pickerTitleText: '请选择',
+      pickerTitleColor: [0, 17, 51, 1],
       pickerConfirmBtnText: '确定',
+      pickerConfirmBtnColor: [0, 17, 51, 1],
       pickerCancelBtnText: '取消',
+      pickerCancelBtnColor: [0, 17, 51, 0.5],
+      pickerToolBarBg: [255, 255, 255, 1],
+      pickerBg: [255, 255, 255, 1],
+      pickerToolBarFontSize: 17,
       onPickerConfirm: data => {
         console.log(data);
-        this.setState({marital: data[0] === '未婚' ? 2 : 1});
+        this.setState({isshowPicker: false, marital: data[0] === '未婚' ? 2 : 1});
       },
-      onPickerCancel: data => {},
+      onPickerCancel: data => {
+        this.setState({isshowPicker: false});
+      },
     });
     Picker.show();
   }
@@ -145,6 +163,7 @@ class UserInfo extends Component {
               保存
             </Text>
           </View>
+          {this.state.isshowPicker ? <View style={styles.mask}></View> : null}
         </View>
         <DatePicker
           modal

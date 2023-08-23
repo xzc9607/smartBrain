@@ -24,7 +24,7 @@ class Privacy extends Component {
               </View>
             </TouchableWithoutFeedback>
           </View>
-          <ScrollView style={styles.mainView} contentContainerStyle={{alignItems: 'center'}}>
+          <ScrollView style={styles.scrollMainView} contentContainerStyle={{alignItems: 'center'}}>
             <Text style={[styles.privacyText, {marginTop: 20}]}>
               一、用户信息包括个人隐私信息和非个人隐私信息。用户同意：个人隐私信息是指那些能够对用户进行个人辨识或涉及个人通信的信息，包括下列信息：用户真实姓名，身份证号，手机号码，IP地址。而非个人隐私信息是指用户对本服务的操作状态以及使用习惯等一些明确且客观反映在本公司服务器端的基本记录信息和其他一切个人隐私信息范围外的普通信息，以及用户同意公开的上述隐私信息。
             </Text>
