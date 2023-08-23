@@ -14,10 +14,9 @@ import {connect} from 'react-redux';
 import {resetData, resetaddList} from '../store/globle/action';
 import Picker from 'react-native-picker';
 
-import {styles} from '../styles/additem_style';
 import img from '../imgs/img';
 import api from '../config/api';
-import {useNavigationBuilder} from '@react-navigation/native';
+import {styles} from '../styles/additem_style';
 
 class AddItem extends Component {
   constructor(props) {
@@ -26,6 +25,7 @@ class AddItem extends Component {
       infoData: [],
       value: [],
       unitArr: [],
+      isshowPicker: false,
     };
     this.callback = {
       projectId: this.props.route.params.transParams.id,
@@ -278,24 +278,33 @@ class AddItem extends Component {
   }
 
   showPicker(value, index) {
+    this.setState({isshowPicker: true});
     this.pickerArr = this.genPickerArr(value.unitList);
     Picker.init({
       pickerData: this.pickerArr,
       pickerTitleText: '请选择单位',
+      pickerTitleColor: [0, 17, 51, 1],
       pickerConfirmBtnText: '确定',
+      pickerConfirmBtnColor: [0, 17, 51, 1],
       pickerCancelBtnText: '取消',
+      pickerCancelBtnColor: [0, 17, 51, 0.5],
+      pickerToolBarBg: [255, 255, 255, 1],
+      pickerBg: [255, 255, 255, 1],
+      pickerToolBarFontSize: 17,
       onPickerConfirm: data => {
         value.unitList.forEach((item, Iindex) => {
           if (item.elementName === data[0]) {
             let arr = Array.from(this.state.unitArr);
             arr[index] = item.elementName;
-            this.setState({unitArr: arr});
+            this.setState({unitArr: arr, isshowPicker: false});
             this.callback.dataList[index].elementUnitId = item.id;
           }
         });
         api.formateJSON(this.callback);
       },
-      onPickerCancel: data => {},
+      onPickerCancel: data => {
+        this.setState({isshowPicker: false});
+      },
     });
     Picker.show();
   }
@@ -387,6 +396,7 @@ class AddItem extends Component {
             <Text style={styles.footerBtnView}>确定</Text>
           </TouchableOpacity>
         </View>
+        {this.state.isshowPicker ? <View style={styles.mask}></View> : null}
       </View>
     );
   }

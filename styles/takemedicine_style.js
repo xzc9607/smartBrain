@@ -7,10 +7,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   safeView: {
-    position: 'absolute',
     width: windowWidth,
-    height: screenHeight - barHeight,
-    top: barHeight,
+    height: screenHeight,
+    marginTop: barHeight,
+    flex: 1,
     alignItems: 'center',
   },
   navView: {
@@ -120,8 +120,6 @@ const styles = StyleSheet.create({
     width: windowWidth,
     height: MC(144),
     backgroundColor: '#ffffff',
-    position: 'absolute',
-    bottom: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },

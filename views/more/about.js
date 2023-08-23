@@ -3,9 +3,8 @@ import {View, StatusBar, Image, Text, TouchableWithoutFeedback} from 'react-nati
 import {connect} from 'react-redux';
 import {resetData} from '../../store/globle/action';
 
-import {styles} from '../../styles/setting_style';
 import img from '../../imgs/img';
-
+import {styles} from '../../styles/setting_style';
 class About extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +14,7 @@ class About extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
             <Text style={styles.navTitle}>关于我们</Text>

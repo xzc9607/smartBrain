@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, StatusBar, ScrollView, Text} from 'react-native';
+import {View, StatusBar, ScrollView, Text, DeviceEventEmitter} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData, resetaddList} from '../store/globle/action';
 
@@ -14,6 +14,7 @@ class Continue extends Component {
 
   allright() {
     this.props.resetaddList([]);
+    DeviceEventEmitter.emit('message', 'refresh');
     this.props.navigation.navigate('Index');
   }
 

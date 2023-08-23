@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFF',
     width: windowWidth,
-    alignItems: 'center',
   },
   infoView: {
     width: MC(690),
@@ -94,6 +93,11 @@ const styles = StyleSheet.create({
   privacyText: {
     width: MC(650),
     fontSize: MC(28),
+    color: '#000000',
+  },
+  helpText: {
+    width: MC(650),
+    fontSize: MC(30),
     color: '#000000',
   },
   appicon: {

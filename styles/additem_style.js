@@ -221,6 +221,12 @@ const styles = StyleSheet.create({
     width: MC(300),
     textAlign: 'right',
   },
+  mask: {
+    position: 'absolute',
+    width: windowWidth,
+    height: screenHeight,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+  },
 });
 
 export {styles};

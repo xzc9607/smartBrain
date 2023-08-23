@@ -4,11 +4,11 @@ import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {styles} from '../styles/mian_style';
-import {MC} from '../config/convert';
 import img from '../imgs/img';
 
-const day = 24 * 60 * 60;
+import {styles} from '../styles/mian_style';
+import {MC} from '../config/convert';
+import {DAY} from '../config/data';
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class Index extends Component {
   dealCreateTime() {
     let now = Date.now() / 1000;
     let time = this.props.globle.userdata.creatorTime;
-    this.setState({createTime: Math.ceil((now - time) / day)});
+    this.setState({createTime: Math.ceil((now - time) / DAY)});
   }
 
   exit() {
@@ -98,11 +98,11 @@ class Index extends Component {
               <Text style={styles.ItemText}>个人信息</Text>
               <Image style={styles.backIcon3} source={img.backIconBlck} />
             </TouchableOpacity>
-            <View style={styles.itemMid}>
+            <TouchableOpacity style={styles.itemMid} onPress={() => this.toNextPage('Help')}>
               <Image style={styles.ItemIcon} source={img.kefuIcon} />
               <Text style={styles.ItemText}>客服帮助</Text>
               <Image style={styles.backIcon3} source={img.backIconBlck} />
-            </View>
+            </TouchableOpacity>
             <TouchableOpacity style={styles.itemMid} onPress={() => this.toNextPage('About')}>
               <Image style={styles.ItemIcon} source={img.aboutIcon} />
               <Text style={styles.ItemText}>关于我们</Text>

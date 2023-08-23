@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
   },
   popchooseResetbtn: {
     position: 'absolute',
-    bottom: MC(34),
+    bottom: MC(90),
     left: MC(50),
     width: MC(304),
     height: MC(88),
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   },
   popchooseSubbtn: {
     poscition: 'absolute',
-    bottom: MC(34),
+    bottom: MC(90),
     left: MC(182),
     width: MC(304),
     height: MC(88),

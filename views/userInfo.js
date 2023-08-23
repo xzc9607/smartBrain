@@ -5,14 +5,11 @@ import {resetData} from '../store/globle/action';
 import DatePicker from 'react-native-date-picker';
 import Picker from 'react-native-picker';
 
-import {styles} from '../styles/userinfo_style';
 import img from '../imgs/img';
 import api from '../config/api';
 import date_api from '../config/date_api';
-
-const genderPickDate = ['男', '女'];
-const maritalPickDate = ['未婚', '已婚'];
-
+import {genderPickDate, maritalPickDate} from '../config/data';
+import {styles} from '../styles/userinfo_style';
 class UserInfo extends Component {
   constructor(props) {
     super(props);

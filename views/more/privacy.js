@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
-import {View, StatusBar, Image, Text, TouchableWithoutFeedback} from 'react-native';
+import {View, StatusBar, Image, Text, TouchableWithoutFeedback, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../../store/globle/action';
 
 import {styles} from '../../styles/setting_style';
 import img from '../../imgs/img';
-
 class Privacy extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +14,7 @@ class Privacy extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
             <Text style={styles.navTitle}>隐私政策</Text>
@@ -25,7 +24,7 @@ class Privacy extends Component {
               </View>
             </TouchableWithoutFeedback>
           </View>
-          <View style={styles.mainView}>
+          <ScrollView style={styles.mainView} contentContainerStyle={{alignItems: 'center'}}>
             <Text style={[styles.privacyText, {marginTop: 20}]}>
               一、用户信息包括个人隐私信息和非个人隐私信息。用户同意：个人隐私信息是指那些能够对用户进行个人辨识或涉及个人通信的信息，包括下列信息：用户真实姓名，身份证号，手机号码，IP地址。而非个人隐私信息是指用户对本服务的操作状态以及使用习惯等一些明确且客观反映在本公司服务器端的基本记录信息和其他一切个人隐私信息范围外的普通信息，以及用户同意公开的上述隐私信息。
             </Text>
@@ -45,7 +44,7 @@ class Privacy extends Component {
             </Text>
             <Text style={[styles.privacyText, {marginTop: 20, textAlign: 'right'}]}>杭州博健科技有限公司</Text>
             <Text style={[styles.privacyText, {marginTop: 5, textAlign: 'right'}]}>生效日期：2023年7月1日</Text>
-          </View>
+          </ScrollView>
         </View>
       </View>
     );

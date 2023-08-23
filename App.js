@@ -21,6 +21,7 @@ import AddItem from './views/additem';
 import Continue from './views/continue';
 import Privacy from './views/more/privacy';
 import About from './views/more/about';
+import Help from './views/more/help';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,7 @@ const App: () => Node = () => {
           <Stack.Screen name="Continue" component={Continue} />
           <Stack.Screen name="Privacy" component={Privacy} />
           <Stack.Screen name="About" component={About} />
+          <Stack.Screen name="Help" component={Help} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
       </NavigationContainer>

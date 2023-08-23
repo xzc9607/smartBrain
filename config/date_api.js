@@ -119,7 +119,7 @@ const formateDrewTime = date => {
     var timer = new Date(date * 1000).getTime();
     var text = new Date(timer);
     text = dateFormate('yyyy.MM.dd', text);
-    return text + '更新';
+    return text + ' 更新';
   }
 };
 

@@ -5,7 +5,6 @@ import {resetData} from '../../store/globle/action';
 
 import {styles} from '../../styles/bodyrecord_style';
 import img from '../../imgs/img';
-import dateTool from '../../config/date_api';
 import RNEChartsPro from 'react-native-echarts-pro';
 import {MC} from '../../config/convert';
 

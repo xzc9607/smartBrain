@@ -11,40 +11,18 @@ import {
   ImageBackground,
   ScrollView,
   Modal,
+  DeviceEventEmitter,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../store/globle/action';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {styles} from '../styles/index_style';
-import {MC, barHeight, screenHeight, windowWidth} from '../config/convert';
 import img from '../imgs/img';
 import api from '../config/api';
 import date_api from '../config/date_api';
-
-const filterStatusData = [
-  {value: 5, name: '待办项'},
-  // {value: 'advance', name: '进步项'},
-  // {value: 'lag', name: '退步项'},
-  {value: 20, name: '警示项'},
-  {value: 25, name: '异常项'},
-  {value: 99, name: '全部项'},
-];
-const filterTypeData = [
-  {value: 1, name: '体检'},
-  {value: 2, name: '诊断'},
-  {value: 3, name: '治疗'},
-  {value: 5, name: '病史'},
-  // {value: 'system', name: '身体系统'},
-  // {value: 'position', name: '身体部位'},
-];
-const filterTimeData = [
-  {value: 1, name: '近一个月'},
-  {value: 2, name: '近三个月'},
-  {value: 3, name: '近六个月'},
-  {value: 4, name: '近一年'},
-];
-
+import {styles} from '../styles/index_style';
+import {filterStatusData, filterTypeData, filterTimeData} from '../config/data';
+import {MC, barHeight, screenHeight, windowWidth} from '../config/convert';
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -61,14 +39,27 @@ class Index extends Component {
       choosedTime: '',
       proCount: {},
       drewData: [],
-      lastDrewTime: 0,
+      lastDrewTime: 1,
       userList: [],
     };
   }
 
   componentDidMount() {
+    this.getMessage = DeviceEventEmitter.addListener('message', this._getMessage);
     this.getUserinfo();
   }
+
+  componentWillUnmount() {
+    this.getMessage.remove();
+  }
+
+  _getMessage = res => {
+    if (res === 'refresh') {
+      this.getProjectCount();
+      this.getBodyInfo();
+      this.getUserList();
+    }
+  };
 
   async getUserinfo() {
     const value = await AsyncStorage.getItem('token');
@@ -334,7 +325,7 @@ class Index extends Component {
     } else if (item.projectEditType === 25) {
       //异常
       return (
-        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('TakeMedicine')}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('Check')}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
@@ -445,12 +436,20 @@ class Index extends Component {
   }
 
   labelClick(type) {
+    if (!this.state.bodyInfoState) {
+      this.switchBodyInfo(this.state.bodyInfoState);
+    }
     let body = {};
     if (type !== 99) {
-      body.projectType = type;
+      body.statusType = type;
     }
+    console.log(body);
     api.post('project/user/list', body, res => {
-      this.setState({userList: res.data, choosedState: '', choosedType: '', choosedTime: '', screenCount: 0});
+      this.setState({userList: res.data, choosedState: type, choosedType: '', choosedTime: '', screenCount: 1}, () => {
+        if (!this.state.bodyInfoState) {
+          this.switchBodyInfo(this.state.bodyInfoState);
+        }
+      });
     });
   }
 
@@ -561,24 +560,6 @@ class Index extends Component {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                {/* <View style={styles.infoItem}>
-                  <Text style={styles.infoItemTitleText}>进步项</Text>
-                  <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>
-                      <Image style={styles.infoItemIcon} source={img.upIcon} />
-                      {this.state.proCount.progressiveCount > 0 ? this.state.proCount.progressiveCount : '-'}
-                    </Text>
-                  </View>
-                </View> */}
-                {/* <View style={styles.infoItem}>
-                  <Text style={styles.infoItemTitleText}>退步项</Text>
-                  <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>
-                      <Image style={styles.infoItemIcon} source={img.downIcon} />{' '}
-                      {this.state.proCount.behindCount > 0 ? this.state.proCount.behindCount : '-'}
-                    </Text>
-                  </View>
-                </View> */}
                 <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(20)}>
                   <Text style={styles.infoItemTitleText}>警示项</Text>
                   <View style={styles.infoItemInner}>
@@ -609,7 +590,33 @@ class Index extends Component {
             </View>
           </View>
           {/* 底部按钮 */}
-          <View style={styles.indexBtnView}>
+          {this.state.bodyInfoState ? (
+            <View style={[styles.indexBtnView, {display: 'flex'}]}>
+              <TouchableOpacity onPress={() => this.toNextPage('Add')}>
+                <View style={styles.indexBtn}>
+                  <Text style={styles.indexBtnText}>新增健康动态</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : this.state.lastDrewTime === 0 ? (
+            <View style={[styles.indexBtnView, {display: 'flex'}]}>
+              <TouchableOpacity onPress={() => this.toNextPage('Add')}>
+                <View style={styles.indexBtn}>
+                  <Image
+                    style={styles.userBtnAvatar}
+                    source={this.props.globle.userdata.gender === 2 ? img.womenAvatar : img.userAvatar}
+                  />
+                  <Text style={styles.indexBtnText}>补充健康信息，完善健康画像</Text>
+                  <View style={styles.addBtnView}>
+                    <Image style={styles.addIcon} source={img.addIcon} />
+                    <Text style={styles.addBtnText}>新增</Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ) : null}
+
+          {/* <View style={[styles.indexBtnView, {display: 'flex'}]}>
             <TouchableOpacity onPress={() => this.toNextPage('Add')}>
               {this.state.bodyInfoState ? (
                 <View style={styles.indexBtn}>
@@ -627,13 +634,9 @@ class Index extends Component {
                     <Text style={styles.addBtnText}>新增</Text>
                   </View>
                 </View>
-              ) : (
-                <View style={styles.indexBtn}>
-                  <Text style={styles.indexBtnText}>新增健康动态</Text>
-                </View>
-              )}
+              ) : null}
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         {/* 筛选弹窗 */}
         <Modal

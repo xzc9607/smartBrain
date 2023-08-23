@@ -1,4 +1,3 @@
-/* eslint-disable react/self-closing-comp */
 import React, {Component} from 'react';
 import {View, StatusBar, Image, Text, TouchableOpacity, TouchableWithoutFeedback} from 'react-native';
 import {connect} from 'react-redux';
@@ -111,7 +110,7 @@ class Check extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
+        <StatusBar backgroundColor="transparent" translucent={true} barStyle="dark-content" />
         <View style={styles.safeView}>
           <View style={styles.navView}>
             <Text style={styles.navTitle}>检查</Text>
