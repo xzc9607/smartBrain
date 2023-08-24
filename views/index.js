@@ -100,7 +100,7 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      // api.formateJSON(res.data);
+      api.formateJSON(res.data);
       if (res.data.updateTime > 0) {
         this.setState({lastDrewTime: res.data.updateTime, drewData: res.data.list});
       }
@@ -120,7 +120,7 @@ class Index extends Component {
     }
     api.post('project/user/list', body, res => {
       // console.log('user/list');
-      // api.formateJSON(res);
+      api.formateJSON(res);
       this.setState({userList: res.data});
     });
   }
@@ -311,7 +311,7 @@ class Index extends Component {
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateWait}>{item.result}</Text>
+          <Text style={styles.infoListItemStateWait}>待办</Text>
         </TouchableOpacity>
       );
     } else if (item.projectEditType === 20) {
@@ -327,7 +327,7 @@ class Index extends Component {
     } else if (item.projectEditType === 25) {
       //异常
       return (
-        <TouchableOpacity style={styles.infoListItem} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('Record', item)}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
@@ -337,8 +337,8 @@ class Index extends Component {
     }
   }
 
-  toNextPage(pageName) {
-    this.props.navigation.navigate(pageName);
+  toNextPage(pageName, item) {
+    this.props.navigation.navigate(pageName, {transParams: item});
   }
 
   switchBodyInfo(action) {

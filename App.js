@@ -12,6 +12,7 @@ import UserInfo from './views/main/userInfo';
 import Setting from './views/main/setting';
 import Webview from './views/components/webview';
 import Check from './views/record/check';
+import Record from './views/record/record';
 import CheckRecord from './views/record/checkrecord';
 import TakeMedicine from './views/record/takemedicine';
 import TakeMedicineRecord from './views/record/takemedicinerecord';
@@ -41,6 +42,7 @@ const App: () => Node = () => {
           <Stack.Screen name="TakeMedicine" component={TakeMedicine} />
           <Stack.Screen name="TakeMedicineRecord" component={TakeMedicineRecord} />
           <Stack.Screen name="BodyRecord" component={BodyRecord} />
+          <Stack.Screen name="Record" component={Record} />
           <Stack.Screen name="AddItem" component={AddItem} />
           <Stack.Screen name="Continue" component={Continue} />
           <Stack.Screen name="Privacy" component={Privacy} />
