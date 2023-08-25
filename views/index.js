@@ -66,7 +66,8 @@ class Index extends Component {
     if (value !== null) {
       // 登录了
       api.get('app/user/info', res => {
-        if (res.code === 600) {
+        if (res.code === 600 || res.code === 400) {
+          api.toast(res.msg);
           this.props.navigation.reset({
             index: 0,
             routes: [{name: 'Login'}],
@@ -125,173 +126,169 @@ class Index extends Component {
     });
   }
 
-  drewShow(data) {
-    data.map((item, index) => {
-      if (item.elementName === '颈部' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewNeck}>
-            <Image style={styles.lineBodyNeck} source={img.lineBodyNeck} />
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
-              <Text style={styles.TipsInnerText}>颈部 {item.count}</Text>
-            </View>
+  drewShow(item) {
+    if (item.elementName === '颈部' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewNeck} key={item.id}>
+          <Image style={styles.lineBodyNeck} source={img.lineBodyNeck} />
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+            <Text style={styles.TipsInnerText}>颈部 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '肾脏' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewKidney}>
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF', marginTop: MC(20)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肾脏 {item.count}</Text>
-            </View>
-            <Image style={styles.lineGutKidney} source={img.lineGutKidney} />
+        </View>
+      );
+    } else if (item.elementName === '肾脏' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewKidney} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF', marginTop: MC(20)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肾脏 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '肝脏' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewLiver}>
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400'}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肝脏 {item.count}</Text>
-            </View>
-            <Image style={styles.lineGutLiver} source={img.lineGutLiver} />
+          <Image style={styles.lineGutKidney} source={img.lineGutKidney} />
+        </View>
+      );
+    } else if (item.elementName === '肝脏' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewLiver} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400'}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肝脏 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '脾脏' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewPancreas}>
-            <Image style={styles.lineGutPancreas} source={img.lineGutPancreas} />
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(42)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>脾脏 {item.count}</Text>
-            </View>
+          <Image style={styles.lineGutLiver} source={img.lineGutLiver} />
+        </View>
+      );
+    } else if (item.elementName === '脾脏' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewPancreas} key={item.id}>
+          <Image style={styles.lineGutPancreas} source={img.lineGutPancreas} />
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(42)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>脾脏 {item.count}</Text>
           </View>
-        );
-      } else if ((item.elementName === '胃' || item.elementName === '胃部') && item.count > 0) {
-        return (
-          <View style={styles.TipsViewStomach}>
-            <Image style={styles.lineGutStomach} source={img.lineGutStomach} />
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#822EF3'}]}>
-              <Text style={[styles.TipsInnerText, {color: '#822EF3'}]}>胃部 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '胃' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewStomach} key={item.id}>
+          <Image style={styles.lineGutStomach} source={img.lineGutStomach} />
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#822EF3'}]}>
+            <Text style={[styles.TipsInnerText, {color: '#822EF3'}]}>胃部 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '心脏' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewHeart}>
-            <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
-              <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '心脏' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewHeart} key={item.id}>
+          <Image style={styles.lineGutHeart} source={img.lineGutHeart} />
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#E83417'}]}>
+            <Text style={styles.TipsInnerText}>心脏 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '血液' && item.count > 0) {
-        return (
-          <View style={styles.bloodView}>
-            <Text style={styles.bloodText}>🩸血液 {item.count}</Text>
+        </View>
+      );
+    } else if (item.elementName === '血液' && item.count > 0) {
+      return (
+        <View style={styles.bloodView} key={item.id}>
+          <Text style={styles.bloodText}>🩸血液 {item.count}</Text>
+        </View>
+      );
+    } else if (item.elementName === '阴部' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewGenital} key={item.id}>
+          <Image style={styles.lineBodyGenital} source={img.lineBodyGenital} />
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(88)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>阴部 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '阴部' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewGenital}>
-            <Image style={styles.lineBodyGenital} source={img.lineBodyGenital} />
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(88)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>阴部 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '左腿' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewLegL} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左腿 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '左腿' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewLegL}>
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左腿 {item.count}</Text>
-            </View>
-            <Image style={styles.lineBodyLeg} source={img.lineBodyLegL} />
+          <Image style={styles.lineBodyLeg} source={img.lineBodyLegL} />
+        </View>
+      );
+    } else if (item.elementName === '右腿' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewLegR} key={item.id}>
+          <Image style={styles.lineBodyLeg} source={img.lineBodyLegR} />
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右腿 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '右腿' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewLegR}>
-            <Image style={styles.lineBodyLeg} source={img.lineBodyLegR} />
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(52)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右腿 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '左臂' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewHelperL} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左臂 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '左臂' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewHelperL}>
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>左臂 {item.count}</Text>
-            </View>
-            <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperL} />
+          <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperL} />
+        </View>
+      );
+    } else if (item.elementName === '右臂' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewHelperR} key={item.id}>
+          <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperR} />
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右臂 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '右臂' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewHelperR}>
-            <Image style={styles.lineBodyHelperL} source={img.lineBodyHelperR} />
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54', marginTop: MC(20)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FF4A54'}]}>右臂 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '肠道' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewEnteric} key={item.id}>
+          <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400', marginTop: MC(32)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肠道 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '肠道' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewEnteric}>
-            <Image style={styles.lineGutEnteric} source={img.lineGutEnteric} />
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#FA6400', marginTop: MC(32)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#FA6400'}]}>肠道 {item.count}</Text>
-            </View>
+        </View>
+      );
+    } else if (item.elementName === '膀胱' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewBladder} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
+            <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>膀胱 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '膀胱' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewBladder}>
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#00AF7F', marginTop: MC(20)}]}>
-              <Text style={[styles.TipsInnerText, {color: '#00AF7F'}]}>膀胱 {item.count}</Text>
-            </View>
-            <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
+          <Image style={styles.lineGutBladder} source={img.lineGutBladder} />
+        </View>
+      );
+    } else if (item.elementName === '肺' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewLung} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
+            <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肺部 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '肺' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewLung}>
-            <View style={[styles.TipsInnerView, {borderStyle: 'dotted', borderColor: '#0597FF'}]}>
-              <Text style={[styles.TipsInnerText, {color: '#0597FF'}]}>肺部 {item.count}</Text>
-            </View>
-            <Image style={styles.lineGutLung} source={img.lineGutLung} />
+          <Image style={styles.lineGutLung} source={img.lineGutLung} />
+        </View>
+      );
+    } else if (item.elementName === '头部' && item.count > 0) {
+      return (
+        <View style={styles.TipsViewHead} key={item.id}>
+          <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
+            <Text style={styles.TipsInnerText}>头部 {item.count}</Text>
           </View>
-        );
-      } else if (item.elementName === '头部' && item.count > 0) {
-        return (
-          <View style={styles.TipsViewHead}>
-            <View style={[styles.TipsInnerView, {borderColor: '#FF4A54'}]}>
-              <Text style={styles.TipsInnerText}>头部 {item.count}</Text>
-            </View>
-            <Image style={styles.lineBodyHead} source={img.lineBodyHead} />
-          </View>
-        );
-      }
-    });
+          <Image style={styles.lineBodyHead} source={img.lineBodyHead} />
+        </View>
+      );
+    }
   }
 
-  bodyInnerDrewShow(data) {
-    data.map((item, index) => {
-      if (item.elementName === '肾脏' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutKidney} />;
-      } else if (item.elementName === '肝脏' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutLiver} />;
-      } else if (item.elementName === '脾脏' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutPancreas} />;
-      } else if (item.elementName === '胃' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutStomach} />;
-      } else if (item.elementName === '心脏' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutHeart} />;
-      } else if (item.elementName === '肠道' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} />;
-      } else if (item.elementName === '膀胱' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutbladder} />;
-      } else if (item.elementName === '肺' && item.count > 0) {
-        return <Image style={styles.bodyWarImg} source={img.ImgGutLung} />;
-      }
-    });
+  bodyInnerDrewShow(item) {
+    if (item.elementName === '肾脏' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutKidney} key={item.id} />;
+    } else if (item.elementName === '肝脏' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutLiver} key={item.id} />;
+    } else if (item.elementName === '脾脏' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutPancreas} key={item.id} />;
+    } else if (item.elementName === '胃' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutStomach} key={item.id} />;
+    } else if (item.elementName === '心脏' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutHeart} key={item.id} />;
+    } else if (item.elementName === '肠道' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutEnteric} key={item.id} />;
+    } else if (item.elementName === '膀胱' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutbladder} key={item.id} />;
+    } else if (item.elementName === '肺' && item.count > 0) {
+      return <Image style={styles.bodyWarImg} source={img.ImgGutLung} key={item.id} />;
+    }
   }
 
   indexList(item) {
@@ -543,11 +540,19 @@ class Index extends Component {
                       style={styles.manDrew}
                       source={this.props.globle.userdata.gender === 2 ? img.womanDrew : img.manDrew}>
                       <ImageBackground style={styles.bodyInner} source={img.bodyInner}>
-                        {this.state.lastDrewTime > 0 ? this.bodyInnerDrewShow(this.state.drewData) : null}
+                        {this.state.lastDrewTime > 0
+                          ? this.state.drewData.map((bItem, bIndex) => {
+                              return this.bodyInnerDrewShow(bItem);
+                            })
+                          : null}
                       </ImageBackground>
                     </ImageBackground>
 
-                    {this.state.lastDrewTime > 0 ? this.drewShow(this.state.drewData) : null}
+                    {this.state.lastDrewTime > 0
+                      ? this.state.drewData.map((dItem, dIndex) => {
+                          return this.drewShow(dItem);
+                        })
+                      : null}
                   </View>
                 )}
               </Animated.View>

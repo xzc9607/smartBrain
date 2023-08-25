@@ -41,6 +41,7 @@ class Continue extends Component {
                         <View key={rItem.elementName} style={{flexDirection: 'row'}}>
                           <Text style={styles.itemContentTextTitle}>
                             {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
+                            <Text style={{color: '#001133'}}>{rItem.elementUnit ?? ''}</Text>
                           </Text>
                           {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
                         </View>
