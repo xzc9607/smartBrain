@@ -19,6 +19,7 @@ import TakeMedicineRecord from './views/record/takemedicinerecord';
 import BodyRecord from './views/record/bodyrecord';
 import Add from './views/add/index';
 import AddItem from './views/add/additem';
+import AddItemFromIndex from './views/add/additemfromindex';
 import Continue from './views/add/continue';
 import Privacy from './views/main/setting/privacy';
 import About from './views/main/about';
@@ -44,6 +45,7 @@ const App: () => Node = () => {
           <Stack.Screen name="BodyRecord" component={BodyRecord} />
           <Stack.Screen name="Record" component={Record} />
           <Stack.Screen name="AddItem" component={AddItem} />
+          <Stack.Screen name="AddItemFromIndex" component={AddItemFromIndex} />
           <Stack.Screen name="Continue" component={Continue} />
           <Stack.Screen name="Privacy" component={Privacy} />
           <Stack.Screen name="About" component={About} />

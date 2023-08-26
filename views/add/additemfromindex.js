@@ -9,6 +9,7 @@ import {
   ScrollView,
   TextInput,
   Alert,
+  DeviceEventEmitter,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {resetData, resetaddList} from '../../store/globle/action';
@@ -18,7 +19,7 @@ import img from '../../imgs/img';
 import api from '../../config/api';
 import {styles} from '../../styles/additem_style';
 
-class AddItem extends Component {
+class AddItemFromIndex extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -28,7 +29,7 @@ class AddItem extends Component {
       isshowPicker: false,
     };
     this.callback = {
-      projectId: this.props.route.params.transParams.id,
+      projectId: this.props.route.params.transParams.projectId,
       dataList: [],
     };
     this.pickerArr = [];
@@ -44,26 +45,16 @@ class AddItem extends Component {
   }
 
   getItemInfo() {
-    api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
+    api.post('project/info/' + this.props.route.params.transParams.projectId, {}, res => {
       api.formateJSON(res.data);
       res.data.forEach((item, index) => {
-        if (item.elementDataType === 5 && item.unitList.length > 1) {
+        if (item.elementDataType === 5 && item.unitList.length !== 0) {
           this.callback.dataList.push({
             elementDataType: item.elementDataType,
             elementId: item.elementId,
             elementValue: '',
             elementUnitId: '',
           });
-        } else if (item.elementDataType === 5 && item.unitList.length === 1) {
-          this.callback.dataList.push({
-            elementDataType: item.elementDataType,
-            elementId: item.elementId,
-            elementValue: '',
-            elementUnitId: item.unitList[0].id,
-          });
-          let arr = [];
-          arr[index] = item.unitList[0].elementName;
-          this.setState({unitArr: arr});
         } else {
           this.callback.dataList.push({
             elementDataType: item.elementDataType,
@@ -370,12 +361,12 @@ class AddItem extends Component {
     });
     api.formateJSON(this.callback);
     api.post(
-      'project/result/' + this.props.route.params.transParams.id,
+      'project/result/' + this.props.route.params.transParams.projectId,
       this.callback,
       res => {
         api.formateJSON(res.data);
-        this.props.resetaddList([res.data, ...this.props.globle.addList]);
-        this.props.navigation.navigate('Continue');
+        DeviceEventEmitter.emit('message', 'refresh');
+        this.props.navigation.navigate('Index');
       },
       res => res(this.props),
     );
@@ -393,9 +384,9 @@ class AddItem extends Component {
                 <Image style={styles.backIcon} source={img.backIconBlck} />
               </View>
             </TouchableWithoutFeedback>
-            <TouchableOpacity style={styles.bigiconView} onPress={() => this.getDes()}>
+            {/* <TouchableOpacity style={styles.bigiconView} onPress={() => this.getDes()}>
               <Image style={styles.bigicon} source={img.bigAddInfo} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <ScrollView style={styles.mainView} contentContainerStyle={{alignItems: 'center'}}>
             {this.state.infoData.map((item, index) => {
@@ -425,4 +416,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddItem);
+export default connect(mapStateToProps, mapDispatchToProps)(AddItemFromIndex);

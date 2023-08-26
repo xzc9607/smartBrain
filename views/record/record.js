@@ -8,6 +8,7 @@ import {MC} from '../../config/convert';
 import {styles} from '../../styles/bodyrecord_style';
 import img from '../../imgs/img';
 import api from '../../config/api';
+import date_api from '../../config/date_api';
 
 class Record extends Component {
   constructor(props) {
@@ -15,6 +16,88 @@ class Record extends Component {
     this.state = {
       listInfo: [],
       chartInfo: {},
+      isshowChart: true,
+    };
+    this.lineOption = {
+      color: ['#00A910 '],
+      grid: {
+        top: '11%',
+        left: '3%',
+        right: '7%',
+        bottom: '19%',
+        containLabel: true,
+      },
+      xAxis: {
+        type: 'category',
+        data: [],
+        axisTick: {
+          alignWithLabel: true,
+        },
+      },
+      yAxis: {
+        name: '',
+        type: 'category',
+        nameLocation: 'end',
+        data: [],
+        axisLabel: {
+          formatter(value) {
+            return value.length >= 4 ? value.substring(0, 3) + '...' : value;
+          },
+        },
+      },
+      series: [
+        {
+          data: [],
+          type: 'line',
+          smooth: false,
+        },
+      ],
+    };
+    this.histogram = {
+      color: ['#1FD1A2'],
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
+      grid: {
+        top: '12%',
+        left: '5%',
+        right: '5%',
+        bottom: '17%',
+        containLabel: true,
+      },
+      xAxis: [
+        {
+          type: 'category',
+          data: [],
+          axisTick: {
+            alignWithLabel: true,
+          },
+        },
+      ],
+      yAxis: [
+        {
+          name: '',
+          type: 'value',
+          min: 0,
+          max: 0,
+        },
+      ],
+      series: [
+        {
+          name: '',
+          type: 'bar',
+          barWidth: '30%',
+          data: [],
+          itemStyle: {
+            normal: {
+              barBorderRadius: [100, 100, 0, 0],
+            },
+          },
+        },
+      ],
     };
     api.formateJSON(this.props.route.params.transParams);
   }
@@ -28,43 +111,99 @@ class Record extends Component {
     api.post(
       'project/user/list/item',
       {
-        projectId: this.props.route.params.transParams.id,
-        projectQueryType: 1,
+        projectId: this.props.route.params.transParams.projectId,
+        projectQueryType: 0,
       },
       res => {
-        api.formateJSON(res.data);
+        // api.formateJSON(res.data);
+        this.setState({listInfo: res.data});
       },
     );
   }
 
   getChartInfo() {
     // 1. 柱状图 2. 折线图
-    api.get('app/user/chart/' + this.props.route.params.transParams.id, res => {
-      this.setState({
-        chartInfo: {
-          color: ['#00A910 '],
-          xAxis: {
-            type: 'category',
-            data: ['2/1', '2/2', '2/3', '2/4', '2/5', '2/6', '2/7'],
-            axisTick: {
-              alignWithLabel: true,
-            },
-          },
-          yAxis: {
-            name: '程度',
-            type: 'category',
-            data: ['轻度', '中度', '重度'],
-          },
-          series: [
-            {
-              data: ['轻度', '轻度', '重度', '中度', '轻度', '中度', '重度'],
-              type: 'line',
-            },
-          ],
-        },
-      });
+    api.get('app/user/chart/' + this.props.route.params.transParams.projectId, res => {
       api.formateJSON(res.data);
+      if (res.data.dataY.length === 0) {
+        this.setState({isshowChart: false});
+        return;
+      }
+      if (res.data.type === 1) {
+        this.histogram.xAxis[0].data = res.data.dataX;
+        this.histogram.yAxis[0].name = res.data.unitY ? '单位(' + res.data.unitY + ')' : '';
+        this.histogram.yAxis[0].min = parseFloat(res.data.minDataY);
+        this.histogram.yAxis[0].max = parseFloat(res.data.maxDataY);
+        this.histogram.series[0].data = res.data.dataY.map(item => parseFloat(item));
+        this.histogram.series[0].name = res.data.unitY ? '单位(' + res.data.unitY + ')' : '';
+        api.formateJSON(this.histogram);
+        this.setState({chartInfo: this.histogram});
+      } else if (res.data.type === 2) {
+        this.lineOption.xAxis.data = res.data.dataX;
+        this.lineOption.yAxis.data = res.data.dataYRange;
+        this.lineOption.yAxis.name = res.data.unitY ? '单位(' + res.data.unitY + ')' : '';
+        this.lineOption.series[0].data = res.data.dataY;
+        this.setState({chartInfo: this.lineOption});
+      }
     });
+  }
+
+  listItem(item) {
+    if (item.projectEditType === 5) {
+      return null;
+    } else {
+      return (
+        <View style={styles.checkItemView} key={item.id}>
+          <View style={styles.checkItemTitleView}>
+            <Text style={styles.checkItemTitleText}>{item.projectName}</Text>
+            <Text
+              style={[
+                styles.checkItemStatusText,
+                {
+                  color:
+                    this.props.route.params.transParams.projectEditType === 0
+                      ? '#1FD1A2'
+                      : this.props.route.params.transParams.projectEditType === 20
+                      ? '#FFA41B'
+                      : this.props.route.params.transParams.projectEditType === 25
+                      ? '#FF5151'
+                      : '#001133',
+                },
+              ]}>
+              {item.result ?? ''}
+            </Text>
+          </View>
+          <View style={styles.itemLine}></View>
+          {item.resultItem ? (
+            <View style={styles.itemContentView}>
+              {item.resultItem.map((rItem, rIndex) => {
+                return (
+                  <View key={rItem.elementId + item.id} style={{flexDirection: 'row'}}>
+                    <Text style={styles.itemContentTextTitle}>
+                      {rItem.elementName}：
+                      <Text
+                        style={{
+                          color: '#001133',
+                        }}>
+                        {' '}
+                        {rItem.elementValue}
+                        {rItem.elementUnit ?? ''}
+                      </Text>
+                    </Text>
+                    {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
+                  </View>
+                );
+              })}
+            </View>
+          ) : null}
+
+          <View style={styles.itemContentView}>
+            <Text style={styles.itemContentTextTitle}>时间：</Text>
+            <Text style={[styles.itemContentTextTitle, {color: '#001133'}]}>{date_api.formateTdateList(item.addTime)}</Text>
+          </View>
+        </View>
+      );
+    }
   }
 
   render() {
@@ -81,72 +220,19 @@ class Record extends Component {
             </TouchableWithoutFeedback>
           </View>
           <View style={styles.mainView}>
-            <View style={styles.checkChartView}>
-              <View style={styles.chartTitle}>
-                <Text style={styles.chartTitleText}>头痛</Text>
+            {this.state.isshowChart ? (
+              <View style={styles.checkChartView}>
+                <View style={styles.chartTitle}>
+                  <Text style={styles.chartTitleText}>{this.props.route.params.transParams.projectName}</Text>
+                </View>
+                <RNEChartsPro height={MC(530)} option={this.state.chartInfo} />
               </View>
-              <RNEChartsPro height={MC(460)} option={this.state.chartInfo} />
-            </View>
+            ) : null}
             <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-              <View style={styles.checkItemView}>
-                <View style={styles.checkItemTitleView}>
-                  <Text style={styles.checkItemTitleText}>头痛</Text>
-                  <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>重度</Text>
-                </View>
-                <View style={styles.itemLine}></View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>
-                    时长：
-                    <Text style={{color: '#001133'}}>5天</Text>
-                  </Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>
-                    时长：
-                    <Text style={{color: '#001133'}}>5天</Text>
-                  </Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>
-                    性质:
-                    <Text style={{color: '#001133'}}>振发性 胀痛</Text>
-                  </Text>
-                </View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>时间</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>2023.03.12 14:08</Text>
-                </View>
-              </View>
-              <View style={styles.checkItemView}>
-                <View style={styles.checkItemTitleView}>
-                  <Text style={styles.checkItemTitleText}>头痛</Text>
-                  <Text style={[styles.checkItemStatusText, {color: '#FFA41B'}]}>中度</Text>
-                </View>
-                <View style={styles.itemLine}></View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>时长:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'5天'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>部位:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'枕部正中'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>程度:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'中度'}</Text>
-                </View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>性质:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'振发性 胀痛'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>诱因:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'熬夜'}</Text>
-                  <Text style={styles.itemContentTextLine}>|</Text>
-                  <Text style={styles.itemContentTextTitle}>缓解:</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>{'按摩'}</Text>
-                </View>
-                <View style={styles.itemContentView}>
-                  <Text style={styles.itemContentTextTitle}>时间</Text>
-                  <Text style={[styles.itemContentTextTitle, {opacity: 1}]}>2023.03.12 14:08</Text>
-                </View>
-              </View>
-              <View style={styles.itemContentView}></View>
+              {this.state.listInfo.map((item, index) => {
+                return this.listItem(item);
+              })}
+              <View style={{height: 100}}></View>
             </ScrollView>
           </View>
         </View>

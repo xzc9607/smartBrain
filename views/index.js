@@ -101,7 +101,7 @@ class Index extends Component {
 
   getBodyInfo() {
     api.post('home/info', {}, res => {
-      api.formateJSON(res.data);
+      // api.formateJSON(res.data);
       if (res.data.updateTime > 0) {
         this.setState({lastDrewTime: res.data.updateTime, drewData: res.data.list});
       }
@@ -292,19 +292,20 @@ class Index extends Component {
   }
 
   indexList(item) {
-    if (!item.projectEditType) {
-      //未知
+    if (item.projectEditType === 0) {
+      //正常
       return (
-        <View style={styles.infoListItem} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('Record', item)}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-        </View>
+          <Text style={styles.infoListItemStateNor}>{item.result}</Text>
+        </TouchableOpacity>
       );
     } else if (item.projectEditType === 5) {
       //待办
       return (
-        <TouchableOpacity style={styles.infoListItem} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toAddItemPage(item)}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
@@ -314,7 +315,7 @@ class Index extends Component {
     } else if (item.projectEditType === 20) {
       //警示
       return (
-        <TouchableOpacity style={styles.infoListItem} key={item.id}>
+        <TouchableOpacity style={styles.infoListItem} key={item.id} onPress={() => this.toNextPage('Record', item)}>
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
@@ -336,6 +337,10 @@ class Index extends Component {
 
   toNextPage(pageName, item) {
     this.props.navigation.navigate(pageName, {transParams: item});
+  }
+
+  toAddItemPage(item) {
+    this.props.navigation.navigate('AddItemFromIndex', {transParams: item});
   }
 
   switchBodyInfo(action) {

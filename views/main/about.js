@@ -27,7 +27,7 @@ class About extends Component {
           <View style={styles.mainView}>
             <Image style={styles.appicon} source={img.appicon} />
             <Text style={styles.aboutTitle}>健康智脑</Text>
-            <Text style={styles.versionTitle}>版本信息: v0.0.1</Text>
+            <Text style={styles.versionTitle}>版本信息: v0.9.9</Text>
             <Text style={styles.rightTitle}>杭州博健科技有限公司版权所有</Text>
           </View>
         </View>

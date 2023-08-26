@@ -279,6 +279,13 @@ const styles = StyleSheet.create({
     color: '#FF5151',
     fontSize: MC(28),
   },
+  infoListItemStateNor: {
+    top: MC(30),
+    right: MC(30),
+    position: 'absolute',
+    color: '#1FD1A2',
+    fontSize: MC(28),
+  },
   screenView: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.5)',

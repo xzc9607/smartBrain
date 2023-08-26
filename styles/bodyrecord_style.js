@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {screenHeight, MC, safeHeight, windowWidth, barHeight} from '../config/convert';
+import {screenHeight, MC, windowWidth, barHeight} from '../config/convert';
 
 const styles = StyleSheet.create({
   container: {
@@ -7,10 +7,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   safeView: {
-    position: 'absolute',
     width: windowWidth,
-    height: safeHeight,
-    top: barHeight,
+    height: screenHeight,
+    marginTop: barHeight,
     alignItems: 'center',
   },
   navView: {
@@ -178,9 +177,10 @@ const styles = StyleSheet.create({
   },
   itemContentView: {
     width: MC(630),
-    height: MC(34),
+    minHeight: MC(34),
     marginTop: MC(20),
     flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   itemContentTextTitle: {
     color: '#0011337f',
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
     fontSize: MC(32),
     marginLeft: MC(20),
     marginRight: MC(20),
+    marginTop: MC(-6),
   },
 });
 

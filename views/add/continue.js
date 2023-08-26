@@ -61,7 +61,7 @@ class Continue extends Component {
               继续新增
             </Text>
             <Text style={styles.footerBtnView} onPress={() => this.allright()}>
-              完成
+              回到首页
             </Text>
           </View>
         </View>

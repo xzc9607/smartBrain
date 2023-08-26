@@ -17,9 +17,10 @@ const pieOption = {
     },
   },
   grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
+    top: '12%',
+    left: '5%',
+    right: '5%',
+    bottom: '17%',
     containLabel: true,
   },
   xAxis: [
@@ -84,7 +85,7 @@ class TakeMedicineRecord extends Component {
               <View style={styles.chartTitle}>
                 <Text style={styles.chartTitleText}>用量</Text>
               </View>
-              <RNEChartsPro height={MC(460)} option={pieOption} />
+              <RNEChartsPro height={MC(530)} option={pieOption} />
             </View>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
               <View style={styles.checkItemView}>
