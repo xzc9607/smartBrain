@@ -65,7 +65,7 @@ class Login extends Component {
       return;
     }
     api.login(this.state.phone, this.state.code, res => {
-      api.formateJSON(res);
+      // api.formateJSON(res);
       if (res.code === 200) {
         this.saveToken(res.data.token);
       } else {

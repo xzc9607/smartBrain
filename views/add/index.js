@@ -72,7 +72,7 @@ class Add extends Component {
           keyword: this.state.searchText,
         },
         res => {
-          api.formateJSON(res.data);
+          // api.formateJSON(res.data);
           this.setState({isShowResult: true, searchResult: res.data});
         },
       );
@@ -86,7 +86,7 @@ class Add extends Component {
             keyword: this.state.searchText,
           },
           res => {
-            api.formateJSON(res.data);
+            // api.formateJSON(res.data);
             this.setState({isShowResult: true, searchResult: res.data});
           },
         );
@@ -321,7 +321,7 @@ class Add extends Component {
                     );
                   })}
                 </View>
-                <Text style={[styles.searchTitle, {marginTop: 20}]}>猜你喜欢</Text>
+                <Text style={[styles.searchTitle, {marginTop: 20}]}>猜你想搜</Text>
                 <View style={styles.historyView}>
                   {this.state.wantData.map((item, index) => {
                     return (

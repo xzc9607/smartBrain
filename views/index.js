@@ -121,7 +121,7 @@ class Index extends Component {
     }
     api.post('project/user/list', body, res => {
       // console.log('user/list');
-      api.formateJSON(res);
+      // api.formateJSON(res);
       this.setState({userList: res.data});
     });
   }
@@ -448,11 +448,14 @@ class Index extends Component {
       body.statusType = type;
     }
     api.post('project/user/list', body, res => {
-      this.setState({userList: res.data, choosedState: type, choosedType: '', choosedTime: '', screenCount: 1}, () => {
-        if (!this.state.bodyInfoState) {
-          this.switchBodyInfo(this.state.bodyInfoState);
-        }
-      });
+      this.setState(
+        {userList: res.data, choosedState: type, choosedType: '', choosedTime: '', screenCount: type === 99 ? 0 : 1},
+        () => {
+          if (!this.state.bodyInfoState) {
+            this.switchBodyInfo(this.state.bodyInfoState);
+          }
+        },
+      );
     });
   }
 

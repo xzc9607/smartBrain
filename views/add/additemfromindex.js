@@ -33,7 +33,7 @@ class AddItemFromIndex extends Component {
       dataList: [],
     };
     this.pickerArr = [];
-    api.formateJSON(this.props.route.params.transParams);
+    // api.formateJSON(this.props.route.params.transParams);
   }
 
   componentDidMount() {
@@ -45,16 +45,26 @@ class AddItemFromIndex extends Component {
   }
 
   getItemInfo() {
-    api.post('project/info/' + this.props.route.params.transParams.projectId, {}, res => {
-      api.formateJSON(res.data);
+    api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
+      // api.formateJSON(res.data);
       res.data.forEach((item, index) => {
-        if (item.elementDataType === 5 && item.unitList.length !== 0) {
+        if (item.elementDataType === 5 && item.unitList.length > 1) {
           this.callback.dataList.push({
             elementDataType: item.elementDataType,
             elementId: item.elementId,
             elementValue: '',
             elementUnitId: '',
           });
+        } else if (item.elementDataType === 5 && item.unitList.length === 1) {
+          this.callback.dataList.push({
+            elementDataType: item.elementDataType,
+            elementId: item.elementId,
+            elementValue: '',
+            elementUnitId: item.unitList[0].id,
+          });
+          let arr = [];
+          arr[index] = item.unitList[0].elementName;
+          this.setState({unitArr: arr});
         } else {
           this.callback.dataList.push({
             elementDataType: item.elementDataType,
@@ -301,7 +311,7 @@ class AddItemFromIndex extends Component {
             this.callback.dataList[index].elementUnitId = item.id;
           }
         });
-        api.formateJSON(this.callback);
+        // api.formateJSON(this.callback);
       },
       onPickerCancel: data => {
         this.setState({isshowPicker: false});
@@ -359,12 +369,12 @@ class AddItemFromIndex extends Component {
         this.callback.dataList[index].elementValue = val;
       }
     });
-    api.formateJSON(this.callback);
+    // api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.projectId,
       this.callback,
       res => {
-        api.formateJSON(res.data);
+        // api.formateJSON(res.data);
         DeviceEventEmitter.emit('message', 'refresh');
         this.props.navigation.navigate('Index');
       },

@@ -32,7 +32,7 @@ class AddItem extends Component {
       dataList: [],
     };
     this.pickerArr = [];
-    api.formateJSON(this.props.route.params.transParams);
+    // api.formateJSON(this.props.route.params.transParams);
   }
 
   componentDidMount() {
@@ -45,7 +45,7 @@ class AddItem extends Component {
 
   getItemInfo() {
     api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
-      api.formateJSON(res.data);
+      // api.formateJSON(res.data);
       res.data.forEach((item, index) => {
         if (item.elementDataType === 5 && item.unitList.length > 1) {
           this.callback.dataList.push({
@@ -310,7 +310,7 @@ class AddItem extends Component {
             this.callback.dataList[index].elementUnitId = item.id;
           }
         });
-        api.formateJSON(this.callback);
+        // api.formateJSON(this.callback);
       },
       onPickerCancel: data => {
         this.setState({isshowPicker: false});
@@ -368,12 +368,12 @@ class AddItem extends Component {
         this.callback.dataList[index].elementValue = val;
       }
     });
-    api.formateJSON(this.callback);
+    // api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.id,
       this.callback,
       res => {
-        api.formateJSON(res.data);
+        // api.formateJSON(res.data);
         this.props.resetaddList([res.data, ...this.props.globle.addList]);
         this.props.navigation.navigate('Continue');
       },

@@ -83,6 +83,9 @@ class Record extends Component {
           type: 'value',
           min: 0,
           max: 0,
+          splitLine: {
+            show: true,
+          },
         },
       ],
       series: [
@@ -99,7 +102,7 @@ class Record extends Component {
         },
       ],
     };
-    api.formateJSON(this.props.route.params.transParams);
+    // api.formateJSON(this.props.route.params.transParams);
   }
 
   componentDidMount() {
@@ -121,10 +124,19 @@ class Record extends Component {
     );
   }
 
+  dealMax(val) {
+    let max = val;
+    if (max % 5 !== 0) {
+      max++;
+    } else {
+      return max;
+    }
+  }
+
   getChartInfo() {
     // 1. 柱状图 2. 折线图
     api.get('app/user/chart/' + this.props.route.params.transParams.projectId, res => {
-      api.formateJSON(res.data);
+      // api.formateJSON(res.data);
       if (res.data.dataY.length === 0) {
         this.setState({isshowChart: false});
         return;
@@ -132,11 +144,10 @@ class Record extends Component {
       if (res.data.type === 1) {
         this.histogram.xAxis[0].data = res.data.dataX;
         this.histogram.yAxis[0].name = res.data.unitY ? '单位(' + res.data.unitY + ')' : '';
-        this.histogram.yAxis[0].min = parseFloat(res.data.minDataY);
-        this.histogram.yAxis[0].max = parseFloat(res.data.maxDataY);
+        this.histogram.yAxis[0].min = parseInt(res.data.minDataY, 10);
+        this.histogram.yAxis[0].max = this.dealMax(parseInt(res.data.maxDataY, 10));
         this.histogram.series[0].data = res.data.dataY.map(item => parseFloat(item));
         this.histogram.series[0].name = res.data.unitY ? '单位(' + res.data.unitY + ')' : '';
-        api.formateJSON(this.histogram);
         this.setState({chartInfo: this.histogram});
       } else if (res.data.type === 2) {
         this.lineOption.xAxis.data = res.data.dataX;
