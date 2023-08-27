@@ -332,6 +332,12 @@ class Index extends Component {
           <Text style={styles.infoListItemStateBad}>{item.result}</Text>
         </TouchableOpacity>
       );
+    } else {
+      <View style={styles.infoListItem} key={item.id}>
+        <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
+        <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
+        <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
+      </View>;
     }
   }
 

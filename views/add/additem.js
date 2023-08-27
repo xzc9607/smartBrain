@@ -44,37 +44,44 @@ class AddItem extends Component {
   }
 
   getItemInfo() {
-    api.post('project/info/' + this.props.route.params.transParams.id, {}, res => {
-      // api.formateJSON(res.data);
-      res.data.forEach((item, index) => {
-        if (item.elementDataType === 5 && item.unitList.length > 1) {
-          this.callback.dataList.push({
-            elementDataType: item.elementDataType,
-            elementId: item.elementId,
-            elementValue: '',
-            elementUnitId: '',
-          });
-        } else if (item.elementDataType === 5 && item.unitList.length === 1) {
-          this.callback.dataList.push({
-            elementDataType: item.elementDataType,
-            elementId: item.elementId,
-            elementValue: '',
-            elementUnitId: item.unitList[0].id,
-          });
-          let arr = [];
-          arr[index] = item.unitList[0].elementName;
-          this.setState({unitArr: arr});
-        } else {
-          this.callback.dataList.push({
-            elementDataType: item.elementDataType,
-            elementId: item.elementId,
-            elementValue: '',
-          });
-        }
-      });
-      // api.formateJSON(this.callback);
-      this.setState({infoData: res.data});
-    });
+    api.post(
+      'project/info/' + this.props.route.params.transParams.id,
+      {},
+      res => {
+        // api.formateJSON(res.data);
+        res.data.forEach((item, index) => {
+          if (item.elementDataType === 5 && item.unitList.length > 1) {
+            this.callback.dataList.push({
+              elementDataType: item.elementDataType,
+              elementId: item.elementId,
+              elementValue: '',
+              elementUnitId: '',
+            });
+          } else if (item.elementDataType === 5 && item.unitList.length === 1) {
+            this.callback.dataList.push({
+              elementDataType: item.elementDataType,
+              elementId: item.elementId,
+              elementValue: '',
+              elementUnitId: item.unitList[0].id,
+            });
+            let arr = [];
+            arr[index] = item.unitList[0].elementName;
+            this.setState({unitArr: arr});
+          } else {
+            this.callback.dataList.push({
+              elementDataType: item.elementDataType,
+              elementId: item.elementId,
+              elementValue: '',
+            });
+          }
+        });
+        // api.formateJSON(this.callback);
+        this.setState({infoData: res.data});
+      },
+      res => {
+        res(this.props);
+      },
+    );
   }
 
   getDes(id) {

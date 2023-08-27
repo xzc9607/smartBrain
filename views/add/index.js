@@ -89,15 +89,25 @@ class Add extends Component {
             // api.formateJSON(res.data);
             this.setState({isShowResult: true, searchResult: res.data});
           },
+          res => {
+            res(this.props);
+          },
         );
       });
     }
   }
 
   getWant() {
-    api.post('common/want/search', {}, res => {
-      this.setState({wantData: res.data});
-    });
+    api.post(
+      'common/want/search',
+      {},
+      res => {
+        this.setState({wantData: res.data});
+      },
+      res => {
+        res(this.props);
+      },
+    );
   }
 
   //键盘收起
@@ -115,8 +125,8 @@ class Add extends Component {
       res => {
         this.setState({typeList: res.data});
       },
-      err => {
-        console.log(err);
+      res => {
+        res(this.props);
       },
     );
   }
@@ -125,9 +135,16 @@ class Add extends Component {
     // 1.存大类id，判断选择的是哪个大类
     // 2.请求当前类目下的第一个子类
     this.setState({choosedTypeId: id}, () => {
-      api.post('element/parent/' + id, {}, res => {
-        this.setState({subtypeList: [res.data], subtypeId: [], isShowComfirm: false});
-      });
+      api.post(
+        'element/parent/' + id,
+        {},
+        res => {
+          this.setState({subtypeList: [res.data], subtypeId: [], isShowComfirm: false});
+        },
+        res => {
+          res(this.props);
+        },
+      );
     });
   }
 
@@ -135,18 +152,25 @@ class Add extends Component {
     //? innerindex 当前index下的子项的index
 
     if (this.state.subtypeId[index] === undefined) {
-      api.post('element/parent/' + id, {}, res => {
-        if (res.data.length === 0) {
-          this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
-            this.canToAdd(id);
+      api.post(
+        'element/parent/' + id,
+        {},
+        res => {
+          if (res.data.length === 0) {
+            this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
+              this.canToAdd(id);
+            });
+            return;
+          }
+          this.setState({
+            subtypeId: [...this.state.subtypeId, id],
+            subtypeList: [...this.state.subtypeList, res.data],
           });
-          return;
-        }
-        this.setState({
-          subtypeId: [...this.state.subtypeId, id],
-          subtypeList: [...this.state.subtypeList, res.data],
-        });
-      });
+        },
+        res => {
+          res(this.props);
+        },
+      );
     } else if (this.state.subtypeId[index] !== undefined && this.state.subtypeId[index] === id) {
       return;
     } else {
@@ -157,29 +181,43 @@ class Add extends Component {
           isShowComfirm: false,
         },
         () => {
-          api.post('element/parent/' + id, {}, res => {
-            if (res.data.length === 0) {
-              this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
-                this.canToAdd(id);
+          api.post(
+            'element/parent/' + id,
+            {},
+            res => {
+              if (res.data.length === 0) {
+                this.setState({subtypeId: [...this.state.subtypeId, id]}, () => {
+                  this.canToAdd(id);
+                });
+                return;
+              }
+              this.setState({
+                subtypeList: [...this.state.subtypeList, res.data],
               });
-              return;
-            }
-            this.setState({
-              subtypeList: [...this.state.subtypeList, res.data],
-            });
-          });
+            },
+            res => {
+              res(this.props);
+            },
+          );
         },
       );
     }
   }
 
   canToAdd(id) {
-    api.post('project/get/element/' + id, {}, res => {
-      console.log(res.data.length === 0 ? '无法添加此项，因为没有添加项' : '可以被添加');
-      this.setState({isShowComfirm: res.data.length !== 0}, () => {
-        this.transParams = res.data[0];
-      });
-    });
+    api.post(
+      'project/get/element/' + id,
+      {},
+      res => {
+        console.log(res.data.length === 0 ? '无法添加此项，因为没有添加项' : '可以被添加');
+        this.setState({isShowComfirm: res.data.length !== 0}, () => {
+          this.transParams = res.data[0];
+        });
+      },
+      res => {
+        res(this.props);
+      },
+    );
   }
 
   searchToAdd(item) {

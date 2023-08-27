@@ -121,6 +121,9 @@ class Record extends Component {
         // api.formateJSON(res.data);
         this.setState({listInfo: res.data});
       },
+      res => {
+        res(this.props);
+      },
     );
   }
 
