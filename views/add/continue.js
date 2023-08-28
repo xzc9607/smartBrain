@@ -32,7 +32,22 @@ class Continue extends Component {
                 <View style={styles.checkItemView} key={item.addTime}>
                   <View style={styles.checkItemTitleView}>
                     <Text style={styles.checkItemTitleText}>{item.projectName}</Text>
-                    <Text style={[styles.checkItemStatusText, {color: '#FF5151'}]}>{item.result ?? ''}</Text>
+                    <Text
+                      style={[
+                        styles.checkItemStatusText,
+                        {
+                          color:
+                            item.projectEditType === 0
+                              ? '#1FD1A2'
+                              : item.projectEditType === 20
+                              ? '#FF5151'
+                              : item.projectEditType === 25
+                              ? '#EE7800'
+                              : '#001133',
+                        },
+                      ]}>
+                      {item.result ?? ''}
+                    </Text>
                   </View>
                   <View style={styles.itemLine}></View>
                   <View style={styles.itemContentView}>

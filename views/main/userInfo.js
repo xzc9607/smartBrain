@@ -70,7 +70,6 @@ class UserInfo extends Component {
       pickerBg: [255, 255, 255, 1],
       pickerToolBarFontSize: 17,
       onPickerConfirm: data => {
-        console.log(data);
         this.setState({isshowPicker: false, marital: data[0] === '未婚' ? 2 : 1});
       },
       onPickerCancel: data => {

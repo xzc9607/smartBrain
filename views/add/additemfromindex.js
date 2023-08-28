@@ -30,6 +30,7 @@ class AddItemFromIndex extends Component {
     };
     this.callback = {
       projectId: this.props.route.params.transParams.projectId,
+      id: this.props.route.params.transParams.id,
       dataList: [],
     };
     this.pickerArr = [];

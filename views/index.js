@@ -309,7 +309,7 @@ class Index extends Component {
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateWait}>待办</Text>
+          <Text style={styles.infoListItemStateMid}>待办</Text>
         </TouchableOpacity>
       );
     } else if (item.projectEditType === 20) {
@@ -319,7 +319,7 @@ class Index extends Component {
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateMid}>{item.result}</Text>
+          <Text style={styles.infoListItemStateBad}>{item.result}</Text>
         </TouchableOpacity>
       );
     } else if (item.projectEditType === 25) {
@@ -329,7 +329,7 @@ class Index extends Component {
           <Image style={styles.dynamicIcon} source={img.dynamicIcon} />
           <Text style={styles.infoListItemTitle}>{item.projectName}</Text>
           <Text style={styles.infoListItemTime}>创建时间：{date_api.formateTdateList(item.addTime)}</Text>
-          <Text style={styles.infoListItemStateBad}>{item.result}</Text>
+          <Text style={styles.infoListItemStateMid}>{item.result}</Text>
         </TouchableOpacity>
       );
     } else {
@@ -583,24 +583,24 @@ class Index extends Component {
                 <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(5)}>
                   <Text style={styles.infoItemTitleText}>待办项</Text>
                   <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>
+                    <Text style={[styles.infoItemText, {color: '#EE7800'}]}>
                       {this.state.proCount.waitCount > 0 ? this.state.proCount.waitCount : '-'}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(20)}>
-                  <Text style={styles.infoItemTitleText}>警示项</Text>
-                  <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>
-                      {this.state.proCount.warningCount > 0 ? this.state.proCount.warningCount : '-'}
                     </Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(25)}>
                   <Text style={styles.infoItemTitleText}>异常项</Text>
                   <View style={styles.infoItemInner}>
-                    <Text style={styles.infoItemText}>
+                    <Text style={[styles.infoItemText, {color: '#EE7800'}]}>
                       {this.state.proCount.abnormalCount > 0 ? this.state.proCount.abnormalCount : '-'}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.infoItem} onPress={() => this.labelClick(20)}>
+                  <Text style={styles.infoItemTitleText}>警示项</Text>
+                  <View style={styles.infoItemInner}>
+                    <Text style={[styles.infoItemText, {color: '#FF5151'}]}>
+                      {this.state.proCount.warningCount > 0 ? this.state.proCount.warningCount : '-'}
                     </Text>
                   </View>
                 </TouchableOpacity>

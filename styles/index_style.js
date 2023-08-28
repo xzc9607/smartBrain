@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     top: MC(30),
     right: MC(30),
     position: 'absolute',
-    color: '#FFA41B',
+    color: '#EE7800',
     fontSize: MC(28),
   },
   infoListItemStateBad: {

@@ -175,12 +175,12 @@ class Record extends Component {
                 styles.checkItemStatusText,
                 {
                   color:
-                    this.props.route.params.transParams.projectEditType === 0
+                    item.projectEditType === 0
                       ? '#1FD1A2'
-                      : this.props.route.params.transParams.projectEditType === 20
-                      ? '#FFA41B'
-                      : this.props.route.params.transParams.projectEditType === 25
+                      : item.projectEditType === 20
                       ? '#FF5151'
+                      : item.projectEditType === 25
+                      ? '#EE7800'
                       : '#001133',
                 },
               ]}>
@@ -194,12 +194,11 @@ class Record extends Component {
                 return (
                   <View key={rItem.elementId + item.id} style={{flexDirection: 'row'}}>
                     <Text style={styles.itemContentTextTitle}>
-                      {rItem.elementName}：
+                      {rItem.elementName ? rItem.elementName + '：' : ''}
                       <Text
                         style={{
                           color: '#001133',
                         }}>
-                        {' '}
                         {rItem.elementValue}
                         {rItem.elementUnit ?? ''}
                       </Text>
@@ -210,7 +209,6 @@ class Record extends Component {
               })}
             </View>
           ) : null}
-
           <View style={styles.itemContentView}>
             <Text style={styles.itemContentTextTitle}>时间：</Text>
             <Text style={[styles.itemContentTextTitle, {color: '#001133'}]}>{date_api.formateTdateList(item.addTime)}</Text>

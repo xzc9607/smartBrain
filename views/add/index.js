@@ -11,6 +11,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  DeviceEventEmitter,
 } from 'react-native';
 import {connect} from 'react-redux';
 import {resetData} from '../../store/globle/action';
@@ -46,6 +47,7 @@ class Add extends Component {
   }
 
   componentWillUnmount() {
+    DeviceEventEmitter.emit('message', 'refresh');
     this.keyboardDidHideListener.remove();
   }
 
@@ -209,7 +211,7 @@ class Add extends Component {
       'project/get/element/' + id,
       {},
       res => {
-        console.log(res.data.length === 0 ? '无法添加此项，因为没有添加项' : '可以被添加');
+        // console.log(res.data.length === 0 ? '无法添加此项，因为没有添加项' : '可以被添加');
         this.setState({isShowComfirm: res.data.length !== 0}, () => {
           this.transParams = res.data[0];
         });
@@ -279,6 +281,7 @@ class Add extends Component {
                   })
                 }
                 onSubmitEditing={() => this.search()}
+                returnKeyType="search"
                 placeholder="搜索体检/疾病/诊断"
               />
               <TouchableOpacity style={styles.searchIcon} onPress={() => this.search()}>
