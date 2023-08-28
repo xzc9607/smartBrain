@@ -51,17 +51,19 @@ class Continue extends Component {
                   </View>
                   <View style={styles.itemLine}></View>
                   <View style={styles.itemContentView}>
-                    {item.resultItem.map((rItem, rIndex) => {
-                      return (
-                        <View key={rItem.elementName} style={{flexDirection: 'row'}}>
-                          <Text style={styles.itemContentTextTitle}>
-                            {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
-                            <Text style={{color: '#001133'}}>{rItem.elementUnit ?? ''}</Text>
-                          </Text>
-                          {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
-                        </View>
-                      );
-                    })}
+                    {item.resultItem
+                      ? item.resultItem.map((rItem, rIndex) => {
+                          return (
+                            <View key={rItem.elementName} style={{flexDirection: 'row'}}>
+                              <Text style={styles.itemContentTextTitle}>
+                                {rItem.elementName}：<Text style={{color: '#001133'}}>{rItem.elementValue}</Text>
+                                <Text style={{color: '#001133'}}>{rItem.elementUnit ?? ''}</Text>
+                              </Text>
+                              {rIndex + 1 === item.resultItem.length ? null : <Text style={styles.itemContentTextLine}>|</Text>}
+                            </View>
+                          );
+                        })
+                      : null}
                   </View>
                   <View style={styles.itemContentView}>
                     <Text style={styles.itemContentTextTitle}>记录：</Text>

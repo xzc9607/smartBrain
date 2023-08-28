@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     fontSize: MC(32),
     marginLeft: MC(20),
     marginRight: MC(20),
+    marginTop: MC(-4),
   },
 });
 

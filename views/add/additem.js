@@ -335,6 +335,30 @@ class AddItem extends Component {
     }
   }
 
+  getValue(id, index) {
+    let value = '';
+    if (this.state.infoData[index].elementDataType === 5) {
+      return this.state.value[index] + this.state.unitArr[index];
+    } else if (this.state.infoData[index].elementDataType === 3) {
+      return this.state.value[index];
+    } else if (this.state.infoData[index].elementDataType === 2) {
+      this.state.infoData[index].selectList.forEach((item, iindex) => {
+        id.forEach((Nitem, Nindex) => {
+          if (Nitem === item.id) {
+            value += item.elementName + ' ';
+          }
+        });
+      });
+    } else {
+      this.state.infoData[index].selectList.forEach((item, iindex) => {
+        if (item.id === id) {
+          value = item.elementName;
+        }
+      });
+    }
+    return value;
+  }
+
   submit() {
     for (let i = 0; i < this.state.infoData.length; i++) {
       if (this.state.value[i] === undefined) {
@@ -362,12 +386,21 @@ class AddItem extends Component {
         this.callback.dataList[index].elementValue = val;
       }
     });
-    // api.formateJSON(this.callback);
+    api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.id,
       this.callback,
       res => {
-        // api.formateJSON(res.data);
+        api.formateJSON(res.data);
+        if (res.data.result === null) {
+          res.data.resultItem = [];
+          this.state.infoData.forEach((item, index) => {
+            res.data.resultItem.push({
+              elementName: item.elementName,
+              elementValue: this.getValue(this.state.value[index], index),
+            });
+          });
+        }
         this.props.resetaddList([res.data, ...this.props.globle.addList]);
         this.props.navigation.navigate('Continue');
       },
