@@ -278,6 +278,7 @@ class Add extends Component {
                     this.getHistory();
                   })
                 }
+                onSubmitEditing={() => this.search()}
                 placeholder="搜索体检/疾病/诊断"
               />
               <TouchableOpacity style={styles.searchIcon} onPress={() => this.search()}>

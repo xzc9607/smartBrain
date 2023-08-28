@@ -51,14 +51,14 @@ class AddItemFromIndex extends Component {
       res => {
         // api.formateJSON(res.data);
         res.data.forEach((item, index) => {
-          if (item.elementDataType === 5 && item.unitList.length > 1) {
+          if ((item.elementDataType === 4 || item.elementDataType === 5) && item.unitList.length > 1) {
             this.callback.dataList.push({
               elementDataType: item.elementDataType,
               elementId: item.elementId,
               elementValue: '',
               elementUnitId: '',
             });
-          } else if (item.elementDataType === 5 && item.unitList.length === 1) {
+          } else if ((item.elementDataType === 4 || item.elementDataType === 5) && item.unitList.length === 1) {
             this.callback.dataList.push({
               elementDataType: item.elementDataType,
               elementId: item.elementId,
@@ -188,24 +188,8 @@ class AddItemFromIndex extends Component {
           <TextInput style={styles.inputView} placeholder={'请在此输入详情'} onChangeText={text => this.textInput(text, index)} />
         </View>
       );
-    } else if (item.elementDataType === 4) {
-      // number
-      return (
-        {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
-        (
-          <View style={[styles.pickerView]} key={item.id}>
-            <Text style={styles.pickerTitle}>{item.elementName}</Text>
-            <TextInput
-              style={styles.valueInput}
-              placeholder="请在此输入数值"
-              keyboardType="numeric"
-              onChangeText={num => this.valueEnter(num, index)}
-            />
-          </View>
-        )
-      );
-    } else if (item.elementDataType === 5) {
-      // 区间
+    } else if (item.elementDataType === 4 || item.elementDataType === 5) {
+      // 区间/数值，前端表现一致
       return (
         <View
           style={[
@@ -413,9 +397,11 @@ class AddItemFromIndex extends Component {
               return this.showItem(item, index);
             })}
           </ScrollView>
-          <TouchableOpacity style={styles.footer} onPress={() => this.submit()}>
-            <Text style={styles.footerBtnView}>确定</Text>
-          </TouchableOpacity>
+          {this.state.value[this.state.infoData.length - 1] !== undefined ? (
+            <TouchableOpacity style={styles.footer} onPress={() => this.submit()}>
+              <Text style={styles.footerBtnView}>确定</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
         {this.state.isshowPicker ? <View style={styles.mask}></View> : null}
       </View>
