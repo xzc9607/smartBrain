@@ -437,7 +437,6 @@ class Index extends Component {
         },
       );
     } else {
-      //todo 重新拿所有数据
       this.setState({screenCount: 0}, () => {
         this.showScreen(false);
         this.getUserList();
@@ -521,6 +520,7 @@ class Index extends Component {
             </View>
             {/* 主视图 */}
             <View style={styles.mainViewCtrl}>
+              {/* 画像/列表 */}
               <Animated.View
                 style={[
                   styles.infoListView,
@@ -529,6 +529,7 @@ class Index extends Component {
                   },
                 ]}>
                 {this.state.bodyInfoState ? (
+                  //! 列表
                   <ScrollView
                     style={{flex: 1}}
                     showsVerticalScrollIndicator={false}
@@ -546,6 +547,7 @@ class Index extends Component {
                     <View style={{position: 'relative', width: windowWidth, height: 35}}></View>
                   </ScrollView>
                 ) : (
+                  //! 画像
                   <View style={styles.drawView}>
                     {this.state.lastDrewTime > 0 ? null : (
                       <Image resizeMode="contain" style={styles.nodataDrew} source={img.nodataDrew} />
@@ -570,6 +572,7 @@ class Index extends Component {
                   </View>
                 )}
               </Animated.View>
+              {/* 项目数量 */}
               <Animated.View
                 style={[
                   styles.userBodyInfoText,
@@ -638,28 +641,6 @@ class Index extends Component {
               </TouchableOpacity>
             </View>
           ) : null}
-
-          {/* <View style={[styles.indexBtnView, {display: 'flex'}]}>
-            <TouchableOpacity onPress={() => this.toNextPage('Add')}>
-              {this.state.bodyInfoState ? (
-                <View style={styles.indexBtn}>
-                  <Text style={styles.indexBtnText}>新增健康动态</Text>
-                </View>
-              ) : this.state.lastDrewTime === 0 ? (
-                <View style={styles.indexBtn}>
-                  <Image
-                    style={styles.userBtnAvatar}
-                    source={this.props.globle.userdata.gender === 2 ? img.womenAvatar : img.userAvatar}
-                  />
-                  <Text style={styles.indexBtnText}>补充健康信息，完善健康画像</Text>
-                  <View style={styles.addBtnView}>
-                    <Image style={styles.addIcon} source={img.addIcon} />
-                    <Text style={styles.addBtnText}>新增</Text>
-                  </View>
-                </View>
-              ) : null}
-            </TouchableOpacity>
-          </View> */}
         </View>
         {/* 筛选弹窗 */}
         <Modal
