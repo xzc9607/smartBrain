@@ -46,7 +46,7 @@ class AddItemFromIndex extends Component {
 
   getItemInfo() {
     api.post(
-      'project/info/' + this.props.route.params.transParams.id,
+      'project/info/' + this.props.route.params.transParams.projectId,
       {},
       res => {
         // api.formateJSON(res.data);
@@ -191,15 +191,18 @@ class AddItemFromIndex extends Component {
     } else if (item.elementDataType === 4) {
       // number
       return (
-        <View style={styles.pickerView} key={item.id}>
-          <Text style={styles.pickerTitle}>{item.elementName}</Text>
-          <TextInput
-            style={styles.valueInput}
-            placeholder="请在此输入数值"
-            keyboardType="numeric"
-            onChangeText={num => this.valueEnter(num, index)}
-          />
-        </View>
+        {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+        (
+          <View style={[styles.pickerView]} key={item.id}>
+            <Text style={styles.pickerTitle}>{item.elementName}</Text>
+            <TextInput
+              style={styles.valueInput}
+              placeholder="请在此输入数值"
+              keyboardType="numeric"
+              onChangeText={num => this.valueEnter(num, index)}
+            />
+          </View>
+        )
       );
     } else if (item.elementDataType === 5) {
       // 区间

@@ -190,7 +190,12 @@ class AddItem extends Component {
     } else if (item.elementDataType === 4) {
       // number
       return (
-        <View style={styles.pickerView} key={item.id}>
+        <View
+          style={[
+            styles.pickerView,
+            {display: index === 0 ? 'flex' : this.state.value[index - 1] !== undefined ? 'flex' : 'none'},
+          ]}
+          key={item.id}>
           <Text style={styles.pickerTitle}>{item.elementName}</Text>
           <TextInput
             style={styles.valueInput}
