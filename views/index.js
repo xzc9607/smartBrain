@@ -109,6 +109,17 @@ class Index extends Component {
   }
 
   getUserList() {
+    // 列表性能不足时用这个
+    // <FlatList
+    //   data={this.state.userList}
+    //   showsVerticalScrollIndicator={false}
+    //   renderItem={item => this.indexList(item)}
+    //   ListFooterComponent={
+    //     <View style={styles.blankItem}>
+    //       <Text>暂无相关项目</Text>
+    //     </View>
+    //   }
+    // />
     let body = {};
     if (this.state.choosedState !== '' && this.state.choosedState !== 99) {
       body.statusType = this.state.choosedState;

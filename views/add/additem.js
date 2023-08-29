@@ -75,7 +75,6 @@ class AddItem extends Component {
             });
           }
         });
-        // api.formateJSON(this.callback);
         this.setState({infoData: res.data});
       },
       res => {
@@ -379,19 +378,14 @@ class AddItem extends Component {
       }
     }
     this.state.value.forEach((val, index) => {
-      if (this.state.infoData[index].elementDataType === 2) {
-        //多选
-        this.callback.dataList[index].elementValue = val.join(',');
-      } else {
-        this.callback.dataList[index].elementValue = val;
-      }
+      this.callback.dataList[index].elementValue = this.state.infoData[index].elementDataType === 2 ? val.join(',') : val;
     });
-    api.formateJSON(this.callback);
+    // api.formateJSON(this.callback);
     api.post(
       'project/result/' + this.props.route.params.transParams.id,
       this.callback,
       res => {
-        api.formateJSON(res.data);
+        // api.formateJSON(res.data);
         if (res.data.result === null) {
           res.data.resultItem = [];
           this.state.infoData.forEach((item, index) => {

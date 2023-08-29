@@ -337,6 +337,30 @@ class AddItemFromIndex extends Component {
     }
   }
 
+  getValue(id, index) {
+    let value = '';
+    if (this.state.infoData[index].elementDataType === 5) {
+      return this.state.value[index] + this.state.unitArr[index];
+    } else if (this.state.infoData[index].elementDataType === 3) {
+      return this.state.value[index];
+    } else if (this.state.infoData[index].elementDataType === 2) {
+      this.state.infoData[index].selectList.forEach((item, iindex) => {
+        id.forEach((Nitem, Nindex) => {
+          if (Nitem === item.id) {
+            value += item.elementName + ' ';
+          }
+        });
+      });
+    } else {
+      this.state.infoData[index].selectList.forEach((item, iindex) => {
+        if (item.id === id) {
+          value = item.elementName;
+        }
+      });
+    }
+    return value;
+  }
+
   submit() {
     for (let i = 0; i < this.state.infoData.length; i++) {
       if (this.state.value[i] === undefined) {
@@ -357,12 +381,7 @@ class AddItemFromIndex extends Component {
       }
     }
     this.state.value.forEach((val, index) => {
-      if (this.state.infoData[index].elementDataType === 2) {
-        //多选
-        this.callback.dataList[index].elementValue = val.join(',');
-      } else {
-        this.callback.dataList[index].elementValue = val;
-      }
+      this.callback.dataList[index].elementValue = this.state.infoData[index].elementDataType === 2 ? val.join(',') : val;
     });
     // api.formateJSON(this.callback);
     api.post(
@@ -370,6 +389,16 @@ class AddItemFromIndex extends Component {
       this.callback,
       res => {
         // api.formateJSON(res.data);
+        // 首页待办完成直接回首页了
+        // if (res.data.result === null) {
+        //   res.data.resultItem = [];
+        //   this.state.infoData.forEach((item, index) => {
+        //     res.data.resultItem.push({
+        //       elementName: item.elementName,
+        //       elementValue: this.getValue(this.state.value[index], index),
+        //     });
+        //   });
+        // }
         DeviceEventEmitter.emit('message', 'refresh');
         this.props.navigation.navigate('Index');
       },

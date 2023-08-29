@@ -92,7 +92,7 @@ class Record extends Component {
         {
           name: '',
           type: 'bar',
-          barWidth: '30%',
+          barWidth: '5%',
           data: [],
           itemStyle: {
             normal: {

@@ -610,6 +610,12 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     fontSize: MC(24),
   },
+  blankItem: {
+    height: screenHeight - MC(596) - barHeight,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: windowWidth,
+  },
 });
 
 export {styles};
