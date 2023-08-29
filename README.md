@@ -15,7 +15,7 @@
 - app安装完毕后在根目录执行npm start
 - 真机开发使其与pc在同一网络下，摇晃手机选择change bundle location输入pc的IP地址(xxx.xxx.xxx.xxx:8081)点击确定即可
 
-### 打包
-- 替换./android/app下的keystore密钥文件为自己的密钥
+### [打包](https://www.reactnative.cn/docs/0.68/signed-apk-android)
+- (替换/创建) ./android/app 下的keystore密钥文件为自己的密钥
 - 在./android目录下执行 ./gradlew assembleRelease 命令
 - 生成的apk文件目录为./android/app/build/outputs/apk/
